@@ -1,3 +1,4 @@
+<!-- all views will be rendered here -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +6,8 @@
     <link rel="stylesheet" hrefs="/css/main.css">
 </head>
 <body>
-    {{navbar}}
+    {{>logo}}
+    {{>navbar}}
     <div class="layoutBody">
         {{{body}}}
     </div>

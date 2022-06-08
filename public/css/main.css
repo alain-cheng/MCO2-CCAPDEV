@@ -70,69 +70,6 @@ textarea {
     resize: none;
 }
 
-/* LOGO */
-
-.header-logo {
-    margin-right: auto;
-    margin-left: auto;
-    display: block;
-    width: 50%;
-}
-
-/* NAVBAR */
-.navbar {
-    position: sticky;
-    top: 0px;
-    border: 1px solid var(--white2);
-    background-color: var(--green1);
-    height: 65px;
-    z-index: 1;
-}
-
-.navbar-contents {
-    position: sticky;
-    margin: 0 auto;
-    padding: 0px;
-    width: 1000px;
-    height: 65px;
-}
-
-.navbar-buttons {
-    background-color: var(--green1);
-    border-radius: 20px;
-    border: none;
-    color: var(--white1);
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 24px;
-    font-family: 'Inter', sans-serif;
-    padding-top: 15px;
-    padding-bottom: 20px;
-    margin-right: 30px;
-    cursor: pointer;
-    opacity: 100%;
-}
-
-.navbar-loginregister {
-    background-color: var(--green1);
-    border-radius: 20px;
-    border: none;
-    color: var(--white1);
-    text-align: center;
-    text-decoration: none;
-    font-size: 24px;
-    font-family: 'Inter', sans-serif;
-    padding-top: 15px;
-    padding-bottom: 20px;
-    padding-right: 0px;
-    cursor: pointer;
-    float: right;
-    opacity: 100%;
-}
-
-
-
 /* MAIN PAGE */
 .content {
     min-width: 1000px;
