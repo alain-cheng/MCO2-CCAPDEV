@@ -6,3 +6,5 @@
   2. express
   3. express-handlebars
   4. mongodb
+  5. path
+  6. url
