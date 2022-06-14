@@ -1,11 +1,11 @@
 import 'dotenv/config';
+
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-
 import express from 'express';
 import exphbs from 'express-handlebars';
 
-import { connectToMongo } from './db/conn.js';
+import { connectToMongo } from './models/db/conn.js';
 
 import navRoutes from './routes/navigation.js';
 
@@ -14,11 +14,12 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 
 
-app.use(express.static(__dirname + '/public'));         // set /public as our static folder
+app.use(express.static(__dirname + '/public'));
 
-app.engine('hbs', exphbs.engine({ extname: 'hbs' }));   // set handlebars as the view engine
-app.set("view engine", 'hbs');                          // set default extension as .hbs
-app.set('views', './views');                            // set directory for views
+app.engine('hbs', exphbs.engine({ extname: 'hbs' }));
+app.set("view engine", 'hbs');                         
+app.set('views', './views');                            
+
 app.set("view cache", false);                           // disable caching
 
 

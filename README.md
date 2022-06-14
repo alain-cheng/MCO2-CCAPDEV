@@ -1,10 +1,11 @@
 # MCO2-CCAPDEV
+Back-end development for DLSU Prof To Pick.
 
-### Modules Installed
-
-  1. dotenv
-  2. express
-  3. express-handlebars
-  4. mongodb
-  5. path
-  6. url
+## Modules Installed
+- **dotenv**
+- **express**
+- **express-handlebars**
+- **mongodb**
+- **mongoose**
+- **path**
+- **url**
