@@ -9,3 +9,10 @@ Back-end development for DLSU Prof To Pick.
 - **mongoose**
 - **path**
 - **url**
+
+## Project Folders
+- `controllers`
+- `models`
+- `public`
+- `routes`
+- `views`
