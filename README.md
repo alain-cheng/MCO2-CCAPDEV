@@ -18,5 +18,3 @@ Back-end development for DLSU Prof To Pick.
 - [`public`](public) - random text.
 - [`routes`](routes) - Handles navigation bar routing and post functions routing.
 - *views* - Meant to contain .hbs files, use **[pages](pages)** instead.
-- [`layouts`](controllers/pages/layouts) - Contains the main page to be displayed.
-- [`reusables`](controllers/pages/reusables) - "Reusable" html elements.

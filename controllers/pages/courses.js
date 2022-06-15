@@ -1,1 +1,0 @@
-/* Prints the Course page */

@@ -1,1 +1,0 @@
-This folder contains reusable content like the login box, navigation bars, posts, etc.

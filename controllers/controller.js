@@ -5,8 +5,6 @@ import db from '../models/db.js';
 import { Post } from '../models/schemas.js';
 import { User } from '../models/schemas.js';
 
-import home from './pages/home.js';
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -14,20 +12,23 @@ const controller = {
 
     /*
         Use this to display the home page by sending an HTTP Get request.
-        This should execute home.js
     */
     getHome: (req, res) => {
-        // Send out the main layout first to display
-        res.sendFile('pages/layouts/main.html', {root: __dirname});
-        home.page;
+        res.sendFile('pages/home.html', {root: __dirname});
     },
 
+    /*
+        Use this to display the courses page by sending an HTTP Get request.
+    */
     getCourses: (req, res) => {
-
+        res.sendFile('pages/courses.html', {root: __dirname});
     },
 
+    /*
+        Use this to display the profs page by sending an HTTP Get request.
+    */
     getProfs: (req, res) => {
-
+        res.sendFile('pages/profs.html', {root: __dirname});
     },
 
     /*
