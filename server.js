@@ -4,6 +4,7 @@ import express from 'express';
 // import exphbs from 'express-handlebars';
 import routes from './routes/routes.js'
 import db from './models/db.js';
+import collection from './models/schemas.js';
 
 const port = process.env.SERVER_PORT;
 
