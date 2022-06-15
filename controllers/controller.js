@@ -42,11 +42,19 @@ const controller = {
 
     },
 
-    addCourse: (req, res) => {
+    followCourse: (req, res) => {
 
     },
 
-    removeCourse: (req, res) => {
+    unfollowCourse: (req, res) => {
+
+    },
+
+    likePost: (req, res) => {
+
+    },
+
+    unlikePost: (req, res) => {
 
     }
 }
