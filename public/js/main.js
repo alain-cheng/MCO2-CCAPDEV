@@ -5,7 +5,7 @@ jQuery(function () {
     console.log("Document Loaded");
 
     /******************************************************
-        Sample for getting a college document from the db
+        Sample for getting a document from the db
     *******************************************************/
     let collegeSample; 
     $.get("/findCourse", {
