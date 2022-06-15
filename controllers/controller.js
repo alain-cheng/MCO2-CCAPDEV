@@ -2,8 +2,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import db from '../models/db.js';
-import { Post } from '../models/schemas.js';
-import { User } from '../models/schemas.js';
+import collection from '../models/schemas.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,21 +10,21 @@ const __dirname = path.dirname(__filename);
 const controller = {
 
     /*
-        Use this to display the home page by sending an HTTP Get request.
+        Use this to display the home page by sending an HTTP GET.
     */
     getHome: (req, res) => {
         res.sendFile('pages/home.html', {root: __dirname});
     },
 
     /*
-        Use this to display the courses page by sending an HTTP Get request.
+        Use this to display the courses page by sending an HTTP GET.
     */
     getCourses: (req, res) => {
         res.sendFile('pages/courses.html', {root: __dirname});
     },
 
     /*
-        Use this to display the profs page by sending an HTTP Get request.
+        Use this to display the profs page by sending an HTTP GET.
     */
     getProfs: (req, res) => {
         res.sendFile('pages/profs.html', {root: __dirname});
@@ -61,6 +60,20 @@ const controller = {
 
     unlikePost: (req, res) => {
 
+    },
+
+    /*
+        Use HTTP GET to find a course and returns
+        the object if found.
+    */
+    findCourse: (req, res) => {
+        db.findOne(collection[req.query['model']], {
+            id: req.query['id']
+        }, null, (result) => {
+            console.log("findCourse success", result);
+            res.send(result);
+            return result;
+        });
     }
 }
 

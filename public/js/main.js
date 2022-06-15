@@ -2,7 +2,22 @@ const errPostEmpty = "OOPS! There are no posts here.";
 var currentUser;
 
 jQuery(function () {
-    console.log("Document Loaded Success");
+    console.log("Document Loaded");
+
+    /******************************************************
+        Sample for getting a document from the db
+    *******************************************************/
+    let collegeSample; 
+    $.get("/findCourse", {
+        model: 'colleges',
+        id: 'CCS'
+    }).then((res) => {
+        collegeSample = res;
+        console.log('Document Object:', collegeSample);
+        console.log('Object Name:', collegeSample['name']);
+        console.log('Object ID:', collegeSample['id']);
+    });
+    ////////////////////////////////////////////////////////
 
     function fadeWrap() {
         let scrollPos = window.pageYOffset || document.documentElement.scrollLeft;

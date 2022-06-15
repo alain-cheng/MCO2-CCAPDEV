@@ -13,4 +13,6 @@ routes.get('/unfollowCourse', controller.unfollowCourse);
 routes.get('/likePost', controller.likePost);
 routes.get('/unlikePost', controller.unlikePost);
 
+routes.get('/findCourse', controller.findCourse);
+
 export default routes;
