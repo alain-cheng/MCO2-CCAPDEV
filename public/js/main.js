@@ -2,22 +2,22 @@ const errPostEmpty = "OOPS! There are no posts here.";
 var currentUser;
 
 jQuery(function () {
-    console.log("Document Loaded Success");
+    console.log("Document Loaded");
 
-    // let colleges = db.findOne(College, { id: 'CCS' }, null, (err, result) => {
-    //     if(err) console.log('FindOne error occured', err);
-    //     else console.log('FindOne success', result);
-    // })
-    // console.log('College: ', colleges);
-
-    let collegeSample = 
+    /******************************************************
+        Sample for getting a college document from the db
+    *******************************************************/
+    let collegeSample; 
     $.get("/findCourse", {
         model: 'colleges',
         id: 'CCS'
     }).then((res) => {
-        console.log("Res is", res);
+        collegeSample = res;
+        console.log('Document Object:', collegeSample);
+        console.log('Object Name:', collegeSample['name']);
+        console.log('Object ID:', collegeSample['id']);
     });
-    console.log('College: ', collegeSample);
+    ////////////////////////////////////////////////////////
 
     function fadeWrap() {
         let scrollPos = window.pageYOffset || document.documentElement.scrollLeft;
