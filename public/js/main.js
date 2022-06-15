@@ -1,7 +1,8 @@
 const errPostEmpty = "OOPS! There are no posts here.";
 var currentUser;
 
-$(document).ready(function () {
+jQuery(function () {
+    console.log("Document Loaded Success");
 
     function fadeWrap() {
         let scrollPos = window.pageYOffset || document.documentElement.scrollLeft;
@@ -24,12 +25,13 @@ $(document).ready(function () {
 
     /* Reloads the page content for the user */
     function refreshContent(user) {
-        $(".lu-info-top").text("");                                         // Clear Right-bar user info
+        // Reset the Right-bar user info
+        $(".lu-info-top").text("");
         $(".lu-info-bottom").text("");
-        $(".lu-info-top").text(user.firstName + " " + user.lastName);       // Set Right-bar user info 
+        $("#fr-list").html("");
+        $(".lu-info-top").text(user.firstName + " " + user.lastName);
         $(".lu-info-bottom").text(user.degree + " | " + user.college);
-        $("#fr-list").html("");                                             // Clear Suggestions
-
+        
         /*
             If  User  is  following  atleast  1  course ->
             Suggest courses based on the followed courses-
@@ -37,55 +39,115 @@ $(document).ready(function () {
 
             Else if the User is not following any course ->
             Suggest courses based on the college of the user.
+
+            courseSuggestions(), which accepts a list of course
+            objects to be displayed will be called.
         */
-        // if(user.followedCourses.length > 0)                                 
-        //      courseSuggestions(user.followedCourses);
-        // else if(user.followedCourses.length == 0) {
-        //      let suggest = [];                                              // Used to store course suggestions
+        if(user.followedCourses.length > 0)                                 
+             courseSuggestions(user.followedCourses);
+        else if(user.followedCourses.length == 0) {
+            let suggest = [];
              
-        //      let collegename = user.college;                                // Get the user's college
-        //      let ccode;                                                     // Stores the college's id
+            let collegename = user.college;
+            let ccode;
+            
+            // Find the college's id
+            for(var i = 0; i < colleges.length; i++) {                     
+                if(colleges[i].name == collegename) {                     
+                    ccode = colleges[i].code;
+                    break;
+                }
+            }
 
-        //      for(var i = 0; i < colleges.length; i++) {                     // Find the college's id
-        //           if(colleges[i].name == collegename) {                     
-        //                ccode = colleges[i].code;
-        //                break;
-        //           }
-        //      }
+            // Find all courses with the same college id tag
+            courses.forEach(e => {                                         
+                if(e.collegeid == ccode) {
+                       suggest.push(e);
+                } 
+            });
+            courseSuggestions(suggest);
+        }
+        
+        // Clears all posts
+        $("#coursepostContainer").html("");                                 
 
-        //      courses.forEach(e => {                                         // Find all courses with the same college id tag
-        //           if(e.collegeid == ccode) {
-        //                suggest.push(e);
-        //           } 
-        //      });
-        //      courseSuggestions(suggest);
-        // }
-             
-        // $("#coursepostContainer").html("");                                 // Clears all posts
+        /*
+            If the user is not following any course,
+            it should display  all  posts  available
+            in the database regardless of the user's
+            college.
 
-        // /*
-        //     If the user is not following any course,
-        //     it should display  all  posts  available
-        //     in the database regardless of the user's
-        //     college.
+            Otherwise, display  posts  based  on  the
+            courses    the    user    is    following
 
-        //     Otherwise, display  posts  based  on  the
-        //     courses    the    user    is    following
-        // */
-        // if(user.followedCourses.length == 0)
-        //      displayPosts(posts);
-        // else if(user.followedCourses.length > 0) {                          
-        //      let currPosts = [];
-        //      for(var i = 0; i < user.followedCourses.length; i++) {
-        //           for(var j = 0; j < posts.length; j++) {
-        //                if(user.followedCourses[i].name == posts[j].course)
-        //                     currPosts.push(posts[j]);
-        //           }
-        //      }
-        //      displayPosts(currPosts);
-        // }  
+            Uses displayPosts() that accepts a list of
+            post objects to be displayed.
+        */
+        if(user.followedCourses.length == 0)
+            displayPosts(posts);
+        else if(user.followedCourses.length > 0) {
+            let currPosts = [];
+            for(var i = 0; i < user.followedCourses.length; i++) {
+                for(var j = 0; j < posts.length; j++) {
+                    if(user.followedCourses[i].name == posts[j].course)
+                        currPosts.push(posts[j]);
+                }
+            }
+            displayPosts(currPosts);
+        }
 
-        // addLikeEvents();                                                    // Resets the like button's event handlers
-   }
+        // Resets the like button's event handlers
+        // addLikeEvents();
+    }
+
+     /* 
+        A function that accepts a list of courses objects
+        meant to be shown in the suggestions bar.
+     */
+    function courseSuggestions(courseList) {
+        /* 
+            We will need to determine which colleges 
+            the courses in the list belong to
+        */
+        var collegecodes = [];                                      // Used to store unique college ids from the courseList parameter
+        var flag = 0;
+        
+        collegecodes.push(courseList[0].collegeid);                 // Push the first element
+        
+        /*
+            All courses from the courseList must be checked
+            which colleges they are coming from.
+            The college ids will then be stored in a list 
+            without duplicates.
+
+            After the college ids have been compiled,
+            all courses that belong from the compiled college
+            ids must be displayed through displayCourse().
+        */
+        if(courseList.length > 1) {
+             for(var i = 1; i < courseList.length; i++) {
+                  flag = 1;
+                  for(var j = 0; j < collegecodes.length; j++) {
+                       if(collegecodes[j] == courseList[i].collegeid)
+                            flag = 0;
+                  }
+                  if(flag != 0)
+                       collegecodes.push(courseList[i].collegeid);
+             }
+
+             for(var x = 0; x < collegecodes.length; x++) {
+                  for(var y = 0; y < courses.length; y++) {
+                       if(courses[y].collegeid == collegecodes[x])
+                            displayCourse(courses[y].name);
+                  }
+             }
+        }
+        else {
+             for(var l = 0; l < courses.length; l++) {
+                  if(courses[l].collegeid == collegecodes[0])
+                       displayCourse(courses[l].name);
+             }
+        }
+    }
 
 });
