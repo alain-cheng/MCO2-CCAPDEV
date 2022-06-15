@@ -114,6 +114,10 @@ textarea {
     opacity: 100%;
 }
 
+.navbar-contents button:hover {
+    background-color: rgb(71, 179, 107)
+}
+
 .navbar-loginregister {
     background-color: var(--green1);
     border-radius: 20px;
