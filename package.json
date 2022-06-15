@@ -26,5 +26,8 @@
     "mongoose": "^6.3.8",
     "path": "^0.12.7",
     "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.5.14"
   }
 }

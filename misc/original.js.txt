@@ -1,3 +1,4 @@
+// @ts-nocheck
 var User = function(firstName, lastName, degree, college, batch, username, password, img) {
     this.firstName = firstName;
     this.lastName  = lastName;

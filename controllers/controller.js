@@ -32,21 +32,34 @@ const controller = {
     },
 
     /*
-        Use this when a new user registers into the application
+        Use this when a new user registers into the application.
+        Use HTTP POST method.
     */
     addUser: (req, res) => {
 
     },
 
+    /*
+        Use when submitting a post review.
+        Use HTTP POST method 
+    */
     addPost: (req, res) => {
 
     },
 
-    addCourse: (req, res) => {
+    followCourse: (req, res) => {
 
     },
 
-    removeCourse: (req, res) => {
+    unfollowCourse: (req, res) => {
+
+    },
+
+    likePost: (req, res) => {
+
+    },
+
+    unlikePost: (req, res) => {
 
     }
 }
