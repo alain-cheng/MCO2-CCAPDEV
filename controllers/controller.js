@@ -2,8 +2,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import db from '../models/db.js';
-import { Post } from '../models/schemas.js';
-import { User } from '../models/schemas.js';
+import collection from '../models/schemas.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -61,6 +60,15 @@ const controller = {
 
     unlikePost: (req, res) => {
 
+    },
+
+    findCourse: (req, res) => {
+        db.findOne(collection[req.query['model']], {
+            id: req.query['id']
+        }, null, (result) => {
+            console.log("findCourse success", result);
+            return result;
+        });
     }
 }
 

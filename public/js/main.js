@@ -4,6 +4,21 @@ var currentUser;
 jQuery(function () {
     console.log("Document Loaded Success");
 
+    // let colleges = db.findOne(College, { id: 'CCS' }, null, (err, result) => {
+    //     if(err) console.log('FindOne error occured', err);
+    //     else console.log('FindOne success', result);
+    // })
+    // console.log('College: ', colleges);
+
+    let collegeSample = 
+    $.get("/findCourse", {
+        model: 'colleges',
+        id: 'CCS'
+    }).then((res) => {
+        console.log("Res is", res);
+    });
+    console.log('College: ', collegeSample);
+
     function fadeWrap() {
         let scrollPos = window.pageYOffset || document.documentElement.scrollLeft;
         if(scrollPos > 300) {
