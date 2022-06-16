@@ -10,21 +10,22 @@ const __dirname = path.dirname(__filename);
 const controller = {
 
     /*
-        Use this to display the home page by sending an HTTP GET.
+        Use this to display the home.html page by sending an HTTP GET.
     */
     getHome: (req, res) => {
         res.sendFile('pages/home.html', {root: __dirname});
     },
 
     /*
-        Use this to display the courses page by sending an HTTP GET.
+        Use this to display the courses.html page by sending an HTTP GET.
+        Not to be confused with findCourses function.
     */
     getCourses: (req, res) => {
         res.sendFile('pages/courses.html', {root: __dirname});
     },
 
     /*
-        Use this to display the profs page by sending an HTTP GET.
+        Use this to display the profs.html page by sending an HTTP GET.
     */
     getProfs: (req, res) => {
         res.sendFile('pages/profs.html', {root: __dirname});
@@ -46,6 +47,11 @@ const controller = {
 
     },
 
+    /*
+        Use when user presses the follow button on a course.
+        Use HTTP GET method.
+        Same goes for unfollowCourse function.
+    */
     followCourse: (req, res) => {
 
     },
@@ -54,6 +60,11 @@ const controller = {
 
     },
 
+    /*
+        Use when user presses the like button on a post
+        Use HTTP GET method
+        Same goes for unlikePost function.
+    */
     likePost: (req, res) => {
 
     },
@@ -68,22 +79,22 @@ const controller = {
     /*   Use HTTP GET requests for funcs below.
     /*=====================================================*/
 
-    /* Use to find a course; Uses collegeid to find*/
+    /* Use to find a course; Uses college to find*/
     findCourse: (req, res) => {
         db.findOne(collection['courses'], {
-            collegeid: req.query['collegeid']
-        }, null, (result) => {
-            console.log("findCourse result", result);
+            college: req.query['college']
+        }, req.query['projection'], (result) => {
+            //console.log("findCourse result", result);
             res.send(result);                           // Sends the course document found as a response                    
         });
     },
 
-    /* Plural version of findCourse; Uses collegeid to find */
+    /* Plural version of findCourse; Uses college to find */
     findCourses: (req, res) => {
         db.findMany(collection['courses'], {
-            collegeid: req.query['collegeid']
-        }, null, (result) => {
-            console.log("findCourses result", result);
+            college: req.query['college']
+        }, req.query['projection'], (result) => {
+            //console.log("findCourses result", result);
             res.send(result);
         });
     },
@@ -92,8 +103,8 @@ const controller = {
     findCollege: (req, res) => {
         db.findOne(collection['colleges'], {
             id: req.query['id']
-        }, null, (result) => {
-            console.log("findCollege result", result);
+        }, req.query['projection'], (result) => {
+            //console.log("findCollege result", result);
             res.send(result);
         });
     },
@@ -102,18 +113,22 @@ const controller = {
     findColleges: (req, res) => {
         db.findMany(collection['colleges'], {
             id: req.query['id']
-        }, null, (result) => {
-            console.log("findColleges result", result);
+        }, req.query['projection'], (result) => {
+            //console.log("findColleges result", result);
             res.send(result);
         });
     },
 
-    /* Find a user; Uses username to find */
+    /* 
+        Find a user; Uses username and password to find
+        Use this for logging in.
+    */
     findUser: (req, res) => {
         db.findOne(collection['users'], {
-            username: req.query['username']
-        }, null, (result) => {
-            console.log("findUser result", result);
+            username: req.query['username'],
+            password: req.query['password']
+        }, req.query['projection'], (result) => {
+            //console.log("findUser result", result);
             res.send(result);
         });
     },
@@ -122,8 +137,8 @@ const controller = {
     findUsers: (req, res) => {
         db.findMany(collection['users'], {
             username: req.query['username']
-        }, null, (result) => {
-            console.log("findUsers result", result);
+        }, req.query['projection'], (result) => {
+            //console.log("findUsers result", result);
             res.send(result);
         });
     },
@@ -132,8 +147,8 @@ const controller = {
     findPost: (req, res) => {
         db.findOne(collection['posts'], {
             id: req.query['id']
-        }, null, (result) => {
-            console.log("findPost result", result);
+        }, req.query['projection'], (result) => {
+            //console.log("findPost result", result);
             res.send(result);
         });
     },
@@ -141,8 +156,8 @@ const controller = {
     findPosts: (req, res) => {
         db.findOne(collection['posts'], {
             id: req.query['id']
-        }, null, (result) => {
-            console.log("findPosts result", result);
+        }, req.query['projection'], (result) => {
+            //console.log("findPosts result", result);
             res.send(result);
         });
     }

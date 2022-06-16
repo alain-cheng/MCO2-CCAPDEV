@@ -35,19 +35,19 @@ collection['users'].insertMany([
         firstName: 'Harley',
         lastName: 'Davis',
         degree: 'BSCS',
-        college: 'College of Computer Studies',
+        college: { name: 'College of Computer Studies', id: 'CCS'},
         batch: 'ID 120',
         username: 'HDavis',
         password: 'user1',
         img: '/img/user1.jpg',
-        followedCourses: ['CCPROG', 'CSINTSY'],
+        followedCourses: [{ name: 'CCPROG', college: 'CCS' }, { name: 'CSINTSY', college: 'CCS' }],
         likedPosts: [100001]
     },
     {
         firstName: 'Sarah',
         lastName: 'Parker',
         degree: 'BSCS',
-        college: 'College of Computer Studies',
+        college: { name: 'College of Computer Studies', id: 'CCS'},
         batch: 'ID 119',
         username: 'Sarah',
         password: 'user2',
@@ -57,7 +57,7 @@ collection['users'].insertMany([
         firstName: 'Amy',
         lastName: 'Bougainvillea',
         degree: 'BSCS',
-        college: 'College of Computer Studies',
+        college: { name: 'College of Computer Studies', id: 'CCS'},
         batch: 'ID 120',
         username: 'Amivillea',
         password: 'user3',
@@ -67,7 +67,7 @@ collection['users'].insertMany([
         firstName: 'Lance',
         lastName: 'Mendoza',
         degree: 'BSCS',
-        college: 'College of Computer Studies',
+        college: { name: 'College of Computer Studies', id: 'CCS'},
         batch: 'ID 12',
         username: 'LanDoza',
         password: 'user4',
@@ -77,7 +77,7 @@ collection['users'].insertMany([
         firstName: 'Mad',
         lastName: 'Scientist',
         degree: 'BSBC',
-        college: 'College of Science',
+        college: { name: 'College of Science', id: 'COS'},
         batch: 'ID 118',
         username: 'MaddoScientisto',
         password: 'user5',
@@ -91,23 +91,23 @@ collection['users'].insertMany([
 collection['courses'].insertMany([
     {
         name: 'CCPROG',
-        collegeid: 'CCS'
+        college: 'CCS'
     },
     {
         name: 'CCPROG2',
-        collegeid: 'CCS'
+        college: 'CCS'
     },
     {
         name: 'CCDSTRU',
-        collegeid: 'CCS'
+        college: 'CCS'
     },
     {
         name: 'CSINTSY',
-        collegeid: 'CCS'
+        college: 'CCS'
     },
     {
         name: 'KEMPSY1',
-        collegeid: 'COS'
+        college: 'COS'
     }
 ], (err, res) => {
     if(err) console.log('Insert error occured for Courses, possible duplicates');

@@ -12,27 +12,27 @@ const PostSchema = new mongoose.Schema({
     id: { type: Number, required: true, index: true, unique: true } // 6 digit id, counting starts at 100001
 });
 
+const CollegeSchema = new mongoose.Schema({
+    name: { type: String },
+    id: { type: String, unique: true }
+});
+
+const CourseSchema = new mongoose.Schema({
+    name: { type: String, unique: true, required: true },
+    college: { type: String, required: true }
+});
+
 const UserSchema = new mongoose.Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     degree: { type: String, required: true },
-    college: { type: String, required: true },
+    college: { type: CollegeSchema, required: true },
     batch: { type: String, required: true },
     username: { type: String, required: true, index: true, unique: true },
     password: { type: String, required: true },
     img: { type: String, required: true },          // image links
-    followedCourses: [{ type: String }],            // store course names 
-    likedPosts: [{ type: Number }]                  // store post ids  
-});
-
-const CourseSchema = new mongoose.Schema({
-    name: { type: String, required: true, unique: true },
-    collegeid: { type: String, required: true }
-});
-
-const CollegeSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    id: { type: String, required: true, unique: true }
+    followedCourses: [{ type: CourseSchema }],
+    likedPosts: [{ type: Number }]                  // store post ids
 });
 
 // exports

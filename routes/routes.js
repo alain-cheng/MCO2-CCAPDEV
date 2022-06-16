@@ -15,5 +15,11 @@ routes.get('/unlikePost', controller.unlikePost);
 
 routes.get('/findCourse', controller.findCourse);
 routes.get('/findCourses', controller.findCourses);
+routes.get('/findCollege', controller.findCollege);
+routes.get('/findColleges', controller.findColleges);
+routes.get('/findUser', controller.findUser);
+routes.get('/findUsers', controller.findUsers);
+routes.get('/findPost', controller.findPost);
+routes.get('/findPosts', controller.findPosts);
 
 export default routes;
