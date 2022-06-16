@@ -12,7 +12,7 @@ jQuery(function () {
      $.get("/findCourse", {
           filter: { college: 'CCS' }
      }).then((res) => {              // retrieve response data
-          var collegeSample = res;    
+          var collegeSample = res;
           console.log('Sample Object:', collegeSample);
           console.log('Object Name:', collegeSample['name']);
           console.log('Object ID:', collegeSample['college']);
@@ -30,11 +30,11 @@ jQuery(function () {
      // Temporary: Auto login a user (testing purposes)
      $.get("/findUser", {
           filter: {
-               username: 'Sarah',
-               password: 'user2'
+               username: 'HDavis',
+               password: 'user1'
           }
      }).then((res) => {
-               currentUser = res;  // dis a local scope
+               currentUser = res;  
                console.log('Logged In', res['username']);
                console.log('Following', res['followedCourses']);
                login(currentUser);
@@ -58,8 +58,8 @@ jQuery(function () {
      function login(user) {
           currentUser = user;
           console.log('Current User is: ', currentUser);
-          // set profile picture
-          $("#logged-user").attr("src", user.img);
+          $('.signed-out-message').hide();
+          $("#logged-user").attr("src", user['img']);
           refreshContent(user);
      }
 
@@ -69,8 +69,8 @@ jQuery(function () {
           $(".lu-info-top").text("");
           $(".lu-info-bottom").text("");
           $("#fr-list").html("");
-          $(".lu-info-top").text(user.firstName + " " + user.lastName);
-          $(".lu-info-bottom").text(user.degree + " | " + user.college);
+          $(".lu-info-top").text(user['firstName'] + " " + user['lastName']);
+          $(".lu-info-bottom").text(user['degree'] + " | " + user['college'].name);
           
           /*
                If  User   is   following    atleast   1   course ->
@@ -79,7 +79,7 @@ jQuery(function () {
 
                Else if  the  User is  not  following  any course ->
                Suggest courses  based  on the  college of the user.
-
+               
                Similar rules apply above in displaying posts except
                that every single post is displayed available in the
                db if the user is not following any courses.
@@ -90,22 +90,38 @@ jQuery(function () {
                to be displayed.
           */
           if(user['followedCourses'].length > 0) {
-               courseSuggestions(user['followedCourses']);
+               //courseSuggestions(user['followedCourses']);
+               let following = user['followedCourses'];
+               let setCodes = new Set();                            // Stores college ids without duplicates
+               let codes = [];
 
-               let posts = [];
-               $.get("/findPosts", {
-                    filter: {}
+               for(var i = 0; i < user['followedCourses'].length; i++) {
+                    setCodes.add(user['followedCourses'][i].college);
+               }
+
+               setCodes.forEach((element) => {                      // Place all elements of the Set into an array
+                    codes.push(element);
+               });
+
+               $.get("/findCourses", {
+                    filter: { college: codes }
                }).then((res) => {
+                    console.log('Courses to suggest:', res);
+                    courseSuggestions(res);
+               });
 
+               $.get("/findPosts", {
+                    filter: { course: codes }
+               }).then((posts) => {
+                    console.log("findPosts result:", posts);
+                    displayPosts(posts);
                });
                
           } else if(user['followedCourses'].length == 0) {
                let suggest = [];                                 // will be storing course objects
 
                $.get("/findCourses", {                           // Find all courses with the same `college`
-                    filter: {
-                         college: user['college'].name
-                    }
+                    filter: { college: user['college'].name }
                }).then((res) => {
                     //console.log('Courses found: ', res);
                     for(var i = 0; i < res.length; i++) {
@@ -114,27 +130,15 @@ jQuery(function () {
                     courseSuggestions(suggest);
                });
 
-               $.get("/findPosts", { filter: {} }).then((res) => {           // Returns every single post in the db
-                    displayPosts(res);
+               $.get("/findPosts", { filter: {} }).then((posts) => {           // Returns every single post in the db
+                    console.log('findPosts result:', posts);
+                    displayPosts(posts);
                });
           }
           
           $("#coursepostContainer").html("");                    // Clears all posts
 
-          // if(user.followedCourses.length == 0)
-          //     displayPosts(posts);
-          // else if(user.followedCourses.length > 0) {
-          //     let currPosts = [];
-          //     for(var i = 0; i < user.followedCourses.length; i++) { // finds all posts based on user's followed courses
-          //         for(var j = 0; j < posts.length; j++) {
-          //             if(user.followedCourses[i].name == posts[j].course)
-          //                 currPosts.push(posts[j]);
-          //         }
-          //     }
-          //     displayPosts(currPosts);
-          // }
-
-          // Resets the like button's event handlers
+          // Resets the like button's event handlers cus its bugged.
           // addLikeEvents();
      }
 
@@ -143,6 +147,7 @@ jQuery(function () {
         meant to be shown in the suggestions bar.
      */
      function courseSuggestions(courseList) {
+          console.log('courseSuggestions received:', courseList);
           /* 
                We will need to determine which colleges 
                the courses in the list belong to
@@ -197,6 +202,7 @@ jQuery(function () {
         singular     version       of       this      method.
     */
      function displayPosts(posts) {
+          console.log('displayPosts received:', posts)
           // if(posts.length == 0) {
           //      var message = document.createElement("div");
           //      $(message).addClass("empty-post-message");
@@ -288,27 +294,27 @@ jQuery(function () {
           $(mpLike).attr("id", post.id);
           
           // Set proper display of post ratings
-          // switch(post.stars)
-          // {
-          //      case 1:
-          //           $(mpRStars).css("background-position", "-230px -76px");
-          //           $(mpRDesc).css("bottom", "40px");                         // Patch for 1star text being in the wrong position
-          //           break;
-          //      case 2:
-          //           $(mpRStars).css("background-position", "-10px -148px");
-          //           break;
-          //      case 3:
-          //           $(mpRStars).css("background-position", "-230px -14px");
-          //           break;
-          //      case 4:
-          //           $(mpRStars).css("background-position", "-10px -83px");
-          //           break;
-          //      case 5:
-          //           $(mpRStars).css("background-position", "-10px -18px");
-          //           break;
-          // }
-          // // Display mainpost to post container
-          // $("#coursepostContainer").append(mainpost);
+          switch(post.stars)
+          {
+               case 1:
+                    $(mpRStars).css("background-position", "-230px -76px");
+                    $(mpRDesc).css("bottom", "40px");                         // Patch for 1star text being in the wrong position
+                    break;
+               case 2:
+                    $(mpRStars).css("background-position", "-10px -148px");
+                    break;
+               case 3:
+                    $(mpRStars).css("background-position", "-230px -14px");
+                    break;
+               case 4:
+                    $(mpRStars).css("background-position", "-10px -83px");
+                    break;
+               case 5:
+                    $(mpRStars).css("background-position", "-10px -18px");
+                    break;
+          }
+          // Display mainpost to post container
+          $("#coursepostContainer").append(mainpost);
      }
 
 });

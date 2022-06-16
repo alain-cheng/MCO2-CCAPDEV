@@ -138,7 +138,7 @@ const controller = {
     },
 
     findPosts: (req, res) => {
-        db.findOne(collection['posts'], req.query['filter'], req.query['projection'], (result) => {
+        db.findMany(collection['posts'], req.query['filter'], req.query['projection'], (result) => {
             //console.log("findPosts result", result);
             res.send(result);
         });
