@@ -4,44 +4,45 @@ const errPostEmpty = "OOPS! There are no posts here.";
 var currentUser;                 // Store the logged in user
 
 jQuery(function () {
-    console.log("Document Loaded");
+     console.log("Document Loaded");
 
-    /*=====================================================*/
-    /*   Sample for getting a document from the db
-    /*=====================================================*/
-    $.get("/findCourse", {
-        college: 'CCS'
-    }).then((res) => {              // retrieve response data
-        var collegeSample = res;    
-        console.log('Sample Object:', collegeSample);
-        console.log('Object Name:', collegeSample['name']);
-        console.log('Object ID:', collegeSample['college']);
-    });
-    /*=====================================================*/
-
-
-
-    // Create working course follow buttons
-    // var courseFollow = document.getElementById("fr-list");
-    // courseFollow?.addEventListener('click', followCourse);
+     /*=====================================================*/
+     /*   Sample for getting a document from the db
+     /*=====================================================*/
+     $.get("/findCourse", {
+          filter: { college: 'CCS' }
+     }).then((res) => {              // retrieve response data
+          var collegeSample = res;    
+          console.log('Sample Object:', collegeSample);
+          console.log('Object Name:', collegeSample['name']);
+          console.log('Object ID:', collegeSample['college']);
+     });
+     /*=====================================================*/
 
 
 
-    // Temporary: Auto login a user (testing purposes)
-    $.get("/findUser", {
-          username: 'Sarah',
-          password: 'user2'
-    }).then((res) => {
-          currentUser = res;  // dis a local scope
-          console.log('Logged In', res['username']);
-          console.log('Following', res['followedCourses']);
-          login(currentUser);
-    });
+     // Create working course follow buttons
+     // var courseFollow = document.getElementById("fr-list");
+     // courseFollow?.addEventListener('click', followCourse);
 
 
-    /*=====================================================*/
-    /*   Main application functions below
-    /*=====================================================*/
+
+     // Temporary: Auto login a user (testing purposes)
+     $.get("/findUser", {
+          filter: {
+               username: 'Sarah',
+               password: 'user2'
+          }
+     }).then((res) => {
+               currentUser = res;  // dis a local scope
+               console.log('Logged In', res['username']);
+               console.log('Following', res['followedCourses']);
+               login(currentUser);
+     });
+
+     /*=====================================================*/
+     /*   Main application functions below
+     /*=====================================================*/
 
      function fadeWrap() {
           let scrollPos = window.pageYOffset || document.documentElement.scrollLeft;
@@ -90,11 +91,21 @@ jQuery(function () {
           */
           if(user['followedCourses'].length > 0) {
                courseSuggestions(user['followedCourses']);
+
+               let posts = [];
+               $.get("/findPosts", {
+                    filter: {}
+               }).then((res) => {
+
+               });
+               
           } else if(user['followedCourses'].length == 0) {
                let suggest = [];                                 // will be storing course objects
 
-               $.get("/findCourses", {                           // Find all courses with the same `collegeid`
-                    college: user['college'].name
+               $.get("/findCourses", {                           // Find all courses with the same `college`
+                    filter: {
+                         college: user['college'].name
+                    }
                }).then((res) => {
                     //console.log('Courses found: ', res);
                     for(var i = 0; i < res.length; i++) {
@@ -103,30 +114,18 @@ jQuery(function () {
                     courseSuggestions(suggest);
                });
 
-               $.get("/findPosts", {}).then((res) => {           // Returns every single post in the db
+               $.get("/findPosts", { filter: {} }).then((res) => {           // Returns every single post in the db
                     displayPosts(res);
                });
           }
           
           $("#coursepostContainer").html("");                    // Clears all posts
 
-          /*
-               If the user is not  following any course,
-               it should display  all  posts   available
-               in the database regardless  of the user's
-               college.
-
-               Otherwise, display  posts  based  on  the
-               courses    the    user    is    following
-
-               Uses displayPosts()  that accepts  a list 
-               of  post   objects   to   be   displayed.
-          */
           // if(user.followedCourses.length == 0)
           //     displayPosts(posts);
           // else if(user.followedCourses.length > 0) {
           //     let currPosts = [];
-          //     for(var i = 0; i < user.followedCourses.length; i++) {
+          //     for(var i = 0; i < user.followedCourses.length; i++) { // finds all posts based on user's followed courses
           //         for(var j = 0; j < posts.length; j++) {
           //             if(user.followedCourses[i].name == posts[j].course)
           //                 currPosts.push(posts[j]);
