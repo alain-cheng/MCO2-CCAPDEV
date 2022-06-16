@@ -39,7 +39,9 @@ collection['users'].insertMany([
         batch: 'ID 120',
         username: 'HDavis',
         password: 'user1',
-        img: '/img/user1.jpg'
+        img: '/img/user1.jpg',
+        followedCourses: ['CCPROG', 'CSINTSY'],
+        likedPosts: [100001]
     },
     {
         firstName: 'Sarah',
