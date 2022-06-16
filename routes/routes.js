@@ -14,5 +14,6 @@ routes.get('/likePost', controller.likePost);
 routes.get('/unlikePost', controller.unlikePost);
 
 routes.get('/findCourse', controller.findCourse);
+routes.get('/findCourses', controller.findCourses);
 
 export default routes;

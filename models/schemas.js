@@ -21,8 +21,8 @@ const UserSchema = new mongoose.Schema({
     username: { type: String, required: true, index: true, unique: true },
     password: { type: String, required: true },
     img: { type: String, required: true },          // image links
-    followedCourses: { type: Number },              // Store course ids
-    likedPosts: { type: Number }                    // Store post ids
+    followedCourses: [{ type: String }],            // store course names 
+    likedPosts: [{ type: Number }]                  // store post ids  
 });
 
 const CourseSchema = new mongoose.Schema({

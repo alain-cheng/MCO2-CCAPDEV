@@ -1,23 +1,40 @@
+const mpHeaderLeft = "Review For:";
 const errPostEmpty = "OOPS! There are no posts here.";
-var currentUser;
+
+var currentUser;                 // Store the logged in user
 
 jQuery(function () {
     console.log("Document Loaded");
 
-    /******************************************************
-        Sample for getting a document from the db
-    *******************************************************/
-    let collegeSample; 
+    /*=====================================================*/
+    /*   Sample for getting a document from the db
+    /*=====================================================*/
     $.get("/findCourse", {
-        model: 'colleges',
-        id: 'CCS'
-    }).then((res) => {
-        collegeSample = res;
+        collegeid: 'CCS'
+    }).then((res) => {              // retrieve response data
+        var collegeSample = res;    
         console.log('Document Object:', collegeSample);
         console.log('Object Name:', collegeSample['name']);
-        console.log('Object ID:', collegeSample['id']);
+        console.log('Object ID:', collegeSample['collegeid']);
     });
-    ////////////////////////////////////////////////////////
+    /*=====================================================*/
+
+
+
+    // Create working course follow buttons
+    // var courseFollow = document.getElementById("fr-list");
+    // courseFollow?.addEventListener('click', followCourse);
+
+
+
+
+
+
+
+
+    /*=====================================================*/
+    /*   Main application functions below
+    /*=====================================================*/
 
     function fadeWrap() {
         let scrollPos = window.pageYOffset || document.documentElement.scrollLeft;
@@ -34,7 +51,6 @@ jQuery(function () {
         currentUser = user;
         // set profile picture
         $("#logged-user").attr("src", user.img);
-        
         refreshContent(user);
     }
 
@@ -58,33 +74,32 @@ jQuery(function () {
             courseSuggestions(), which accepts a list of course
             objects to be displayed will be called.
         */
-        if(user.followedCourses.length > 0)                                 
-             courseSuggestions(user.followedCourses);
-        else if(user.followedCourses.length == 0) {
-            let suggest = [];
-             
-            let collegename = user.college;
-            let ccode;
+        // if(user.followedCourses.length > 0)
+        //      courseSuggestions(user.followedCourses);
+        // else if(user.followedCourses.length == 0) {
+        //     let suggest = [];
+        //     let collegename = user.college;
+        //     let ccode;
             
-            // Find the college's id
-            for(var i = 0; i < colleges.length; i++) {                     
-                if(colleges[i].name == collegename) {                     
-                    ccode = colleges[i].code;
-                    break;
-                }
-            }
+        //     // Find the college's id
+        //     for(var i = 0; i < colleges.length; i++) {
+        //         if(colleges[i].name == collegename) {
+        //             ccode = colleges[i].code;
+        //             break;
+        //         }
+        //     }
 
-            // Find all courses with the same college id tag
-            courses.forEach(e => {                                         
-                if(e.collegeid == ccode) {
-                       suggest.push(e);
-                } 
-            });
-            courseSuggestions(suggest);
-        }
+        //     // Find all courses with the same college id tag
+        //     courses.forEach(e => {
+        //         if(e.collegeid == ccode) {
+        //                suggest.push(e);
+        //         } 
+        //     });
+        //     courseSuggestions(suggest);
+        // }
         
         // Clears all posts
-        $("#coursepostContainer").html("");                                 
+        $("#coursepostContainer").html("");
 
         /*
             If the user is not following any course,
@@ -98,18 +113,18 @@ jQuery(function () {
             Uses displayPosts() that accepts a list of
             post objects to be displayed.
         */
-        if(user.followedCourses.length == 0)
-            displayPosts(posts);
-        else if(user.followedCourses.length > 0) {
-            let currPosts = [];
-            for(var i = 0; i < user.followedCourses.length; i++) {
-                for(var j = 0; j < posts.length; j++) {
-                    if(user.followedCourses[i].name == posts[j].course)
-                        currPosts.push(posts[j]);
-                }
-            }
-            displayPosts(currPosts);
-        }
+        // if(user.followedCourses.length == 0)
+        //     displayPosts(posts);
+        // else if(user.followedCourses.length > 0) {
+        //     let currPosts = [];
+        //     for(var i = 0; i < user.followedCourses.length; i++) {
+        //         for(var j = 0; j < posts.length; j++) {
+        //             if(user.followedCourses[i].name == posts[j].course)
+        //                 currPosts.push(posts[j]);
+        //         }
+        //     }
+        //     displayPosts(currPosts);
+        // }
 
         // Resets the like button's event handlers
         // addLikeEvents();
@@ -163,6 +178,130 @@ jQuery(function () {
                        displayCourse(courses[l].name);
              }
         }
+    }
+
+    /*
+        Accepts a list of post objects meant to be displayed.
+        If there are no posts to be displayed, a message must
+        be  displayed  indicating  no  posts  are  available.
+
+        This function  is   tied   with   displayPost(),  the
+        singular     version       of       this      method.
+    */
+    function displayPosts(posts) {
+        if(posts.length == 0) {
+             var message = document.createElement("div");
+             $(message).addClass("empty-post-message");
+             $(message).text(errPostEmpty);
+             $("#coursepostContainer").append(message);
+             console.log(errPostEmpty)
+        }
+        else {
+             console.log("Posts available")
+             for(var i = 0; i < posts.length; i++)
+                  displayPost(posts[i]); 
+        }
+    }
+
+    /*
+        Accepts  a   post  object   to   be   displayed.
+        This function creates all the necessary elements
+        making up a post, and appends the assembled post
+        into the post  container   #coursepostContainer.
+    */
+    function displayPost(post) {
+        // Creating post elements
+        var mainpost = document.createElement("div");
+             var mpHeader = document.createElement("div");
+                  var mpHLeft = document.createElement("div");
+                  var mpHMid = document.createElement("div");
+                       var mpHMTop = document.createElement("div");
+                       var mpHMBot = document.createElement("div");
+             var mpReview = document.createElement("div");
+                  var mpRStars = document.createElement("div");
+                  var mpRDesc = document.createElement("div");
+             var mpReviewBox = document.createElement("div");
+                  var mpReviewText = document.createElement("div");
+                       var mpRParagraph = document.createElement("p");
+             var mpSubHeader = document.createElement("div");
+                  var mpSHImg = document.createElement("img");
+                  var mpSHLeft = document.createElement("div");
+                       var mpSHLTop = document.createElement("div");
+                       var mpSHLBot = document.createElement("div");
+                  var mpLike = document.createElement("div");
+
+        // Add classes
+        $(mainpost).addClass("mainpost");
+        $(mpHeader).addClass("mp-header");
+        $(mpHLeft).addClass("mp-header-left");
+        $(mpHMid).addClass("mp-header-middle");
+        $(mpHMTop).addClass("mp-header-middle-top");
+        $(mpHMBot).addClass("mp-header-middle-bottom");
+        $(mpReview).addClass("mp-review");
+        $(mpRStars).addClass("mp-review-stars");
+        $(mpRDesc).addClass("mp-rev-description");
+        $(mpReviewBox).addClass("mp-review-box");
+        $(mpReviewText).addClass("mp-review-text");
+        $(mpSubHeader).addClass("mp-subheader");
+        $(mpSHImg).addClass("mp-subheader-pic");
+        $(mpSHLeft).addClass("mp-subheader-left");
+        $(mpSHLTop).addClass("mp-subheader-left-top");
+        $(mpSHLBot).addClass("mp-subheader-left-bottom");
+        $(mpLike).addClass("mp-subheader-likebutton");
+
+        // Append
+        $(mainpost).append(mpHeader);
+        $(mpHeader).append(mpHLeft);
+        $(mpHeader).append(mpHMid);
+        $(mpHMid).append(mpHMTop);
+        $(mpHMid).append(mpHMBot);
+        $(mainpost).append(mpReview);
+        $(mpReview).append(mpRStars);
+        $(mpReview).append(mpRDesc);
+        $(mainpost).append(mpReviewBox);
+        $(mpReviewBox).append(mpReviewText);
+        $(mpReviewText).append(mpRParagraph);
+        $(mainpost).append(mpSubHeader);
+        $(mpSubHeader).append(mpSHImg);
+        $(mpSubHeader).append(mpSHLeft);
+        $(mpSHLeft).append(mpSHLTop);
+        $(mpSHLeft).append(mpSHLBot);
+        $(mpSubHeader).append(mpLike);
+
+        // Set post content
+        $(mpHLeft).text(mpHeaderLeft);
+        $(mpHMTop).text(post.profFName + " " + post.profLName);
+        $(mpHMBot).text(post.course + " | Term " + post.term);
+        $(mpRDesc).text(getStarDesc(post.stars));
+        $(mpRParagraph).text(post.text);
+        $(mpSHImg).attr("src", post.owner.img);
+        $(mpSHLTop).text(post.owner.firstName + " " + post.owner.lastName);
+        $(mpSHLBot).text(post.owner.degree + " | " + post.owner.college);
+        $(mpLike).attr("id", post.id);
+        
+        // Set proper display of post ratings
+        switch(post.stars)
+        {
+             case 1:
+                  $(mpRStars).css("background-position", "-230px -76px");
+                  $(mpRDesc).css("bottom", "40px");                         // Patch for 1star text being in the wrong position
+                  break;
+             case 2:
+                  $(mpRStars).css("background-position", "-10px -148px");
+                  break;
+             case 3:
+                  $(mpRStars).css("background-position", "-230px -14px");
+                  break;
+             case 4:
+                  $(mpRStars).css("background-position", "-10px -83px");
+                  break;
+             case 5:
+                  $(mpRStars).css("background-position", "-10px -18px");
+                  break;
+        }
+
+        // Display mainpost to post container
+        $("#coursepostContainer").append(mainpost);
     }
 
 });

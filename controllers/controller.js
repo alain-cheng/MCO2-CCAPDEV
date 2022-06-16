@@ -62,17 +62,88 @@ const controller = {
 
     },
 
-    /*
-        Use HTTP GET to find a course and returns
-        the object if found.
-    */
+    /*=====================================================*/
+    /*   Functions below to retrieve documents from the db.
+    /*   Responds with document objects.
+    /*   Use HTTP GET requests for funcs below.
+    /*=====================================================*/
+
+    /* Use to find a course; Uses collegeid to find*/
     findCourse: (req, res) => {
-        db.findOne(collection[req.query['model']], {
+        db.findOne(collection['courses'], {
+            collegeid: req.query['collegeid']
+        }, null, (result) => {
+            console.log("findCourse result", result);
+            res.send(result);                           // Sends the course document found as a response                    
+        });
+    },
+
+    /* Plural version of findCourse; Uses collegeid to find */
+    findCourses: (req, res) => {
+        db.findMany(collection['courses'], {
+            collegeid: req.query['collegeid']
+        }, null, (result) => {
+            console.log("findCourses result", result);
+            res.send(result);
+        });
+    },
+
+    /* Find a college; Uses id to find */
+    findCollege: (req, res) => {
+        db.findOne(collection['colleges'], {
             id: req.query['id']
         }, null, (result) => {
-            console.log("findCourse success", result);
+            console.log("findCollege result", result);
             res.send(result);
-            return result;
+        });
+    },
+
+    /* Find colleges; Uses id to find */
+    findColleges: (req, res) => {
+        db.findMany(collection['colleges'], {
+            id: req.query['id']
+        }, null, (result) => {
+            console.log("findColleges result", result);
+            res.send(result);
+        });
+    },
+
+    /* Find a user; Uses username to find */
+    findUser: (req, res) => {
+        db.findOne(collection['users'], {
+            username: req.query['username']
+        }, null, (result) => {
+            console.log("findUser result", result);
+            res.send(result);
+        });
+    },
+
+    /* Find users; Uses username to find */
+    findUsers: (req, res) => {
+        db.findMany(collection['users'], {
+            username: req.query['username']
+        }, null, (result) => {
+            console.log("findUsers result", result);
+            res.send(result);
+        });
+    },
+    
+    /* Find a post; Uses id to find */
+    findPost: (req, res) => {
+        db.findOne(collection['posts'], {
+            id: req.query['id']
+        }, null, (result) => {
+            console.log("findPost result", result);
+            res.send(result);
+        });
+    },
+
+    findPosts: (req, res) => {
+        db.findOne(collection['posts'], {
+            id: req.query['id']
+        }, null, (result) => {
+            console.log("findPosts result", result);
+            res.send(result);
         });
     }
 }
