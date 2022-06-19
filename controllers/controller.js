@@ -74,7 +74,7 @@ const controller = {
     },
 
     /*=====================================================*/
-    /*   Functions below to retrieve documents from the db.
+    /*   Functions below to retrieve and manipulate documents from the db.
     /*   Responds with document objects.
     /*   Use HTTP GET requests for funcs below.
     /*=====================================================*/
