@@ -222,11 +222,24 @@ jQuery(function () {
                objects   to  be  displayed  will  be  called,  and 
                displayPosts() which accepts a list of post objects 
                to be displayed.
+
+               One other thing, also suggest courses based on the
+               posts the user has liked.
           */
           if(user['followedCourses'].length > 0) {
                let following = user['followedCourses'];
+               let likedpostCourses = [];                           // Stores the courses from the posts the user has liked
                let setCodes = new Set();                            // Stores college ids without duplicates
                let codes = [];
+
+               // $.get("/findPosts", {                                    // 
+               //      filter: { id: user['likedPosts'] }
+               // }).then((element) => {
+               //      element.forEach(e => {
+               //           likedpostCourses.push(e['reviewCourse']);
+               //      });
+               //      console.log('likedlist', likedpostCourses);
+               // });
                                              
                $.get("/findCourses", {                                   // Look for all the colleges the followed courses belong to
                     filter: { coursecode: following }
@@ -244,35 +257,30 @@ jQuery(function () {
                          filter: { collegeid: codes }
                     }).then((suggestCourses) => {
                          console.log('Courses to suggest:', suggestCourses);
-                         courseSuggestions(suggestCourses);
+                         displayCourse(suggestCourses);
                     });
 
                     $.get("/findPosts", {                                // Display posts based on the courses being followed
                          filter: { reviewCourse: following }
-                    }).then((displayPosts) => {
-                         console.log("Posts to display:", displayPosts);
-                         displayPosts(displayPosts);
+                    }).then((posts) => {
+                         //console.log("Posts to display:", posts);
+                         displayPosts(posts);
                     });
                });
                
           } else if(user['followedCourses'].length == 0) {
-               let suggest = [];
-
                $.get("/findCollege", {                            // Find the college id based on the user's college
                     filter: { collegename: user['college'] }
                }).then((res) => {
-                    console.log('College found: ', res);
 
                     $.get("/findCourses", {                           // Find all courses with the same collegeid
                          filter: { collegeid: res['id'] }
                     }).then((suggestCourses) => {
-                         console.log('Courses found: ', suggestCourses);
-                         courseSuggestions(suggestCourses);
+                         displayCourse(suggestCourses);
                     });
                });
 
                $.get("/findPosts", { filter: {} }).then((posts) => {           // Returns every single post in the db
-                    console.log('findPosts result:', posts);
                     displayPosts(posts);
                });
           }
@@ -281,55 +289,6 @@ jQuery(function () {
 
           // Resets the like button's event handlers.
           addLikeEvents();
-     }
-
-     /* 
-        A function that accepts a list of course objects
-        meant to be shown in the suggestions bar.
-        This function takes all possible courses from the
-        database and passes the objects received onto
-        displayCourse()
-     */
-     function courseSuggestions(courseList) {
-          console.log('courseSuggestions received:', courseList);
-
-          /*
-                    All course suggestions that will be displayed are
-                    related to the current followed courses' colleges.
-
-                    However if courseList is empty, then take the current
-                    user's college and base recommendations of off that.
-          */
-          for(var i = 0; i < courseList.length; i++) {
-               displayCourse(courseList[i]);
-          }
-
-
-          // courseList.forEach(e => {
-          //      setCodes.add(e['collegeid']);
-          // });
-
-          // setCodes.forEach(e => {
-          //      codes.push(e);
-          // });
-
-          // console.log('codes', codes);
-
-          // if(courseList.length > 0){
-          //      $.get("/findCourses", {
-          //           filter: { collegeid: codes }
-          //      }).then((suggestions) => {
-          //           console.log('Courses to Suggest: ', suggestions);
-          //           displayCourse(suggestions)
-          //      });
-          // } else {
-          //      $.get("/findCourses", {
-          //           filter: { college: currentUser['college'].id }
-          //      }).then((suggestions) => {
-          //           console.log('Courses to Suggest: ', suggestions);
-          //           displayCourse(suggestions)
-          //      });
-          // }
      }
 
      /*
@@ -351,8 +310,8 @@ jQuery(function () {
                $(frListElement).append(frListElementName);
                $(frListElement).append(frListElementFollow);
 
-               $(frListElementName).text(e['name']);
-               $(frListElementFollow).text(checkFollowing(e['name']));
+               $(frListElementName).text(e['coursecode']);
+               $(frListElementFollow).text(checkFollowing(e['coursecode']));
 
                $("#fr-list").append(frListElement);
           });
@@ -362,13 +321,13 @@ jQuery(function () {
           Simply checks if current user is following a given
           course name from the parameter. Returns a string.
      */
-     function checkFollowing(coursename) {
+     function checkFollowing(course) {
           let followedCourses = [];
           let flag = 0;
 
           followedCourses = currentUser['followedCourses'];
           followedCourses.forEach(e => {
-               if(coursename.localeCompare(e['name']) == 0) {
+               if(course.localeCompare(e) == 0) {        // a string compare
                     flag = 1;
                }
           });
@@ -386,7 +345,7 @@ jQuery(function () {
         singular form of this method.
     */
      function displayPosts(posts) {
-          //console.log('displayPosts received:', posts);
+          console.log('displayPosts received:', posts);
 
           if(posts.length == 0) {
                var message = document.createElement("div");
@@ -468,13 +427,13 @@ jQuery(function () {
 
           // Set post content
           $(mpHLeft).text(mpHeaderLeft);
-          $(mpHMTop).text(post['profFName'] + " " + post['profLName']);
-          $(mpHMBot).text(post['course'] + " | Term " + post['term']);
-          $(mpRDesc).text(getStarDesc(post['stars']));
-          $(mpRParagraph).text(post['text']);
-          $(mpSHImg).attr("src", post['owner'].img);
-          $(mpSHLTop).text(post['owner'].firstName + " " + post['owner'].lastName);
-          $(mpSHLBot).text(post['owner'].degree + " | " + post['owner'].college);
+          $(mpHMTop).text(post['reviewForFN'] + " " + post['reviewForLN']);
+          $(mpHMBot).text(post['reviewCourse'] + " | Term " + post['reviewTerm']);
+          $(mpRDesc).text(getStarDesc(post['reviewRating']));
+          $(mpRParagraph).text(post['reviewText']);
+          $(mpSHImg).attr("src", post['posterPfp']);
+          $(mpSHLTop).text(post['posterNameFN']+ " " + post['posterNameLN']);
+          $(mpSHLBot).text(post['posterDegCode'] + " | " + post['posterCollege']);
           $(mpLike).attr("id", post['id']);
           
           // Set proper display of post ratings
@@ -548,19 +507,19 @@ jQuery(function () {
           let target = getEventTarget(e);
           let sibling = target.previousElementSibling;
           let currCourse = $(sibling).text();
-          //console.log('followCourse:', currCourse)
+          console.log('followCourse:', currCourse)
           if(target.className.toLowerCase() === "fr-list-element-follow") { //follow
                if(target.innerText.toLowerCase() === "follow") {
                     $(target).text("Following");
                     // Find the course object first in the database, then use that object
                     // to add it into the user's followedCourses.
                     $.get("/findCourse", {
-                         filter: { name: currCourse }
+                         filter: { coursecode: currCourse }
                     }).then((follow) => {
-                         //console.log('found', follow);
+                         console.log('found', follow);
                          $.get("/followCourse", {
                               filter: { username: currentUser['username'] },
-                              update: { $addToSet: { followedCourses: follow }}
+                              update: { $addToSet: { followedCourses: follow['coursecode'] }}
                          });
 
                          // After editting documents from the User schema, the currentUser must be
@@ -572,19 +531,19 @@ jQuery(function () {
                               }
                          }).then((user) => {
                               currentUser = user;
-                              login(currentUser);
+                              login(currentUser); 
                          });
                     });
                }
                else if(target.innerText.toLowerCase() === "following") { //unfollow
                     $(target).text("Follow");
                     $.get("/findCourse", {
-                         filter: { name: currCourse }
+                         filter: { coursecode: currCourse }
                     }).then((follow) => {
-                         //console.log('found', follow);
+                         console.log('found', follow);
                          $.get("/followCourse", {
                               filter: { username: currentUser['username'] },
-                              update: { $pull: { followedCourses: follow }}
+                              update: { $pull: { followedCourses: follow['coursecode'] }}
                          });
 
                          // After editting documents from the User schema, the currentUser must be
