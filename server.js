@@ -29,7 +29,7 @@ app.listen(port, () => {
     console.log('http://localhost:' + port);
 })
 
-// Create default documents for testing
+// Generate Sample Data
 collection['courses'].insertMany([
     {
         name: 'CCPROG',

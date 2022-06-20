@@ -9,7 +9,6 @@ routes.get('/courses', controller.getCourses);
 routes.get('/profs', controller.getProfs);
 routes.get('/addPost', controller.addPost);
 routes.get('/followCourse', controller.followCourse);
-routes.get('/unfollowCourse', controller.unfollowCourse);
 routes.get('/likePost', controller.likePost);
 routes.get('/unlikePost', controller.unlikePost);
 
