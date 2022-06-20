@@ -29,7 +29,47 @@ app.listen(port, () => {
     console.log('http://localhost:' + port);
 })
 
-// Create default documents for testing
+// Generate Sample Data
+collection['courses'].insertMany([
+    {
+        name: 'CCPROG',
+        college: 'CCS'
+    },
+    {
+        name: 'CCPROG2',
+        college: 'CCS'
+    },
+    {
+        name: 'CCDSTRU',
+        college: 'CCS'
+    },
+    {
+        name: 'CSINTSY',
+        college: 'CCS'
+    },
+    {
+        name: 'KEMPSY1',
+        college: 'COS'
+    }
+], (err, res) => {
+    if(err) console.log('Insert error occured for Courses, possible duplicates');
+    else console.log('Course Data Added');
+});
+
+collection['colleges'].insertMany([
+    {
+        name: 'College of Computer Studies',
+        id: 'CCS'
+    },
+    {
+        name: 'College of Science',
+        id: 'COS'
+    }
+], (err, res) => {
+    if(err) console.log('Insert error occured for Colleges, possible duplicates');
+    else console.log('College Data Added');
+});
+
 collection['users'].insertMany([
     {
         firstName: 'Harley',
@@ -88,46 +128,6 @@ collection['users'].insertMany([
     else console.log('User Data Added');
 });
 
-collection['courses'].insertMany([
-    {
-        name: 'CCPROG',
-        college: 'CCS'
-    },
-    {
-        name: 'CCPROG2',
-        college: 'CCS'
-    },
-    {
-        name: 'CCDSTRU',
-        college: 'CCS'
-    },
-    {
-        name: 'CSINTSY',
-        college: 'CCS'
-    },
-    {
-        name: 'KEMPSY1',
-        college: 'COS'
-    }
-], (err, res) => {
-    if(err) console.log('Insert error occured for Courses, possible duplicates');
-    else console.log('Course Data Added');
-});
-
-collection['colleges'].insertMany([
-    {
-        name: 'College of Computer Studies',
-        id: 'CCS'
-    },
-    {
-        name: 'College of Science',
-        id: 'COS'
-    }
-], (err, res) => {
-    if(err) console.log('Insert error occured for Colleges, possible duplicates');
-    else console.log('College Data Added');
-});
-
 collection['posts'].insertMany([
     {
         profFName: 'Porter',
@@ -136,7 +136,16 @@ collection['posts'].insertMany([
         course: 'CCPROG',
         term: 2,
         stars: 5,
-        owner: 'Sarah',
+        owner: { 
+            firstName: 'Sarah',
+            lastName: 'Parker',
+            degree: 'BSCS',
+            college: { name: 'College of Computer Studies', id: 'CCS'},
+            batch: 'ID 119',
+            username: 'Sarah',
+            password: 'user2',
+            img: '/img/user2.jpg' 
+        },
         id: 100001
     },
     {
@@ -146,7 +155,16 @@ collection['posts'].insertMany([
         course: 'CCDSTRU',
         term: 1,
         stars: 4,
-        owner: 'Amivillea',
+        owner: {
+            firstName: 'Amy',
+            lastName: 'Bougainvillea',
+            degree: 'BSCS',
+            college: { name: 'College of Computer Studies', id: 'CCS'},
+            batch: 'ID 120',
+            username: 'Amivillea',
+            password: 'user3',
+            img: '/img/user3.jpg'
+        },
         id: 100002
     },
     {
@@ -156,7 +174,16 @@ collection['posts'].insertMany([
         course: 'CCPROG2',
         term: 2,
         stars: 3,
-        owner: 'Amivillea',
+        owner: {
+            firstName: 'Amy',
+            lastName: 'Bougainvillea',
+            degree: 'BSCS',
+            college: { name: 'College of Computer Studies', id: 'CCS'},
+            batch: 'ID 120',
+            username: 'Amivillea',
+            password: 'user3',
+            img: '/img/user3.jpg'
+        },
         id: 100003
     },
     {
@@ -166,7 +193,16 @@ collection['posts'].insertMany([
         course: 'CCPROG',
         term: 1,
         stars: 4,
-        owner: 'LanDoza',
+        owner: {
+            firstName: 'Lance',
+            lastName: 'Mendoza',
+            degree: 'BSCS',
+            college: { name: 'College of Computer Studies', id: 'CCS'},
+            batch: 'ID 12',
+            username: 'LanDoza',
+            password: 'user4',
+            img: '/img/user4.jpg'
+        },
         id: 100004
     },
     {
@@ -176,7 +212,16 @@ collection['posts'].insertMany([
         course: 'KEMPSY1',
         term: 1,
         stars: 5,
-        owner: 'MaddoScientisto',
+        owner: {
+            firstName: 'Mad',
+            lastName: 'Scientist',
+            degree: 'BSBC',
+            college: { name: 'College of Science', id: 'COS'},
+            batch: 'ID 118',
+            username: 'MaddoScientisto',
+            password: 'user5',
+            img: '/img/empty-profile-pic.jpeg'
+        },
         id: 100005
     }
 ], (err, res) => {

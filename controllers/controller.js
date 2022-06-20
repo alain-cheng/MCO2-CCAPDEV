@@ -50,14 +50,11 @@ const controller = {
     /*
         Use when user presses the follow button on a course.
         Use HTTP GET method.
-        Same goes for unfollowCourse function.
     */
     followCourse: (req, res) => {
-
-    },
-
-    unfollowCourse: (req, res) => {
-
+        db.updateOne(collection['users'], req.query['filter'], req.query['update'], (result) => {
+            //console.log('result:', result);
+        });
     },
 
     /*
@@ -74,89 +71,71 @@ const controller = {
     },
 
     /*=====================================================*/
-    /*   Functions below to retrieve documents from the db.
+    /*   Functions below to retrieve and manipulate documents from the db.
     /*   Responds with document objects.
     /*   Use HTTP GET requests for funcs below.
     /*=====================================================*/
 
-    /* Use to find a course; Uses college to find*/
+    /* Use to find a course */
     findCourse: (req, res) => {
-        db.findOne(collection['courses'], {
-            college: req.query['college']
-        }, req.query['projection'], (result) => {
+        db.findOne(collection['courses'], req.query['filter'], req.query['projection'], (result) => {
             //console.log("findCourse result", result);
             res.send(result);                           // Sends the course document found as a response                    
         });
     },
 
-    /* Plural version of findCourse; Uses college to find */
+    /* Plural version of findCourse */
     findCourses: (req, res) => {
-        db.findMany(collection['courses'], {
-            college: req.query['college']
-        }, req.query['projection'], (result) => {
+        db.findMany(collection['courses'], req.query['filter'], req.query['projection'], (result) => {
             //console.log("findCourses result", result);
             res.send(result);
         });
     },
 
-    /* Find a college; Uses id to find */
+    /* Find a college */
     findCollege: (req, res) => {
-        db.findOne(collection['colleges'], {
-            id: req.query['id']
-        }, req.query['projection'], (result) => {
+        db.findOne(collection['colleges'], req.query['filter'], req.query['projection'], (result) => {
             //console.log("findCollege result", result);
             res.send(result);
         });
     },
 
-    /* Find colleges; Uses id to find */
+    /* Find colleges */
     findColleges: (req, res) => {
-        db.findMany(collection['colleges'], {
-            id: req.query['id']
-        }, req.query['projection'], (result) => {
+        db.findMany(collection['colleges'], req.query['filter'], req.query['projection'], (result) => {
             //console.log("findColleges result", result);
             res.send(result);
         });
     },
 
     /* 
-        Find a user; Uses username and password to find
-        Use this for logging in.
+        Find a user; Use this for logging in.
     */
     findUser: (req, res) => {
-        db.findOne(collection['users'], {
-            username: req.query['username'],
-            password: req.query['password']
-        }, req.query['projection'], (result) => {
+        db.findOne(collection['users'], req.query['filter'], req.query['projection'], (result) => {
             //console.log("findUser result", result);
             res.send(result);
         });
     },
 
-    /* Find users; Uses username to find */
+    /* Find multiple users*/
     findUsers: (req, res) => {
-        db.findMany(collection['users'], {
-            username: req.query['username']
-        }, req.query['projection'], (result) => {
+        db.findMany(collection['users'], req.query['filter'], req.query['projection'], (result) => {
             //console.log("findUsers result", result);
             res.send(result);
         });
     },
     
-    /* Find a post; Uses id to find */
+    /* Find a post */
     findPost: (req, res) => {
-        db.findOne(collection['posts'], {
-            id: req.query['id']
-        }, req.query['projection'], (result) => {
+        db.findOne(collection['posts'], req.query['filter'], req.query['projection'], (result) => {
             //console.log("findPost result", result);
             res.send(result);
         });
     },
 
     findPosts: (req, res) => {
-        db.findOne(collection['posts'], {
-            id: req.query['id']
-        }, req.query['projection'], (result) => {
+        db.findMany(collection['posts'], req.query['filter'], req.query['projection'], (result) => {
             //console.log("findPosts result", result);
             res.send(result);
         });

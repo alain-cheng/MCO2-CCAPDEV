@@ -1,17 +1,6 @@
 import mongoose from 'mongoose';
 
 // schemas
-const PostSchema = new mongoose.Schema({
-    profFName: { type: String, required: true },
-    profLName: { type: String, required: true },
-    text: { type: String, required: true },         // Post content
-    course: { type: String, required: true },
-    term: { type: Number, required: true },
-    stars: { type: Number, required: true },        // Number of stars
-    owner: { type: String, required: true },        // Username
-    id: { type: Number, required: true, index: true, unique: true } // 6 digit id, counting starts at 100001
-});
-
 const CollegeSchema = new mongoose.Schema({
     name: { type: String },
     id: { type: String, unique: true }
@@ -33,6 +22,17 @@ const UserSchema = new mongoose.Schema({
     img: { type: String, required: true },          // image links
     followedCourses: [{ type: CourseSchema }],
     likedPosts: [{ type: Number }]                  // store post ids
+});
+
+const PostSchema = new mongoose.Schema({
+    profFName: { type: String, required: true },
+    profLName: { type: String, required: true },
+    text: { type: String, required: true },         // Post content
+    course: { type: String, required: true },
+    term: { type: Number, required: true },
+    stars: { type: Number, required: true },        // Number of stars
+    owner: { type: UserSchema, required: true },        
+    id: { type: Number, required: true, index: true, unique: true } // 6 digit id, counting starts at 100001
 });
 
 // exports

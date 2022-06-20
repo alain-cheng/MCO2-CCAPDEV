@@ -11,9 +11,9 @@ Back-end development for DLSU Prof To Pick.
 - **url**
 
 ## Project Folders
-- [`controllers`](controllers) - random text.
+- [`controllers`](controllers) - Contains the functions to retrieve and manipulate database contents, and functions in displaying web pages.
 - [`misc`](misc) - Contains dev notes.
-- [`models`](models) - random text.
+- [`models`](models) - Contains database functions and schemas, don't need to edit this section much.
 - [`pages`](controllers/pages) - **Replacement** for hbs /view folder, Javascript files that will print out page contents to the document.
 - [`public`](public) - random text.
 - [`routes`](routes) - Handles navigation bar routing and post functions routing.
