@@ -11,6 +11,8 @@ routes.get('/addPost', controller.addPost);
 routes.get('/followCourse', controller.followCourse);
 routes.get('/likePost', controller.likePost);
 routes.get('/unlikePost', controller.unlikePost);
+routes.get('/getCourseTable', controller.getCourseTable);
+routes.get('/getCourseReviews', controller.getCourseReviews);
 
 routes.get('/findCourse', controller.findCourse);
 routes.get('/findCourses', controller.findCourses);

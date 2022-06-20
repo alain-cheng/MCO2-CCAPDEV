@@ -24,6 +24,20 @@ const UserSchema = new mongoose.Schema({
     likedPosts: [{ type: Number }]                  // store post ids
 });
 
+const ProfsSchema = new mongoose.Schema({
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    img: { type: String, required: true },
+    position: { type: String, required: true },
+    department: { type: String, required: true },
+    degree: { type: String, required: true },
+    college: { type: String, required: true },
+    course: { type: String, required: true }, //course they're currently teaching
+    avgRating: { type: Number, required: true }, // average rating
+    gradYear: { type: Number, required: true }, // year graduated from college
+    expYears: { type: Number, required: true } // years of teaching
+});
+
 const PostSchema = new mongoose.Schema({
     profFName: { type: String, required: true },
     profLName: { type: String, required: true },
@@ -38,10 +52,11 @@ const PostSchema = new mongoose.Schema({
 // exports
 export const Post = mongoose.model('posts', PostSchema);
 export const User = mongoose.model('users', UserSchema);
+export const Profs = mongoose.model('profs', ProfsSchema);
 export const Course = mongoose.model('courses', CourseSchema);
 export const College = mongoose.model('colleges', CollegeSchema);
 
-const collection = {'posts': Post, 'users': User, 'courses': Course, 'colleges': College };
+const collection = {'posts': Post, 'users': User, 'profs': Profs, 'courses': Course, 'colleges': College };
 
 export default collection;
 

@@ -229,7 +229,7 @@ collection['posts'].insertMany([
     else console.log('Post Data Added');
 });
 
-*========================================================*/
+/*========================================================*/
 /* Sample Data*/
 /* This will be the sample data to be used for all testing.
 /*  Un-comment this when it's your first time running this code.

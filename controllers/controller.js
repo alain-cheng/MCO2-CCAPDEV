@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url';
 
 import db from '../models/db.js';
 import collection from '../models/schemas.js';
+import { User , Course, College, Post, Profs} from '../models/schemas.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -68,6 +69,185 @@ const controller = {
 
     unlikePost: (req, res) => {
 
+    },
+
+    /*
+        @param req - request object; this is where the URL passed from main.js through the FETCH API is going to be stored
+        @param res - response object; this is what getCourseTable is eventually going to give back to main.js
+        @ let id - the ID of the 'event' from main.js is going to be queried and stored here
+        @ let table - HTML code for the first portion of the course table in String format
+        @ let newRow - where new rows of the 'table' String will be stored; its value will always change via a for-loop
+        @ let courses - where all of the course documents from the database will be stored
+    */
+
+    getCourseTable: (req, res) => {
+        console.log("GET: /getCourseTable");
+        let id = req.query.collegeid;
+        let table = 
+                `   <br>
+                    <table id="course-table">
+                    <th colspan="2">COURSE NAME</th>
+                    <th>Units</th>
+                `;
+        let newRow;
+        let courses;
+
+        /* We use the find() function of MongoDB to get all of the courses recorded in the database
+            @param {collegeid:{$eq:id}} - "get all courses with the 'collegeid' equal to 'id'"
+                                            - The collegeid field in the Courses database tells you what college it belongs to
+                                                1 - CLA
+                                                2 - COS
+                                                3 - GCOE
+                                                4- RVCOB
+                                                5- SOE
+                                                6 - BAGCED
+                                                7 - CCS
+                                                8 - GE subject
+            @param "coursename coursecode units collegeid" - this is the "projection" parameter; this tells mongodb what parts of the courses documents that we want
+            @param function(err, result) - the callback function; this is where all of the processing is going to happen
+        */
+        Course.find({collegeid:{$eq:id}}, "coursename coursecode units collegeid", function(err, result){
+            if (err) {
+                console.error(err);
+            }
+            else {
+                courses = result;
+                console.log("Courses gathered: ");
+                console.log("---------------------");
+                console.log(courses);
+                console.log("---------------------");
+
+                // a new table row (<tr> ... </tr) HTML string is going to be written and concatenated to the main 'table' string for every iteration of the for-loop
+                for(let i = 0; i < courses.length; i++){
+                    newRow = 
+                    `
+                        <tr>
+                            <td width="108"><button class='courseCodeBtn' id='${courses[i].collegeid}' name='${courses[i].coursecode}'>${courses[i].coursecode}</button></td>
+                            <td width="402">${courses[i].coursename}</td>
+                            <td style="text-align: center;" width="114">${courses[i].units}</td>
+                        </tr>
+                    `;
+                    table = table.concat(newRow);
+                }
+                table = table.concat("</table>"); // once all the rows are written, the "</table" string is concatenated to end the table
+                console.log(table);
+
+                res.status(200).send({
+                    message: table //getCourseTable sends back the 'table' string to main.js along with a status code of 200 (OK)
+                });
+            }
+        });
+    },
+
+    /*
+        @param req - request object; this is where the URL passed from main.js through the FETCH API is going to be stored
+        @param res - response object; this is what getCourseTable is eventually going to give back to main.js
+        @let code - the course code gathered from the URL sent by main.js
+        @let reviewsContainer - HTML string of the first portion of the course reviews
+        @let newMainPost - where HTML strings of new mainpost divs will be stored
+        @let reviews - where Post documents from the database will be stored
+        @let stars - the number of stars of a certain review post; this is going to come from the database
+        @let starsString - the actual star characters; note that "<meta charset="UTF-8">" is needed in courses.html to make it appear in the webpage (it's already there, don't worry)
+        @let starsLegend - the meaning of the number of star characters (i.e., "Excellent", "DO NOT TAKE")
+        In terms of how it works, this function is nearly identical to getCourseTable. The only difference is that a switch case is executed for each for-loop iteration to determine
+        the number of star characters and star legend to be printed on the webpage.
+    */
+
+    getCourseReviews: (req, res) => {
+        console.log("GET: /getCourseReviews");
+        let code = req.query.coursecode;
+        let reviewsContainer = 
+        `
+            <div class="coursePostContainer">
+        `
+        let newMainPost;
+        let reviews;
+        let stars
+        let starsString;
+        let starsLegend;
+
+        Post.find({reviewCourse:{$eq:code}}, function(err, result){
+            if(err){
+                console.error(err);
+            }
+            else {
+                reviews = result;
+                console.log(`Reviews gathered for ${code}`);
+                console.log("---------------------");
+                console.log(reviews);
+                console.log("---------------------");
+
+                for(let i = 0; i < reviews.length; i++){
+                    stars = reviews[i].reviewRating;
+                    switch (stars) {
+                        case 1:
+                                starsString = "★";
+                                starsLegend = "DO NOT TAKE";
+                                break;
+                        case 2:
+                                starsString = "★★";
+                                starsLegend = "Poor";
+                                break;
+                        case 3:
+                                starsString = "★★★";
+                                starsLegend = "Average";
+                                break;
+                        case 4:
+                                starsString = "★★★★";
+                                starsLegend = "Good";
+                                break;
+                        case 5:
+                                starsString = "★★★★★";
+                                starsLegend = "Excellent";
+                                break;
+                    }
+
+                    newMainPost = 
+                    `
+                    <div class="mainpost">
+                        <div class="mp-header">
+                            <div class="mp-header-left">
+                                Review For:
+                            </div>
+                            <div class="mp-header-middle">
+                                <div class="mp-header-middle-top">${reviews[i].reviewForFN} ${reviews[i].reviewForLN}</div>
+                                <div class="mp-header-middle-bottom">${reviews[i].reviewCourse} | ${reviews[i].reviewTerm}</div>
+                            </div>
+                        </div>
+                        <div class="mp-review">
+                            <div class="mp-review-stars">
+                                ${starsString}
+                            </div>
+                            <div class="mp-rev-description">
+                                ${starsLegend}
+                            </div>
+                        </div>
+                        <div class="mp-review-box">
+                            ${reviews[i].reviewText}
+                        </div>
+                        <div class="mp-subheader">
+                            <img class="mp-subheader-pic" src="${reviews[i].posterPfp}" alt="pic">
+                            <div class="mp-subheader-left">
+                                <div class="mp-subheader-left-top">
+                                    ${reviews[i].posterNameFN} ${reviews[i].posterNameLN}
+                                </div>
+                                <div class="mp-subheader-left-bottom">
+                                    ${reviews[i].posterDegCode} | ${reviews[i].posterCollege}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                    reviewsContainer = reviewsContainer.concat(newMainPost);
+                }
+                reviewsContainer = reviewsContainer.concat("</div>"); // "</div>" is concatenated to end the div
+                console.log(reviewsContainer);
+
+                res.status(200).send({
+                    message: reviewsContainer //sends the reviewsContainer string to main.js along with a status code of 200 (OK)
+                });
+            }
+        });
     },
 
     /*=====================================================*/
