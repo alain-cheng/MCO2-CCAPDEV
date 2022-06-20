@@ -2,26 +2,30 @@ import mongoose from 'mongoose';
 
 // schemas
 const CollegeSchema = new mongoose.Schema({
+    collegename: { type: String },
     name: { type: String },
     id: { type: String, unique: true }
 });
 
 const CourseSchema = new mongoose.Schema({
-    name: { type: String, unique: true, required: true },
-    college: { type: String, required: true }
+    coursename: { type: String, required: true },
+    coursecode: {type: String, required: true},
+    collegeid: { type: Number, required: true },
+    units: {type: Number, required: true}
 });
 
 const UserSchema = new mongoose.Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     degree: { type: String, required: true },
-    college: { type: CollegeSchema, required: true },
+    degreeCode: {type: String, required: true},
+    college: { type: String, required: true },
     batch: { type: String, required: true },
-    username: { type: String, required: true, index: true, unique: true },
+    username: { type: String, required: true },
     password: { type: String, required: true },
     img: { type: String, required: true },          // image links
-    followedCourses: [{ type: CourseSchema }],
-    likedPosts: [{ type: Number }]                  // store post ids
+    followedCourses: [String],              // Stored array of course codes
+    likedPosts: [Number]                    // Stored array of post ids
 });
 
 const ProfsSchema = new mongoose.Schema({
@@ -39,6 +43,23 @@ const ProfsSchema = new mongoose.Schema({
 });
 
 const PostSchema = new mongoose.Schema({
+    id: {type: Number, required: true},
+    reviewForFN: { type: String, required: true },
+    reviewForLN: { type: String, required: true },
+    reviewCourse: { type: String, required: true },
+    reviewTerm: { type: String, required: true },
+    reviewRating: { type: Number, required: true },
+    reviewText: { type: String, required: true },
+    posterNameFN: { type: String, required: true },
+    posterNameLN: { type: String, required: true },
+    posterPfp: { type: String, required: true },
+    posterDegCode: { type: String, required: true },
+    posterCollege: { type: String, required: true },
+    likesNum: { type: Number, required: true },
+});
+
+/*
+const PostSchema = new mongoose.Schema({
     profFName: { type: String, required: true },
     profLName: { type: String, required: true },
     text: { type: String, required: true },         // Post content
@@ -48,6 +69,7 @@ const PostSchema = new mongoose.Schema({
     owner: { type: UserSchema, required: true },        
     id: { type: Number, required: true, index: true, unique: true } // 6 digit id, counting starts at 100001
 });
+*/
 
 // exports
 export const Post = mongoose.model('posts', PostSchema);

@@ -30,6 +30,7 @@ app.listen(port, () => {
 })
 
 // Generate Sample Data
+/*
 collection['courses'].insertMany([
     {
         name: 'CCPROG',
@@ -228,6 +229,7 @@ collection['posts'].insertMany([
     if(err) console.log('Insert error occured for Posts, possible duplicates');
     else console.log('Post Data Added');
 });
+*/
 
 /*========================================================*/
 /* Sample Data*/
@@ -236,16 +238,11 @@ collection['posts'].insertMany([
 /*  Afterwards, comment it again to prevent data duplication.
 /*========================================================*/
 
-
-
 // NOTE: for some reason, the console.logs of all code below don't work for some reason but the data is added to the database when you check MongoDBCompass
-
 
 /* TODO */
 // Sample Users - fill up at least 4 more sample users
-
-/*
-User.create({
+collection['users'].create({
     firstName: "Sarah",
     lastName: "Parker",
     degree: "AB Literature",
@@ -266,11 +263,10 @@ User.create({
         console.log("User Sarah Parker saved to database")
     }
 }
+
 /* TODO */
 // Sample Posts - fill up at least 3 more posts
-
-/*
-Post.create({
+collection['posts'].create({
     id: 1201,
     reviewForFN: "Nicole",
     reviewForLN: "Zefanya",
@@ -293,7 +289,7 @@ Post.create({
         console.log("Post 1201 saved to database");
     }
 }
-Post.create({
+collection['posts'].create({
     id: 1202,
     reviewForFN: "Hwang",
     reviewForLN: "Yeji",
@@ -316,7 +312,7 @@ Post.create({
         console.log("Post 1201 saved to database");
     }
 }
-Post.create({
+collection['posts'].create({
     id: 1203,
     reviewForFN: "Nicole",
     reviewForLN: "Zefanya",
@@ -339,9 +335,9 @@ Post.create({
         console.log("Post 1201 saved to database");
     }
 }
+
 // Sample Profs - there are 8 profs for each of the 8 courses in the database
-/*
-Profs.create({
+collection['profs'].create({
     firstName: "Hwang",
     lastName: "Yeji",
     img: "https://kpopping.com/documents/91/4/1500/220411-ITZY-Yeji1st-Fanmeeting-Photoshoot-by-Dispatch-documents-1.jpeg?v=52dbc",
@@ -360,7 +356,7 @@ Profs.create({
     }
     console.log("Prof. Hwang Yeji saved to database");
 }
-Profs.create({
+collection['profs'].create({
     firstName: "Choi",
     lastName: "Jisu",
     img: "https://i.pinimg.com/736x/45/48/db/4548db5f7f80e5abcf0ad638b6d80f18.jpg",
@@ -379,7 +375,7 @@ Profs.create({
     }
     console.log("Prof. Choi Jisu saved to database");
 }
-Profs.create({
+collection['profs'].create({
     firstName: "Lee",
     lastName: "Chaeryeong",
     img: "https://i.mydramalist.com/wRvyN_5f.jpg",
@@ -398,7 +394,7 @@ Profs.create({
     }
     console.log("Prof. Lee Chaeryeong saved to database");
 }
-Profs.create({
+collection['profs'].create({
     firstName: "Shin",
     lastName: "Ryujin",
     img: "https://i.pinimg.com/736x/a0/12/53/a0125307be33e84f2446e16df7781c59.jpg",
@@ -417,7 +413,7 @@ Profs.create({
     }
     console.log("Prof. Shin Ryujin saved to database");
 }
-Profs.create({
+collection['profs'].create({
     firstName: "Shin",
     lastName: "Yuna",
     img: "https://i.mydramalist.com/2V2Zk_5f.jpg",
@@ -436,7 +432,7 @@ Profs.create({
     }
     console.log("Prof. Shin Yuna saved to database");
 }
-Profs.create({
+collection['profs'].create({
     firstName: "George",
     lastName: "Miller",
     img: "https://miro.medium.com/max/500/1*WayO-bj4vW59rCNrkSbjTg.jpeg",
@@ -455,7 +451,7 @@ Profs.create({
     }
     console.log("Prof. George Miller saved to database");
 }
-Profs.create({
+collection['profs'].create({
     firstName: "Brian",
     lastName: "Soewarno",
     img: "https://upload.wikimedia.org/wikipedia/en/c/c6/Amen_RichBrian.jpg",
@@ -474,7 +470,7 @@ Profs.create({
     }
     console.log("Prof. Brian Soewarno saved to database");
 }
-Profs.create({
+collection['profs'].create({
     firstName: "Nicole",
     lastName: "Zefanya",
     img: "https://pbs.twimg.com/profile_images/1515733643368415232/uFPui6Do_400x400.jpg",
@@ -493,9 +489,11 @@ Profs.create({
     }
     console.log("Prof. Nicole Zefanya saved to database");
 }
+
 // Sample Colleges - there are 7 main colleges in DLSU and they are assigned their respective IDs;
 //                   GE is considered its own college for this website
-College.create({
+collection['colleges'].create({
+    collegename: "College of Liberal Arts",
     name: "CLA",
     id: 1
 }), (err) => {
@@ -505,7 +503,8 @@ College.create({
     }
     console.log("College 1 saved to database");
 }
-College.create({
+collection['colleges'].create({
+    collegename: "College of Computer Studies",
     name: "COS",
     id: 2
 }), (err) => {
@@ -515,7 +514,8 @@ College.create({
     }
     console.log("College 1 saved to database");
 }
-College.create({
+collection['colleges'].create({
+    collegename: "Gokongwei College of Engineering",
     name: "GCOE",
     id: 3
 }), (err) => {
@@ -525,7 +525,8 @@ College.create({
     }
     console.log("College 1 saved to database");
 }
-College.create({
+collection['colleges'].create({
+    collegename: "Ramon V. Del Rosario College of Business",
     name: "RVCOB",
     id: 4
 }), (err) => {
@@ -535,7 +536,8 @@ College.create({
     }
     console.log("College 1 saved to database");
 }
-College.create({
+collection['colleges'].create({
+    collegename: "School of Economics",
     name: "SOE",
     id: 5
 }), (err) => {
@@ -545,7 +547,8 @@ College.create({
     }
     console.log("College 1 saved to database");
 }
-College.create({
+collection['colleges'].create({
+    collegename: "Brother Andrew Gonzalez College of Education",
     name: "BAGCED",
     id: 6
 }), (err) => {
@@ -555,7 +558,8 @@ College.create({
     }
     console.log("College 1 saved to database");
 }
-College.create({
+collection['colleges'].create({
+    collegename: "College of Computer Studies",
     name: "CCS",
     id: 7
 }), (err) => {
@@ -565,8 +569,9 @@ College.create({
     }
     console.log("College 1 saved to database");
 }
+
 // Sample Courses - there are 8 sample courses; 7 courses (for 7 colleges) + 1 GE course
-Course.create({
+collection['courses'].create({
     coursename: "Philippine Politics and Government",
     coursecode: "POLGOVT",
     collegeid: 1,
@@ -578,7 +583,7 @@ Course.create({
     }
     console.log("Course 1 saved to database");
 }
-Course.create({
+collection['courses'].create({
     coursename: "Principles of Chemistry 1",
     coursecode: "KEMPRN1",
     collegeid: 2,
@@ -590,7 +595,7 @@ Course.create({
     }
     console.log("Course 2 saved to database");
 }
-Course.create({
+collection['courses'].create({
     coursename: "Engineering Graphics 1",
     coursecode: "GRAPONE",
     collegeid: 3,
@@ -602,7 +607,7 @@ Course.create({
     }
     console.log("Course 3 saved to database");
 }
-Course.create({
+collection['courses'].create({
     coursename: "Fundamentals of Accountancy, Business, and Management",
     coursecode: "FDNACCT",
     collegeid: 4,
@@ -614,7 +619,7 @@ Course.create({
     }
     console.log("Course 4 saved to database");
 }
-Course.create({
+collection['courses'].create({
     coursename: "Basic Microeconomics",
     coursecode: "ECONONE",
     collegeid: 5,
@@ -626,7 +631,7 @@ Course.create({
     }
     console.log("Course 5 saved to database");
 }
-Course.create({
+collection['courses'].create({
     coursename: "Basic Communication and Study Skills",
     coursecode: "ENGLCOM",
     collegeid: 6,
@@ -638,7 +643,7 @@ Course.create({
     }
     console.log("Course 6 saved to database");
 }
-Course.create({
+collection['courses'].create({
     coursename: "Web Application Development",
     coursecode: "CCAPDEV",
     collegeid: 7,
@@ -650,7 +655,7 @@ Course.create({
     }
     console.log("Course 7 saved to database");
 }
-Course.create({
+collection['courses'].create({
     coursename: "Understanding the Self",
     coursecode: "GEUSELF",
     collegeid: 8,
@@ -662,7 +667,7 @@ Course.create({
     }
     console.log("Course 8 saved to database");
 }
-Course.create({
+collection['courses'].create({
     coursename: "Readings in Philippine History",
     coursecode: "GERPHIS",
     collegeid: 8,
@@ -674,7 +679,7 @@ Course.create({
     }
     console.log("Course 9 saved to database");
 }
-Course.create({
+collection['courses'].create({
     coursename: "The Contemporary World",
     coursecode: "GEWORLD",
     collegeid: 8,
@@ -686,7 +691,8 @@ Course.create({
     }
     console.log("Course 10 saved to database");
 }
-*/ // remove "/*" to uncomment
+
+// remove "/*" to uncomment
 
 /*========================================================*/
 /* END OF SAMPLE DATA */

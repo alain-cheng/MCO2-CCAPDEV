@@ -163,8 +163,8 @@ jQuery(function () {
      // Temporary: Auto login a user (testing purposes) (delete if you want)
      $.get("/findUser", {
           filter: {
-               username: 'HDavis',
-               password: 'user1'
+               username: 'Sarah Parker',
+               password: '12345'
           }
      }).then((res) => {
                currentUser = res;  
@@ -204,7 +204,7 @@ jQuery(function () {
           $(".lu-info-bottom").text("");
           $("#fr-list").html("");
           $(".lu-info-top").text(user['firstName'] + " " + user['lastName']);
-          $(".lu-info-bottom").text(user['degree'] + " | " + user['college'].name);
+          $(".lu-info-bottom").text(user['degreeCode'] + " | " + user['college']);
           
           /*
                If  User   is   following    atleast   1   course ->
@@ -224,51 +224,51 @@ jQuery(function () {
                to be displayed.
           */
           if(user['followedCourses'].length > 0) {
-               //courseSuggestions(user['followedCourses']);
                let following = user['followedCourses'];
                let setCodes = new Set();                            // Stores college ids without duplicates
                let codes = [];
-               let courses = [];
-               
-               following.forEach(e => {
-                    courses.push(e['name']);
-               });
-
-               //console.log('User is following', courses);
-
-               for(var i = 0; i < user['followedCourses'].length; i++) {
-                    setCodes.add(user['followedCourses'][i].college);
-               }
-
-               setCodes.forEach((element) => {                      // Place all elements of the Set into an array
-                    codes.push(element);
-               });
-
-               $.get("/findCourses", {
-                    filter: { college: codes }
+                                             
+               $.get("/findCourses", {                                   // Look for all the colleges the followed courses belong to
+                    filter: { coursecode: following }
                }).then((res) => {
-                    //console.log('Courses to suggest:', res);
-                    courseSuggestions(res);
-               });
+                    res.forEach(e => {
+                         setCodes.add(e['collegeid']);
+                    });
 
-               $.get("/findPosts", {
-                    filter: { course: courses }
-               }).then((posts) => {
-                    //console.log("findPosts result:", posts);
-                    displayPosts(posts);
+                    setCodes.forEach((e) => {                            // Convert the set into a list object
+                         codes.push(e);
+                         
+                    });
+
+                    $.get("/findCourses", {                              // Use the codes list to grab all courses within the same colleges
+                         filter: { collegeid: codes }
+                    }).then((suggestCourses) => {
+                         console.log('Courses to suggest:', suggestCourses);
+                         courseSuggestions(suggestCourses);
+                    });
+
+                    $.get("/findPosts", {                                // Display posts based on the courses being followed
+                         filter: { reviewCourse: following }
+                    }).then((displayPosts) => {
+                         console.log("Posts to display:", displayPosts);
+                         displayPosts(displayPosts);
+                    });
                });
                
           } else if(user['followedCourses'].length == 0) {
-               let suggest = [];                                 // will be storing course objects
+               let suggest = [];
 
-               $.get("/findCourses", {                           // Find all courses with the same `college`
-                    filter: { college: user['college'].name }
+               $.get("/findCollege", {                            // Find the college id based on the user's college
+                    filter: { collegename: user['college'] }
                }).then((res) => {
-                    console.log('Courses found: ', res);
-                    for(var i = 0; i < res.length; i++) {
-                         suggest.push(res[i]);
-                    }
-                    courseSuggestions(suggest);
+                    console.log('College found: ', res);
+
+                    $.get("/findCourses", {                           // Find all courses with the same collegeid
+                         filter: { collegeid: res['id'] }
+                    }).then((suggestCourses) => {
+                         console.log('Courses found: ', suggestCourses);
+                         courseSuggestions(suggestCourses);
+                    });
                });
 
                $.get("/findPosts", { filter: {} }).then((posts) => {           // Returns every single post in the db
@@ -291,9 +291,7 @@ jQuery(function () {
         displayCourse()
      */
      function courseSuggestions(courseList) {
-          //console.log('courseSuggestions received:', courseList);
-          let setCodes = new Set();
-          let codes = [];
+          console.log('courseSuggestions received:', courseList);
 
           /*
                     All course suggestions that will be displayed are
@@ -302,29 +300,36 @@ jQuery(function () {
                     However if courseList is empty, then take the current
                     user's college and base recommendations of off that.
           */
-          courseList.forEach(e => {
-               setCodes.add(e['college']);
-          });
-
-          setCodes.forEach(e => {
-               codes.push(e);
-          });
-
-          if(courseList.length > 0){
-               $.get("/findCourses", {
-                    filter: { college: codes }
-               }).then((suggestions) => {
-                    console.log('Courses to Suggest: ', suggestions);
-                    displayCourse(suggestions)
-               });
-          } else {
-               $.get("/findCourses", {
-                    filter: { college: currentUser['college'].id }
-               }).then((suggestions) => {
-                    console.log('Courses to Suggest: ', suggestions);
-                    displayCourse(suggestions)
-               });
+          for(var i = 0; i < courseList.length; i++) {
+               displayCourse(courseList[i]);
           }
+
+
+          // courseList.forEach(e => {
+          //      setCodes.add(e['collegeid']);
+          // });
+
+          // setCodes.forEach(e => {
+          //      codes.push(e);
+          // });
+
+          // console.log('codes', codes);
+
+          // if(courseList.length > 0){
+          //      $.get("/findCourses", {
+          //           filter: { collegeid: codes }
+          //      }).then((suggestions) => {
+          //           console.log('Courses to Suggest: ', suggestions);
+          //           displayCourse(suggestions)
+          //      });
+          // } else {
+          //      $.get("/findCourses", {
+          //           filter: { college: currentUser['college'].id }
+          //      }).then((suggestions) => {
+          //           console.log('Courses to Suggest: ', suggestions);
+          //           displayCourse(suggestions)
+          //      });
+          // }
      }
 
      /*
@@ -332,7 +337,7 @@ jQuery(function () {
           of the homepage by accepting a list of course objects. 
      */
      function displayCourse(courses) {
-          //console.log('displayCourse received:', courses);
+          console.log('displayCourse received:', courses);
 
           courses.forEach(e => {
                let frListElement = document.createElement("div");
