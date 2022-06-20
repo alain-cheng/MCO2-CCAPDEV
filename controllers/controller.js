@@ -50,14 +50,11 @@ const controller = {
     /*
         Use when user presses the follow button on a course.
         Use HTTP GET method.
-        Same goes for unfollowCourse function.
     */
     followCourse: (req, res) => {
-
-    },
-
-    unfollowCourse: (req, res) => {
-
+        db.updateOne(collection['users'], req.query['filter'], req.query['update'], (result) => {
+            //console.log('result:', result);
+        });
     },
 
     /*

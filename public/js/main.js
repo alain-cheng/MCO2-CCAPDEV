@@ -23,7 +23,7 @@ jQuery(function () {
      var courseFollow = document.getElementById("fr-list");
      courseFollow?.addEventListener('click', followCourse);
 
-     // Temporary: Auto login a user (testing purposes)
+     // Temporary: Auto login a user (testing purposes) (delete if you want)
      $.get("/findUser", {
           filter: {
                username: 'HDavis',
@@ -61,6 +61,7 @@ jQuery(function () {
 
     /* Reloads the page content for the user */
      function refreshContent(user) {
+          console.log('refreshContent executed');
           // Reset the Right-bar user info
           $(".lu-info-top").text("");
           $(".lu-info-bottom").text("");
@@ -396,49 +397,68 @@ jQuery(function () {
 
      /* 
           Follows/unfollows courses in the suggestions tab
+
+          Current issue persists where the server lags for 
+          some time when spamming follow buttons or pressing
+          follow buttons a couple times in short intervals
      */
      function followCourse(e) {
           let target = getEventTarget(e);
           let sibling = target.previousElementSibling;
           let currCourse = $(sibling).text();
-          console.log('followCourse:', currCourse)
+          //console.log('followCourse:', currCourse)
           if(target.className.toLowerCase() === "fr-list-element-follow") { //follow
                if(target.innerText.toLowerCase() === "follow") {
                     $(target).text("Following");
-                    // add that course to the currentUsers' followedCourses
-                    $.get("/findCourses", {
+                    // Find the course object first in the database, then use that object
+                    // to add it into the user's followedCourses.
+                    $.get("/findCourse", {
                          filter: { name: currCourse }
-                    }).then((res) => {
-                         console.log('found', res);
-                         res.forEach(e => {
-                              $.get("/followCourse", {
-                                   filter: {}
-                              }).then((res) => {
-                                   
-                              });
+                    }).then((follow) => {
+                         //console.log('found', follow);
+                         $.get("/followCourse", {
+                              filter: { username: currentUser['username'] },
+                              update: { $addToSet: { followedCourses: follow }}
                          });
-                         
-                    });
 
-                    // for(var i = 0; i < courses.length; i++) {
-                    //      if(courses[i].name == currCourse) {
-                    //           currentUser.followedCourses.push(courses[i]);
-                    //           break;
-                    //      }
-                    // }
+                         // After editting documents from the User schema, the currentUser must be
+                         // updated with a new instance of that user to match the database updates.
+                         $.get("/findUser", {
+                              filter: {
+                                   username: currentUser['username'],
+                                   password: currentUser['password']
+                              }
+                         }).then((user) => {
+                              currentUser = user;
+                              login(currentUser);
+                         });
+                    });
                }
                else if(target.innerText.toLowerCase() === "following") { //unfollow
                     $(target).text("Follow");
-                    // loop tru currentUser's followedCourses and remove that course
-                    for(var i = 0; i < currentUser.followedCourses.length; i++) {
-                         if(currentUser.followedCourses[i].name == currCourse) {
-                              currentUser.followedCourses.splice(i, 1);
-                              break;
-                         }
-                    }
+                    $.get("/findCourse", {
+                         filter: { name: currCourse }
+                    }).then((follow) => {
+                         //console.log('found', follow);
+                         $.get("/followCourse", {
+                              filter: { username: currentUser['username'] },
+                              update: { $pull: { followedCourses: follow }}
+                         });
+
+                         // After editting documents from the User schema, the currentUser must be
+                         // updated with a new instance of that user to match the database updates.
+                         $.get("/findUser", {
+                              filter: {
+                                   username: currentUser['username'],
+                                   password: currentUser['password']
+                              }
+                         }).then((user) => {
+                              currentUser = user;
+                              login(currentUser);
+                         });
+                    });
                }
           }
-          refreshContent(currentUser);
      }
 
      /* 
@@ -466,6 +486,9 @@ jQuery(function () {
           });
      }
 
+     /*
+          This is for the scroll buttons on the course posts container
+     */
      function sideScroll(e, direction, speed, distance, step) {
           let scrollAmount = 0;
           let slideTimer = setInterval(function(){
@@ -485,6 +508,7 @@ jQuery(function () {
      /*========================================================*/
      /* HOVER/CLICK EVENTS */
      /*========================================================*/
+     
      $(".navbar-loginregister").click(function (e) {
           //Handles log out functions
           if(loggedIn != -1)
