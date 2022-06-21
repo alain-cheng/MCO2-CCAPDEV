@@ -183,7 +183,7 @@ textarea {
     width: 238px;
     float: right;
     clear: right;
-    /*display: none;*/
+    display: none;
 }
 
 .rightbar-contents {
@@ -323,7 +323,7 @@ textarea {
     background-color: var(--white1);
     margin: auto;
     width: auto;
-    /*display: none;*/
+    display: none;
 }
 
 #review-headline {
@@ -355,7 +355,7 @@ textarea {
     position: relative;
     bottom: 11px;
     right: 5px;
-    /*display: none;*/
+    display: none;
     height: 0px;
 }
 
@@ -433,7 +433,7 @@ textarea {
 }
 
 .newReviewContainer {
-    /*display: none;*/
+    display: none;
     border: 1px solid var(--black1);
     border-radius: 10px 10px 10px 10px;
     height: 250px;
@@ -570,7 +570,7 @@ textarea {
     margin: auto;
     min-height: 318px;
     width: auto;
-    /*display: none;*/
+    display: none;
 }
 
 div#courses-headline {
