@@ -28,4 +28,4 @@ console.log("Connected to database");
 app.listen(port, () => {
     console.log('Server is running at:');
     console.log('http://localhost:' + port);
-})
+});
