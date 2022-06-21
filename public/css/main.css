@@ -428,6 +428,10 @@ textarea {
 
 /* New Review */
 
+#newReview{
+    display: none;
+}
+
 .newReviewContent {
     display: flex;
     flex-direction: column;

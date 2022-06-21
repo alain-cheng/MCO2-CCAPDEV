@@ -321,6 +321,11 @@ const controller = {
         });
     },
 
+    login: (req, res) => {
+        var params = new URLSearchParams(req.url.substring("/login?".length));
+        console.log(params.get("username"));
+    },
+
     //Inputs sample data into the DB
     fillDB: (req, res) => {
         // Generate Sample Data

@@ -24,5 +24,6 @@ routes.get('/findPost', controller.findPost);
 routes.get('/findPosts', controller.findPosts);
 
 routes.get('/fillDB', controller.fillDB);
+routes.get('/login', controller.login);
 
 export default routes;
