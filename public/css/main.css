@@ -154,6 +154,7 @@ textarea {
     max-width: 750px;
     float: left;
     clear: left;
+    display: none;
 }
 
 .mainpage hr {
@@ -183,7 +184,7 @@ textarea {
     width: 238px;
     float: right;
     clear: right;
-    /*display: none;*/
+    display: none;
 }
 
 .rightbar-contents {
