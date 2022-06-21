@@ -76,19 +76,16 @@ jQuery(function () {
                If  User   is   following    atleast   1   course ->
                Suggest courses  based  on  the   followed  courses-
                that belong to the same College.
-
                Else if  the  User is  not  following  any course ->
                Suggest courses  based  on the  college of the user.
                
                Similar rules apply above in displaying posts except
                that every single post is displayed available in the
                db if the user is not following any courses.
-
                courseSuggestions(), which accepts a list of course
                objects   to  be  displayed  will  be  called,  and 
                displayPosts() which accepts a list of post objects 
                to be displayed.
-
                One other thing, also suggest courses based on the
                posts the user has liked.
           */
@@ -205,7 +202,6 @@ jQuery(function () {
         Accepts a list of post objects meant to be displayed.
         If there are no posts to be displayed, a message must
         be  displayed  indicating  no  posts  are  available.
-
         This function  is   tied   with   displayPost(),  the
         singular form of this method.
     */
@@ -365,7 +361,6 @@ jQuery(function () {
 
      /* 
           Follows/unfollows courses in the suggestions tab
-
           Current issue persists where the server lags for 
           some time when spamming follow buttons or pressing
           follow buttons a couple times in short intervals
@@ -429,7 +424,7 @@ jQuery(function () {
           }
      }
 
-     /*
+     /* 
           Returns the target element for an event that has bubbled from the container
      */
      function getEventTarget(e) {
