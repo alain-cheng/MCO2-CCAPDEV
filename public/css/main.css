@@ -622,12 +622,18 @@ div#coursepostContainer::-webkit-scrollbar {
     /*display: none;*/
 }
 
+.coursePostContainer {
+    display: flex;
+    min-height: auto;
+    flex-direction: row;
+}
+
 /* COURSES YOU FOLLOW - POSTS */
 .mainpost {
     background-color: var(--white1);
     border-radius: 7px 7px 7px 7px;
     min-height: 210px;
-    min-width: 245px;
+    width: 245px;
     margin-inline: 4px 4px;
     margin-block: 0% 5%;
 }
@@ -653,9 +659,13 @@ div#coursepostContainer::-webkit-scrollbar {
     background-color: var(--green2);
     min-height: 21px;
     margin: 0px 3px 3px 3px;
+    display: flex;
 }
 
 .mp-review-stars {
+    margin-left: 5px;
+    color: var(--yellow1);
+    /*
     background-image: url('./public/sprites.png');
     background-position: -18px -18px;
     transform: scale(0.6);
@@ -668,33 +678,36 @@ div#coursepostContainer::-webkit-scrollbar {
     float: left;
     clear: left;
     margin: -5px 0px 0px -35px;
+    */
 }
 
 .mp-review div.mp-rev-description {
     font-family: 'Inter', sans-serif;
     font-size: 15px;
     color: var(--white1);
-    float: right;
-    clear: right;
-    position: relative;
-    margin: 2px 5px 2px 0px;
+    margin-left: 5px;
 }
 
 .mp-review-box {
     background-color: var(--white3);
     height: 120px;
     margin: 5px 3px auto 3px;
+    padding: 5px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 .mp-review-text {
+    background-color: var(--green1);
     display: inline-block;
     width: 235px;
-    margin: 0 0 0 -163px;
     height: 100%;
+    margin: 0px 0px 0px -3px;
 
     overflow-wrap: break-word; /* Not working */
     word-break: break-all; /* Not working */
-    overflow-x: auto; /* Placeholder for overflow-wrap and word-break not working */
+    
 }
 
 .mp-review-text > p {

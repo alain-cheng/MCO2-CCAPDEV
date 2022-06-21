@@ -23,6 +23,7 @@ app.set("view cache", false);                           // disable caching
 app.use('/', routes);
 
 db.connect();
+console.log("Connected to database");
 
 app.listen(port, () => {
     console.log('Server is running at:');
