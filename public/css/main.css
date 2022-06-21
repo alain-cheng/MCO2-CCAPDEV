@@ -154,7 +154,6 @@ textarea {
     max-width: 750px;
     float: left;
     clear: left;
-    display: none;
 }
 
 .mainpage hr {
@@ -184,7 +183,7 @@ textarea {
     width: 238px;
     float: right;
     clear: right;
-    display: none;
+    /*display: none;*/
 }
 
 .rightbar-contents {
@@ -858,4 +857,78 @@ div#coursepostContainer {
     cursor: pointer;
     opacity: 100%;
     border-radius: 10px 10px 10px 10px;
+}
+
+
+/*profstuff*/
+
+.prof-row {
+    display: flex;
+}
+
+.prof-container {
+    width: 250px;
+    height: 350px;
+    margin: 5px;
+    border: 3px solid var(--green1);
+    border-radius: 5%;
+    opacity: 100%;
+}
+
+.prof-image {
+    border: 1px solid black;
+    border-radius: 50%;
+    display: block;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    cursor: pointer;
+}
+
+.prof-namebar {
+    background-color: var(--green1);
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    color: var(--white1);
+    text-align: center;
+}
+
+.prof-info {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: bolder;
+    text-align: center;
+}
+
+.prof-creds {
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+    font-weight: bolder;
+    text-align: center;
+}
+
+.prof-rating-container {
+    background-color: var(--green1);
+    border-radius: 25%;
+    width: 20%;
+    margin-top: 10px;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    color: var(--yellow1);
+    text-align: center;
 }

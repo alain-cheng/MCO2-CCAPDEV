@@ -24,7 +24,6 @@ jQuery(function () {
      courseFollow?.addEventListener('click', followCourse);
 
      // Temporary: Auto login a user (testing purposes) (delete if you want)
-     /*
      $.get("/findUser", {
           filter: {
                username: 'Sarah Parker',
@@ -35,12 +34,11 @@ jQuery(function () {
                console.log('Logged In', res['username']);
                console.log('Following', res['followedCourses']);
                login(currentUser);
-     });*/
+     });
 
      /*=====================================================*/
      /*   Main application functions below */
      /*=====================================================*/
-     let loggedIn = false;
 
      // function fadeWrap() {
      //      let scrollPos = window.pageYOffset || document.documentElement.scrollLeft;
@@ -59,7 +57,6 @@ jQuery(function () {
           $('.signed-out-message').hide();
           $("#logged-user").attr("src", user['img']);
           refreshContent(user);
-          //loggedIn = true;
      }
 
     /* Reloads the page content for the user */
@@ -480,15 +477,17 @@ jQuery(function () {
      
      $(".navbar-loginregister").click(function (e) {
           //Handles log out functions
-          if(loggedIn)
+          if(loggedIn != -1)
           {
                //Hide and revert
                $(".rightbar").css("display", "none");
-               $(".mainpage").css("display", "none");
+               $(".reviewContainer").css("display", "none");
+               $(".coursesContainer").css("display", "none");
+               $(".searchContainer").css("left", "142px");
                $(".navbar-loginregister").html("Login/Register");
 
                // clear right bar contents
-               $("#logged-user").attr("src", "");
+               $("#logged-user").attr("src", "./public/empty-profile-pic.jpeg");
                $(".lu-info-top").text("");
                $(".lu-info-bottom").text("");
 
@@ -509,19 +508,19 @@ jQuery(function () {
                //Hide and Delete reviews
                $(".newReviewContainer").css("display", "none");
                $(".newReviewContainer").html("");
-               
+
                //Store name of user temporarily
-               //let tempName = users[loggedIn].firstName + " " + users[loggedIn].lastName;
+               let tempName = users[loggedIn].firstName + " " + users[loggedIn].lastName;
 
                //Reset loggedIn
-               loggedIn = false;
+               loggedIn = -1;
 
                //Re-open login window with a logout declaration
                $(".loginContainer").css("visibility", "visible");
                $(".loginContainer").css("display", "block");
                $("body >*:not(.loginContainer)").css("filter", "blur(2.5px)");
                $("body >*:not(.loginContainer)").css("pointer-events", "none");
-               //$("#loginResponse").html(tempName + " logged out!");
+               $("#loginResponse").html(tempName + " logged out!");
                $("#loginResponse").css("color", "var(--green1)");
                $("#loginResponse").css("display", "block");
                setTimeout(() => {
@@ -531,7 +530,7 @@ jQuery(function () {
                     }, "1600");
 
                //erase tempName data
-               //tempName = "";
+               tempName = "";
           }
           else
           {
