@@ -243,6 +243,7 @@ collection['posts'].insertMany([
 
 /* TODO */
 // Sample Users - fill up at least 4 more sample users: DONE CURRENTLY 6 USERS
+/*
 collection['users'].create({
     firstName: "Sarah",
     lastName: "Parker",
@@ -374,13 +375,11 @@ collection['users'].create({
         console.log("User David ardiente saved to database")
     }
 }
-
-
-
-
+*/
 
 /* TODO */
 // Sample Posts - fill up at least 3 more posts: DONE CURRENLTY 6 posts
+/*
 collection['posts'].create({
     id: 1201,
     reviewForFN: "Nicole",
@@ -878,7 +877,7 @@ collection['courses'].create({
     }
     console.log("Course 10 saved to database");
 }
-
+*/
 // remove "/*" to uncomment
 
 /*========================================================*/
