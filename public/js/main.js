@@ -150,8 +150,7 @@ jQuery(function () {
           
           $("#coursepostContainer").html("");                    // Clears all posts
 
-          // Resets the like button's event handlers.
-          addLikeEvents();
+          
      }
 
      /*
@@ -220,6 +219,8 @@ jQuery(function () {
                posts.forEach(e => {
                     displayPost(e);
                });
+               // Resets the like button's event handlers.
+               addLikeEvents();
           }
      }
 
@@ -437,11 +438,12 @@ jQuery(function () {
           Adds like button event listeners to all the posts in the followed courses tab 
      */
      function addLikeEvents() {
-          const likeButtonsCF = document.querySelectorAll("d.mp-subheader-likebutton");
+          const likeButtonsCF = document.querySelectorAll("div.mp-subheader-likebutton");
           //console.log('likeButton:', likeButtonsCF);
           likeButtonsCF.forEach((e) => {
                console.log('addLikeEvents:', e);
                e.addEventListener("click", like);
+               console.log(e);
                if(currentUser['likedPosts'].indexOf(e.id) !== -1) {
                     e.style.backgroundPosition = "-230px -130px";
                } else {
