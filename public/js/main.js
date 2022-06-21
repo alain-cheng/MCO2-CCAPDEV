@@ -426,7 +426,7 @@ jQuery(function () {
           }
      }
 
-     /* 
+     /*
           Returns the target element for an event that has bubbled from the container
      */
      function getEventTarget(e) {
