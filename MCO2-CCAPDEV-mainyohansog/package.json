@@ -1,0 +1,33 @@
+{
+  "name": "mco2-ccapdev",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alain-cheng/MCO2-CCAPDEV.git"
+  },
+  "author": "Group 6",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alain-cheng/MCO2-CCAPDEV/issues"
+  },
+  "homepage": "https://github.com/alain-cheng/MCO2-CCAPDEV#readme",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-handlebars": "^6.0.6",
+    "mongodb": "^4.7.0",
+    "mongoose": "^6.3.8",
+    "path": "^0.12.7",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.5.14"
+  }
+}
