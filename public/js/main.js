@@ -4,11 +4,13 @@ var currentUser;                 // Store the logged user in json object format
 
 /*
      Fills the db with default data that is stored in controller.js fillDB.
-     If you decide to add more data to the database or want to refresh the data,
-     you might want to delete the entire Prof2Pick db folder and rerun the 
-     application again to save your new changes.
+
+     Sometimes you might want to either delete the Prof2Pick database and restart the app
+     or comment this function out since it only needs to run once especially when testing
+     post liking and or course following to prevent it from reverting to default values when 
+     you dont want it to.
 */
-$.get("/fillDB");                
+//$.get("/fillDB");                
 
 jQuery(function () {
      console.log("Document Loaded");
@@ -283,7 +285,7 @@ jQuery(function () {
           // Set post content
           $(mpHLeft).text(mpHeaderLeft);
           $(mpHMTop).text(post['reviewForFN'] + " " + post['reviewForLN']);
-          $(mpHMBot).text(post['reviewCourse'] + " | Term " + post['reviewTerm']);
+          $(mpHMBot).text(post['reviewCourse'] + " | " + post['reviewTerm']);
           $(mpRDesc).text(getStarDesc(post['reviewRating']));
           $(mpRParagraph).text(post['reviewText']);
           $(mpSHImg).attr("src", post['posterPfp']);
@@ -335,9 +337,14 @@ jQuery(function () {
      function like(e) {
           let bgPos = e.target.style.backgroundPosition;
           if(bgPos == "-300px -130px") { // if like button is empty
+               console.log('currentUser is', currentUser);
                e.target.style.backgroundPosition = "-230px -130px";
                currentUser.likedPosts.push(e.target.id);
                console.log("Liked " + e.target.id);
+               $.get("/likePost", {
+                    filter: { username: currentUser['username'] },
+                    update: { $addToSet: { likedPosts: e.target.id } }
+               });
           } 
           else { // if like button is color red
                e.target.style.backgroundPosition = "-300px -130px";
@@ -348,6 +355,10 @@ jQuery(function () {
                     }  
                }
                console.log("Removed Like for " + e.target.id);
+               $.get("/unlikePost", {
+                    filter: { username: currentUser['username'] },
+                    update: { $pull: { likedPosts: e.target.id } }
+               });
           }          
      }
 
@@ -425,15 +436,14 @@ jQuery(function () {
      }
 
      /* 
-          Adds like button event listeners to all the posts in the followed courses tab 
+          Adds like button event listeners to all the posts in the followed courses tab,
+          and sets the like button state if the user has already liked the post previously.
      */
      function addLikeEvents() {
           const likeButtonsCF = document.querySelectorAll("div.mp-subheader-likebutton");
-          //console.log('likeButton:', likeButtonsCF);
           likeButtonsCF.forEach((e) => {
-               console.log('addLikeEvents:', e);
                e.addEventListener("click", like);
-               console.log(e);
+               console.log('like button', e);
                if(currentUser['likedPosts'].indexOf(e.id) !== -1) {
                     e.style.backgroundPosition = "-230px -130px";
                } else {

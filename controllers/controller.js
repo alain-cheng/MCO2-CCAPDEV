@@ -61,14 +61,23 @@ const controller = {
     /*
         Use when user presses the like button on a post
         Use HTTP GET method
-        Same goes for unlikePost function.
     */
     likePost: (req, res) => {
+        db.updateOne(collection['users'], req.query['filter'], req.query['update'], (result) => {
+             //console.log('result:', result);
+        });
 
+        // db.updateOne(collection['users'], req.query['filter'], {
+        //     update: { $addToSet: { likedPosts: req.query['data'] }}
+        // }, (result) => {
+        //     console.log('result:', result);
+        // });
     },
 
     unlikePost: (req, res) => {
-
+        db.updateOne(collection['users'], req.query['filter'], req.query['update'], (result) => {
+            //console.log('result:', result);
+       });
     },
 
     /*
@@ -356,7 +365,7 @@ const controller = {
                 password: "12345",
                 img: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
                 followedCourses: ["GEUSELF", "POLGOVT"],
-                likedPosts: [1201, 1202]
+                likedPosts: ['1201', '1202']
             }), (err) => {
                 if (err) {
                     console.log(err);
@@ -377,7 +386,7 @@ const controller = {
                 password: "12345",
                 img: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
                 followedCourses: ["CCAPDEV"],
-                likedPosts: []
+                likedPosts: ['']
             }), (err) => {
                 if (err) {
                     console.log(err);
@@ -391,7 +400,7 @@ const controller = {
             /* TODO */
             // Sample Posts - fill up at least 3 more posts
             await collection['posts'].create({
-                id: 1201,
+                id: '1201',
                 reviewForFN: "Nicole",
                 reviewForLN: "Zefanya",
                 reviewCourse: "GEUSELF",
@@ -414,7 +423,7 @@ const controller = {
                 }
             }
             await collection['posts'].create({
-                id: 1202,
+                id: '1202',
                 reviewForFN: "Hwang",
                 reviewForLN: "Yeji",
                 reviewCourse: "POLGOVT",
@@ -437,7 +446,7 @@ const controller = {
                 }
             }
             await collection['posts'].create({
-                id: 1203,
+                id: '1203',
                 reviewForFN: "Nicole",
                 reviewForLN: "Zefanya",
                 reviewCourse: "GEUSELF",
@@ -460,7 +469,7 @@ const controller = {
                 }
             }
             await collection['posts'].create({
-                id: 1204,
+                id: '1204',
                 reviewForFN: "Artemis",
                 reviewForLN: "Celestial",
                 reviewCourse: "CCAPDEV",

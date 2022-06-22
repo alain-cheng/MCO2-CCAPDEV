@@ -21,6 +21,7 @@ app.use(express.static('public'));
 app.set("view cache", false);                           // disable caching
 
 app.use('/', routes);
+// app.use('/fillDB', routes);
 
 db.connect();
 console.log("Connected to database");
