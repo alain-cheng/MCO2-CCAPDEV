@@ -344,6 +344,7 @@ const controller = {
         // NOTE: for some reason, the console.logs of all code below don't work for some reason but the data is added to the database when you check MongoDBCompass
         /* TODO */
         //Async communication with DB
+        fillDB();
         async function fillDB()
         {
             //Used to prevent duplicates, might need to be removed
@@ -366,7 +367,7 @@ const controller = {
                 img: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
                 followedCourses: ["GEUSELF", "POLGOVT"],
                 likedPosts: ['1201', '1202']
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
@@ -374,7 +375,7 @@ const controller = {
                 else {
                     console.log("User Sarah Parker saved to database")
                 }
-            }
+            });
             await collection['users'].create({
                 firstName: "Gerald",
                 lastName: "Velasco",
@@ -387,7 +388,7 @@ const controller = {
                 img: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
                 followedCourses: ["CCAPDEV"],
                 likedPosts: ['']
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
@@ -395,7 +396,7 @@ const controller = {
                 else {
                     console.log("User Gerald Velasco saved to database")
                 }
-            }
+            });
 
             /* TODO */
             // Sample Posts - fill up at least 3 more posts
@@ -413,7 +414,7 @@ const controller = {
                 posterDegCode: "BSCS",
                 posterCollege: "College of Computer Studies",
                 likesNum: 3,
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
@@ -421,7 +422,7 @@ const controller = {
                 else {
                     console.log("Post 1201 saved to database");
                 }
-            }
+            });
             await collection['posts'].create({
                 id: '1202',
                 reviewForFN: "Hwang",
@@ -436,7 +437,7 @@ const controller = {
                 posterDegCode: "ABPOM",
                 posterCollege: "College of Liberal Arts",
                 likesNum: 3,
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
@@ -444,7 +445,7 @@ const controller = {
                 else {
                     console.log("Post 1202 saved to database");
                 }
-            }
+            });
             await collection['posts'].create({
                 id: '1203',
                 reviewForFN: "Nicole",
@@ -459,7 +460,7 @@ const controller = {
                 posterDegCode: "ABLIT",
                 posterCollege: "College of Liberal Arts",
                 likesNum: 3,
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
@@ -467,7 +468,7 @@ const controller = {
                 else {
                     console.log("Post 1203 saved to database");
                 }
-            }
+            });
             await collection['posts'].create({
                 id: '1204',
                 reviewForFN: "Artemis",
@@ -482,7 +483,7 @@ const controller = {
                 posterDegCode: "BSCS",
                 posterCollege: "College of Computer Studies",
                 likesNum: 27,
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
@@ -490,7 +491,7 @@ const controller = {
                 else {
                     console.log("Post 1204 saved to database");
                 }
-            }
+            });
 
             // Sample Profs - there are 8 profs for each of the 8 courses in the database
             await collection['profs'].create({
@@ -505,13 +506,13 @@ const controller = {
                 avgRating: 4.5,
                 gradYear: 2015,
                 expYears: 2
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Prof. Hwang Yeji saved to database");
-            }
+            });
             await collection['profs'].create({
                 firstName: "Choi",
                 lastName: "Jisu",
@@ -524,13 +525,13 @@ const controller = {
                 avgRating: 4.2,
                 gradYear: 2016,
                 expYears: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Prof. Choi Jisu saved to database");
-            }
+            });
             await collection['profs'].create({
                 firstName: "Lee",
                 lastName: "Chaeryeong",
@@ -543,13 +544,13 @@ const controller = {
                 avgRating: 4.3,
                 gradYear: 2017,
                 expYears: 2 
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Prof. Lee Chaeryeong saved to database");
-            }
+            })
             await collection['profs'].create({
                 firstName: "Shin",
                 lastName: "Ryujin",
@@ -562,13 +563,13 @@ const controller = {
                 avgRating: 4.6,
                 gradYear: 2017,
                 expYears: 1
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Prof. Shin Ryujin saved to database");
-            }
+            });
             await collection['profs'].create({
                 firstName: "Shin",
                 lastName: "Yuna",
@@ -581,13 +582,13 @@ const controller = {
                 avgRating: 4.3,
                 gradYear: 2018,
                 expYears: 1
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Prof. Shin Yuna saved to database");
-            }
+            });
             await collection['profs'].create({
                 firstName: "George",
                 lastName: "Miller",
@@ -600,13 +601,13 @@ const controller = {
                 avgRating: 4.1,
                 gradYear: 2013,
                 expYears: 5
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Prof. George Miller saved to database");
-            }
+            });
             await collection['profs'].create({
                 firstName: "Brian",
                 lastName: "Soewarno",
@@ -619,13 +620,13 @@ const controller = {
                 avgRating: 4.0,
                 gradYear: 2017,
                 expYears: 1
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Prof. Brian Soewarno saved to database");
-            }
+            });
             await collection['profs'].create({
                 firstName: "Nicole",
                 lastName: "Zefanya",
@@ -638,13 +639,13 @@ const controller = {
                 avgRating: 4.5,
                 gradYear: 2016,
                 expYears: 2
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Prof. Nicole Zefanya saved to database");
-            }
+            })
             await collection['profs'].create({
                 firstName: "Artemis",
                 lastName: "Celestial",
@@ -657,13 +658,13 @@ const controller = {
                 avgRating: 4.9,
                 gradYear: 2017,
                 expYears: 1
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Prof. Artemis Celestial saved to database");
-            }
+            });
 
             // Sample Colleges - there are 7 main colleges in DLSU and they are assigned their respective IDs;
             //                   GE is considered its own college for this website
@@ -671,79 +672,79 @@ const controller = {
                 collegename: "College of Liberal Arts",
                 name: "CLA",
                 id: 1
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("College 1 saved to database");
-            }
+            });
             await collection['colleges'].create({
                 collegename: "College of Computer Studies",
                 name: "COS",
                 id: 2
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("College 1 saved to database");
-            }
+            });
             await collection['colleges'].create({
                 collegename: "Gokongwei College of Engineering",
                 name: "GCOE",
                 id: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("College 1 saved to database");
-            }
+            })
             await collection['colleges'].create({
                 collegename: "Ramon V. Del Rosario College of Business",
                 name: "RVCOB",
                 id: 4
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("College 1 saved to database");
-            }
+            })
             await collection['colleges'].create({
                 collegename: "School of Economics",
                 name: "SOE",
                 id: 5
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("College 1 saved to database");
-            }
+            });
             await collection['colleges'].create({
                 collegename: "Brother Andrew Gonzalez College of Education",
                 name: "BAGCED",
                 id: 6
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("College 1 saved to database");
-            }
+            })
             await collection['colleges'].create({
                 collegename: "College of Computer Studies",
                 name: "CCS",
                 id: 7
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("College 1 saved to database");
-            }
+            });
 
             // Sample Courses - there are 8 sample courses; 7 courses (for 7 colleges) + 1 GE course
             await collection['courses'].create({
@@ -751,123 +752,122 @@ const controller = {
                 coursecode: "POLGOVT",
                 collegeid: 1,
                 units: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Course 1 saved to database");
-            }
+            });
             await collection['courses'].create({
                 coursename: "Principles of Chemistry 1",
                 coursecode: "KEMPRN1",
                 collegeid: 2,
                 units: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Course 2 saved to database");
-            }
+            });
             await collection['courses'].create({
                 coursename: "Engineering Graphics 1",
                 coursecode: "GRAPONE",
                 collegeid: 3,
                 units: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Course 3 saved to database");
-            }
+            });
             await collection['courses'].create({
                 coursename: "Fundamentals of Accountancy, Business, and Management",
                 coursecode: "FDNACCT",
                 collegeid: 4,
                 units: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Course 4 saved to database");
-            }
+            });
             await collection['courses'].create({
                 coursename: "Basic Microeconomics",
                 coursecode: "ECONONE",
                 collegeid: 5,
                 units: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Course 5 saved to database");
-            }
+            });
             await collection['courses'].create({
                 coursename: "Basic Communication and Study Skills",
                 coursecode: "ENGLCOM",
                 collegeid: 6,
                 units: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Course 6 saved to database");
-            }
+            });
             await collection['courses'].create({
                 coursename: "Web Application Development",
                 coursecode: "CCAPDEV",
                 collegeid: 7,
                 units: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Course 7 saved to database");
-            }
+            });
             await collection['courses'].create({
                 coursename: "Understanding the Self",
                 coursecode: "GEUSELF",
                 collegeid: 8,
                 units: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Course 8 saved to database");
-            }
+            });
             await collection['courses'].create({
                 coursename: "Readings in Philippine History",
                 coursecode: "GERPHIS",
                 collegeid: 8,
                 units: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Course 9 saved to database");
-            }
+            });
             await collection['courses'].create({
                 coursename: "The Contemporary World",
                 coursecode: "GEWORLD",
                 collegeid: 8,
                 units: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Course 10 saved to database");
-            }
+            });
         }
-        fillDB();
 
         // remove "/*" to uncomment
 

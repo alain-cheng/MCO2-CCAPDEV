@@ -7,10 +7,10 @@ var currentUser;                 // Store the logged user in json object format
 
      Sometimes you might want to either delete the Prof2Pick database and restart the app
      or comment this function out since it only needs to run once especially when testing
-     post liking and or course following to prevent it from reverting to default values when 
-     you dont want it to.
+     post liking and course following to prevent it from reverting to default values when 
+     the page gets refreshed.
 */
-//$.get("/fillDB");                
+$.get("/fillDB");                
 
 jQuery(function () {
      console.log("Document Loaded");
@@ -294,23 +294,29 @@ jQuery(function () {
           $(mpLike).attr("id", post['id']);
           
           // Set proper display of post ratings
-          switch(post.stars)
+          console.log('post', post);
+          switch(post['reviewRating'])
           {
                case 1:
-                    $(mpRStars).css("background-position", "-230px -76px");
-                    $(mpRDesc).css("bottom", "40px");                         // Patch for 1star text being in the wrong position
+                    // $(mpRStars).css("background-position", "-230px -76px");
+                    // $(mpRDesc).css("bottom", "40px");                         // Patch for 1star text being in the wrong position
+                    $(mpRStars).text("★");
                     break;
                case 2:
-                    $(mpRStars).css("background-position", "-10px -148px");
+                    // $(mpRStars).css("background-position", "-10px -148px");
+                    $(mpRStars).text("★★");
                     break;
                case 3:
-                    $(mpRStars).css("background-position", "-230px -14px");
+                    //$(mpRStars).css("background-position", "-230px -14px");
+                    $(mpRStars).text("★★★");
                     break;
                case 4:
-                    $(mpRStars).css("background-position", "-10px -83px");
+                    //$(mpRStars).css("background-position", "-10px -83px");
+                    $(mpRStars).text("★★★★");
                     break;
                case 5:
-                    $(mpRStars).css("background-position", "-10px -18px");
+                    //$(mpRStars).css("background-position", "-10px -18px");
+                    $(mpRStars).text("★★★★★");
                     break;
           }
           // Display mainpost to post container
