@@ -45,7 +45,9 @@ const controller = {
         Use HTTP POST method 
     */
     addPost: (req, res) => {
-
+        db.insertOne(collection['posts'], req.query['data'], (result) => {
+            //console.log('result:', result);
+        })
     },
 
     /*
