@@ -2,22 +2,10 @@ const mpHeaderLeft = "Review For:";
 const errPostEmpty = "OOPS! There are no posts here.";
 var currentUser;                 // Store the logged user in json object format
 
+$.get("/fillDB");                // Fill Database with default data
+
 jQuery(function () {
      console.log("Document Loaded");
-
-     /*=====================================================*/
-     /*   Sample for getting a document from the db */
-     /*   Can be deleted before submission          */
-     /*=====================================================*/
-     $.get("/findCourse", {
-          filter: { college: 'CCS' }
-     }).then((res) => {              // retrieve response data
-          var collegeSample = res;
-          console.log('Sample Object:', collegeSample);
-          console.log('Object Name:', collegeSample['name']);
-          console.log('Object ID:', collegeSample['college']);
-     });
-     /*=====================================================*/
 
      // Create working course follow buttons
      var courseFollow = document.getElementById("fr-list");
@@ -52,7 +40,7 @@ jQuery(function () {
      //      }
      // }
 
-    /*  */
+     /*  */
      function login(user) {
           currentUser = user;
           console.log('Current User is: ', currentUser);
@@ -149,8 +137,6 @@ jQuery(function () {
           }
           
           $("#coursepostContainer").html("");                    // Clears all posts
-
-          
      }
 
      /*

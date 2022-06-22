@@ -326,219 +326,13 @@ const controller = {
         console.log(params.get("username"));
     },
 
-    //Inputs sample data into the DB
+    /*========================================================*/
+    /* Sample Data*/
+    /* This will be the sample data to be used for all testing.
+    /* This function is being called by starting up main.js
+    /*========================================================*/
     fillDB: (req, res) => {
-        // Generate Sample Data
-        /*
-        collection['courses'].insertMany([
-            {
-                name: 'CCPROG',
-                college: 'CCS'
-            },
-            {
-                name: 'CCPROG2',
-                college: 'CCS'
-            },
-            {
-                name: 'CCDSTRU',
-                college: 'CCS'
-            },
-            {
-                name: 'CSINTSY',
-                college: 'CCS'
-            },
-            {
-                name: 'KEMPSY1',
-                college: 'COS'
-            }
-        ], (err, res) => {
-            if(err) console.log('Insert error occured for Courses, possible duplicates');
-            else console.log('Course Data Added');
-        });
-
-        collection['colleges'].insertMany([
-            {
-                name: 'College of Computer Studies',
-                id: 'CCS'
-            },
-            {
-                name: 'College of Science',
-                id: 'COS'
-            }
-        ], (err, res) => {
-            if(err) console.log('Insert error occured for Colleges, possible duplicates');
-            else console.log('College Data Added');
-        });
-
-        collection['users'].insertMany([
-            {
-                firstName: 'Harley',
-                lastName: 'Davis',
-                degree: 'BSCS',
-                college: { name: 'College of Computer Studies', id: 'CCS'},
-                batch: 'ID 120',
-                username: 'HDavis',
-                password: 'user1',
-                img: '/img/user1.jpg',
-                followedCourses: [{ name: 'CCPROG', college: 'CCS' }, { name: 'CSINTSY', college: 'CCS' }],
-                likedPosts: [100001]
-            },
-            {
-                firstName: 'Sarah',
-                lastName: 'Parker',
-                degree: 'BSCS',
-                college: { name: 'College of Computer Studies', id: 'CCS'},
-                batch: 'ID 119',
-                username: 'Sarah',
-                password: 'user2',
-                img: '/img/user2.jpg'
-            },
-            {
-                firstName: 'Amy',
-                lastName: 'Bougainvillea',
-                degree: 'BSCS',
-                college: { name: 'College of Computer Studies', id: 'CCS'},
-                batch: 'ID 120',
-                username: 'Amivillea',
-                password: 'user3',
-                img: '/img/user3.jpg'
-            },
-            {
-                firstName: 'Lance',
-                lastName: 'Mendoza',
-                degree: 'BSCS',
-                college: { name: 'College of Computer Studies', id: 'CCS'},
-                batch: 'ID 12',
-                username: 'LanDoza',
-                password: 'user4',
-                img: '/img/user4.jpg'
-            },
-            {
-                firstName: 'Mad',
-                lastName: 'Scientist',
-                degree: 'BSBC',
-                college: { name: 'College of Science', id: 'COS'},
-                batch: 'ID 118',
-                username: 'MaddoScientisto',
-                password: 'user5',
-                img: '/img/empty-profile-pic.jpeg'
-            }
-        ], (err, res) => {
-            if(err) console.log('Insert error occured for Users, possible duplicates');
-            else console.log('User Data Added');
-        });
-
-        collection['posts'].insertMany([
-            {
-                profFName: 'Porter',
-                profLName: 'Newman',
-                text: 'Prof is entertaining, also grades high, strongly recommend!',
-                course: 'CCPROG',
-                term: 2,
-                stars: 5,
-                owner: { 
-                    firstName: 'Sarah',
-                    lastName: 'Parker',
-                    degree: 'BSCS',
-                    college: { name: 'College of Computer Studies', id: 'CCS'},
-                    batch: 'ID 119',
-                    username: 'Sarah',
-                    password: 'user2',
-                    img: '/img/user2.jpg' 
-                },
-                id: 100001
-            },
-            {
-                profFName: 'Henry',
-                profLName: 'Ford',
-                text: 'Very good lectures, always late tho but still recommend',
-                course: 'CCDSTRU',
-                term: 1,
-                stars: 4,
-                owner: {
-                    firstName: 'Amy',
-                    lastName: 'Bougainvillea',
-                    degree: 'BSCS',
-                    college: { name: 'College of Computer Studies', id: 'CCS'},
-                    batch: 'ID 120',
-                    username: 'Amivillea',
-                    password: 'user3',
-                    img: '/img/user3.jpg'
-                },
-                id: 100002
-            },
-            {
-                profFName: 'Farah',
-                profLName: 'Boeing',
-                text: 'Their internet is slow lol, but alright overall',
-                course: 'CCPROG2',
-                term: 2,
-                stars: 3,
-                owner: {
-                    firstName: 'Amy',
-                    lastName: 'Bougainvillea',
-                    degree: 'BSCS',
-                    college: { name: 'College of Computer Studies', id: 'CCS'},
-                    batch: 'ID 120',
-                    username: 'Amivillea',
-                    password: 'user3',
-                    img: '/img/user3.jpg'
-                },
-                id: 100003
-            },
-            {
-                profFName: 'Jack',
-                profLName: 'Frost',
-                text: 'Gives a lot of assignments, but good prof, thats my only complaint',
-                course: 'CCPROG',
-                term: 1,
-                stars: 4,
-                owner: {
-                    firstName: 'Lance',
-                    lastName: 'Mendoza',
-                    degree: 'BSCS',
-                    college: { name: 'College of Computer Studies', id: 'CCS'},
-                    batch: 'ID 12',
-                    username: 'LanDoza',
-                    password: 'user4',
-                    img: '/img/user4.jpg'
-                },
-                id: 100004
-            },
-            {
-                profFName: 'Albert',
-                profLName: 'Einstein',
-                text: 'The chem laboratory blew up because of them but they teach great',
-                course: 'KEMPSY1',
-                term: 1,
-                stars: 5,
-                owner: {
-                    firstName: 'Mad',
-                    lastName: 'Scientist',
-                    degree: 'BSBC',
-                    college: { name: 'College of Science', id: 'COS'},
-                    batch: 'ID 118',
-                    username: 'MaddoScientisto',
-                    password: 'user5',
-                    img: '/img/empty-profile-pic.jpeg'
-                },
-                id: 100005
-            }
-        ], (err, res) => {
-            if(err) console.log('Insert error occured for Posts, possible duplicates');
-            else console.log('Post Data Added');
-        });
-        */
-
-        /*========================================================*/
-        /* Sample Data*/
-        /* This will be the sample data to be used for all testing.
-        /*  Un-comment this when it's your first time running this code.
-        /*  Afterwards, comment it again to prevent data duplication.
-        /*========================================================*/
-
         // NOTE: for some reason, the console.logs of all code below don't work for some reason but the data is added to the database when you check MongoDBCompass
-
         /* TODO */
         //Async communication with DB
         async function fillDB()
@@ -570,6 +364,27 @@ const controller = {
                 }
                 else {
                     console.log("User Sarah Parker saved to database")
+                }
+            }
+            await collection['users'].create({
+                firstName: "Gerald",
+                lastName: "Velasco",
+                degree: "AB Literature",
+                degreeCode: "ABLIT",
+                college: "College of Computer Studies",
+                batch: "119",
+                username: "Gerald Velasco",
+                password: "12345",
+                img: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
+                followedCourses: ["CCAPDEV"],
+                likedPosts: []
+            }), (err) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                else {
+                    console.log("User Gerald Velasco saved to database")
                 }
             }
 
@@ -618,7 +433,7 @@ const controller = {
                     return;
                 }
                 else {
-                    console.log("Post 1201 saved to database");
+                    console.log("Post 1202 saved to database");
                 }
             }
             await collection['posts'].create({
@@ -641,7 +456,30 @@ const controller = {
                     return;
                 }
                 else {
-                    console.log("Post 1201 saved to database");
+                    console.log("Post 1203 saved to database");
+                }
+            }
+            await collection['posts'].create({
+                id: 1204,
+                reviewForFN: "Artemis",
+                reviewForLN: "Celestial",
+                reviewCourse: "CCAPDEV",
+                reviewTerm: "Term 3",
+                reviewRating: 5,
+                reviewText: "Her teaching style is really well thought out, I can say she is a very considerate professor. Easily approachable if you have any concerns related to the course and will most of the time give you an answer you will be satisfied with or are looking for.",
+                posterNameFN: "Gerald",
+                posterNameLN: "Velasco",
+                posterPfp: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
+                posterDegCode: "BSCS",
+                posterCollege: "College of Computer Studies",
+                likesNum: 27,
+            }), (err) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                else {
+                    console.log("Post 1204 saved to database");
                 }
             }
 
@@ -797,6 +635,25 @@ const controller = {
                     return;
                 }
                 console.log("Prof. Nicole Zefanya saved to database");
+            }
+            await collection['profs'].create({
+                firstName: "Artemis",
+                lastName: "Celestial",
+                img: "https://pbs.twimg.com/profile_images/1515733643368415232/uFPui6Do_400x400.jpg",
+                position: "Lecturer",
+                department: "Software Technology",
+                degree: "BS Computer Science",
+                college: "De La Salle University",
+                course: "CCAPDEV",
+                avgRating: 4.9,
+                gradYear: 2017,
+                expYears: 1
+            }), (err) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                console.log("Prof. Artemis Celestial saved to database");
             }
 
             // Sample Colleges - there are 7 main colleges in DLSU and they are assigned their respective IDs;
