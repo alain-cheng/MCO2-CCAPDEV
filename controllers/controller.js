@@ -45,9 +45,29 @@ const controller = {
         Use HTTP POST method 
     */
     addPost: (req, res) => {
-        db.insertOne(collection['posts'], req.query['data'], (result) => {
-            //console.log('result:', result);
-        })
+        // db.insertOne(collection['posts'], req.query['data'], (result) => {
+        //     //console.log('result:', result);
+        // });
+
+        Post.create({
+            id: req.query['id'],
+            reviewForFN: req.query['reviewForFN'],
+            reviewForLN: req.query['reviewForLN'],
+            reviewCourse: req.query['reviewCourse'],
+            reviewTerm: req.query['reviewTerm'],
+            reviewRating: parseInt(req.query['reviewRating']), // its emiting an error
+            reviewText: req.query['reviewText'],
+            posterNameFN: req.query['posterNameFN'],
+            posterNameLN: req.query['posterNameLN'],
+            posterPfp: req.query['posterPfp'],
+            posterDegCode: req.query['posterDegCode'],
+            posterCollege: req.query['posterCollege'],
+            likesNum: req.query['likesNum']
+        }).then(res => {
+            console.log('post result', res);
+        }).catch(err => {
+            console.log('error on post', err);
+        });
     },
 
     /*

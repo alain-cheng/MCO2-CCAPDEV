@@ -935,8 +935,10 @@ jQuery(function () {
                $("#edit-review").html('<button class="edit-review">CLICK HERE TO EDIT</button>')
                // Call createNewReview to update the newReviewContainer div
                //$(".newReviewContainer").html(createNewReview(fNameInput, lNameInput, courseInput, aTermInput, rating, descInput))
-               $.post("/addPost", {
-                    data: {
+               $.get("/findPosts", {filter: {}}).then((res) => {
+                    var idNum = 1200 + res.length + 1;
+                    $.get("/addPost", {
+                         id: idNum,
                          reviewForFN: fNameInput,
                          reviewForLN: lNameInput,
                          reviewCourse: courseInput,
@@ -947,10 +949,11 @@ jQuery(function () {
                          posterNameLN: currentUser['lastName'],
                          posterPfp: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
                          posterDegCode: currentUser['degreeCode'],
-                         posterCollege: currentUser['college']
-                    }
-               }).then((res) => {
-                    console.log('Add post result', res);
+                         posterCollege: currentUser['college'],
+                         likesNum: 0
+                    }).then((res) => {
+                         console.log('Add post result', res);
+                    });
                });
 
                //Reset inputs
