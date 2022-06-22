@@ -22,8 +22,8 @@ routes.get('/findUser', controller.findUser);
 routes.get('/findUsers', controller.findUsers);
 routes.get('/findPost', controller.findPost);
 routes.get('/findPosts', controller.findPosts);
-routes.get('/findProf', controller.findProf);
-routes.get('/findProfs', controller.findProfs);
+// routes.get('/findProf', controller.findProf);
+// routes.get('/findProfs', controller.findProfs);
 
 routes.get('/fillDB', controller.fillDB);
 routes.get('/login', controller.login);

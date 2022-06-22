@@ -622,10 +622,6 @@ div#coursepostContainer {
     font-size: 40px;
 }
 
-#coursepostContainer::-webkit-scrollbar {
-    /*display: none;*/
-}
-
 /* COURSES YOU FOLLOW - POSTS */
 .mainpost {
     float: left;

@@ -10,7 +10,7 @@ var currentUser;                 // Store the logged user in json object format
      post liking and course following to prevent it from reverting to default values when 
      the page gets refreshed.
 */
-$.get("/fillDB");                
+//$.get("/fillDB");                
 
 jQuery(function () {
      console.log("Document Loaded");
@@ -38,16 +38,6 @@ jQuery(function () {
      /*=====================================================*/
      let loggedIn = false;
 
-     // function fadeWrap() {
-     //      let scrollPos = window.pageYOffset || document.documentElement.scrollLeft;
-     //      if(scrollPos > 300) {
-     //           $("#scroll-left").show();
-     //      }
-     //      else {
-     //           $("#scroll-left").hide();
-     //      }
-     // }
-
      /*  */
      function login(user) {
           currentUser = user;
@@ -60,13 +50,13 @@ jQuery(function () {
 
     /* Reloads the page content for the user */
      function refreshContent(user) {
-          console.log('refreshContent executed');
           // Reset the Right-bar user info
           $(".lu-info-top").text("");
           $(".lu-info-bottom").text("");
           $("#fr-list").html("");
           $(".lu-info-top").text(user['firstName'] + " " + user['lastName']);
           $(".lu-info-bottom").text(user['degreeCode'] + " | " + user['college']);
+          $("#coursepostContainer").html(""); // Clears all posts
           
           /*
                If  User   is   following    atleast   1   course ->
@@ -82,8 +72,6 @@ jQuery(function () {
                objects   to  be  displayed  will  be  called,  and 
                displayPosts() which accepts a list of post objects 
                to be displayed.
-               One other thing, also suggest courses based on the
-               posts the user has liked.
           */
           if(user['followedCourses'].length > 0) {
                let following = user['followedCourses'];
@@ -144,7 +132,7 @@ jQuery(function () {
                });
           }
           
-          $("#coursepostContainer").html("");                    // Clears all posts
+          
      }
 
      /*
@@ -209,6 +197,7 @@ jQuery(function () {
                $("#coursepostContainer").append(message);
                console.log(errPostEmpty)
           } else {
+               $('.empty-post-message').hide();
                posts.forEach(e => {
                     displayPost(e);
                });
@@ -402,7 +391,7 @@ jQuery(function () {
                               }
                          }).then((user) => {
                               currentUser = user;
-                              login(currentUser); 
+                              refreshContent(currentUser); 
                          });
                     });
                }
@@ -426,7 +415,7 @@ jQuery(function () {
                               }
                          }).then((user) => {
                               currentUser = user;
-                              login(currentUser);
+                              refreshContent(currentUser);
                          });
                     });
                }
@@ -632,12 +621,55 @@ jQuery(function () {
           $.get("/findPosts", { filter: {} }).then((res) => displayPosts(res));
      });
 
-     $("#coursesContainer").on("hover", function () {
+     $("#coursesContainer").hover(function () {
                $("#scroll-container").css("visibility", "visible");
           }, function () {
                $("#scroll-container").css("visibility", "hidden");
           }
      );
+
+     // For Search container
+     $('#searchByFilter').click(function () {
+          console.log('Course', $('#filtercourse').val());
+          console.log('Term', $('#filterterm').val());
+          console.log('College', $('#filtercollege').val());
+          console.log('Rating', $('#filterrating').val());
+
+          let selectCourse = $('#filtercourse').val();
+          let selectTerm = $('#filterterm').val();
+          let selectCollege = $('#filtercollege').val();
+          let selectRating = $('#filterrating').val();
+
+          $.get("/findPosts", {
+               filter: {
+                    reviewCourse: selectCourse || {},
+                    reviewTerm: selectTerm || {},
+                    posterCollege: selectCollege || {},
+                    reviewRating: selectRating || {}
+               }
+          }).then((posts) => {
+               console.log('result', posts);
+               $("#coursepostContainer").html("");
+               displayPosts(posts);
+          });
+     });
+
+     $('#searchByName').click(function () {
+          console.log('clicked');
+          // console.log('First', $('#profname2').val());
+          // console.log('Last', $('#profLastName2').val());
+
+          $.get("/findPosts", {
+               filter: {
+                    reviewForFN: $('#profname2').val() || {},
+                    reviewForLN: $('#profLastName2').val() || {}
+               }
+          }).then((posts) => {
+               console.log('result', posts);
+               $("#coursepostContainer").html("");
+               displayPosts(posts);
+          });
+     });
 
      // Hovering over Home, Profs, and Courses buttons in the NavBar
      $('.navbar-buttons').on("hover", function() {
