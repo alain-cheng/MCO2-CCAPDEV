@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            DLSU Prof to Pick | Home
+        </title>
+        <meta charset="UTF-8">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="index.js"></script>
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <div class="header-logo">
+            <img src="public/LOGO.png" alt="DLSU PROF TO PICK LOGO">
+        </div>
+        
+        <div class="navbar">
+            <div class="navbar-contents">
+                <a href="index.html"><button class="navbar-buttons">Home</button></a>
+                <a href="pages/profs.html" target="_blank"><button class="navbar-buttons">Profs</button></a>
+                <a href="pages/courses.html" target="_blank"><button class="navbar-buttons">Courses</button></a>
+                <button class="navbar-loginregister">Login/Register</button>
+            </div>
+        </div>
+
+        <!-- Login/Signup Page Pop up-->
+        <div class="loginContainer">
+            <span>LOGIN</span>
+            <button type="button" class="login-close">X</button>
+            <div class="logintable">
+            <table>
+                <tr>
+                    <td>Username/Email</td>
+                    <td><input type="text" id="uName" value="HDavis"></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><input type="password" id="passwordInput" value="user1"></td>
+                </tr>
+                <tr>
+                    <td>Confirm Password</td>
+                    <td><input type="password" id="passwordConfirm" value="user1"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button type="button" class="login">Login</button>
+                    <button type="button" class="signup">Signup</button></td>
+                </tr>
+            </table>
+            <p id="loginResponse">TEST</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Signed out message -->
+            <span class="signed-out-message">It looks like you are Signed out. Login first in order to view reviews!</span>
+
+            <!-- Right side bar -->
+            <div class="rightbar">
+                <div class="rightbar-contents">
+                    <div class="userContainer">
+                        <div class="lu-info">
+                            <img src="./public/empty-profile-pic.jpeg" id="logged-user">
+                            <div class="lu-info-top">FirstName LastName</div>
+                            <div class="lu-info-bottom">Degree | College</div>
+                        </div>
+                    </div>
+                    <div class="follow-recommendations" id="follow-recommendations">
+                        <div class="fr-title" id="fr-title">Suggested courses</div>
+                        <div class="fr-list" id="fr-list">
+                            <!-- elements -->
+                            <div class="fr-list-element">
+                                <div class="fr-list-element-name">Course 1</div>
+                                <div class="fr-list-element-follow">Follow</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mainpage">
+                <div class="reviewContainer">
+                    <div id="review-headline">WRITE A REVIEW</div>
+                    <hr id="hr1">
+                    <div class="reviewDetails">
+                        <input type="text" id="profname" name="profname" placeholder="Input Prof's First Name..." value="">
+                        <input type="text" id="profLastName" name="profLastName" placeholder="Input Prof's Last Name..." value="">
+                        <input type="text" id="profcourse" name="profcourse" placeholder="Input Prof's Course..." value="">
+                        <input type="text" id="acadterm" name="acadterm" placeholder="Input Academic Term..." value="">
+
+                        <div class="rate">
+                            <input type="radio" id="star5" name="rate" value="5" /><label for="star5" title="Excellent">5 stars</label>
+                            <input type="radio" id="star4" name="rate" value="4" /><label for="star4" title="Good">4 stars</label>
+                            <input type="radio" id="star3" name="rate" value="3" /><label for="star3" title="Average">3 stars</label>
+                            <input type="radio" id="star2" name="rate" value="2" /><label for="star2" title="Poor">2 stars</label>
+                            <input type="radio" id="star1" name="rate" value="1" /><label for="star1" title="DO NOT TAKE">1 star</label>
+                        </div>
+
+                        <div class="reviewLegend" id="reviewLegend">Rating</div>
+
+                    </div>
+                    <br>
+                    <div class="reviewBody">
+                        <textarea id="reviewbody" name="reviewbody" placeholder="Be objective!" value=""></textarea>
+                    </div>
+                    <button class="reviewSubmit">SUBMIT</button>
+                    <p id="reviewStatus"></p>
+                </div>
+                <br><br>
+
+                
+                <div>
+                    <div class="new-review-headline"></div>
+                    <div id="edit-review"></div><br>
+                    <div class="newReviewContainer"></div>
+                </div>
+
+                <div class="coursesContainer" id="coursesContainer">
+                    <div id="coursesContainer-header">
+                        <div id="courses-headline">COURSES YOU FOLLOW</div>
+                        <div id="see-all">See all</div>
+                    </div>
+                    <div id="scroll-container">
+                        <div id="scroll-left"><img src="./public/scroll-arrow-left.png" id="scroll-arrow-left"></div>
+                        <div id="scroll-right"><img src="./public/scroll-arrow-right.png" id="scroll-arrow-right"></div>
+                    </div>
+                    <div id="coursepostContainer">
+                        <!-- This section will contain all the posts of courses you follow  -->
+                        <div class="mainpost">
+                            <div class="mp-header">
+                                <div class="mp-header-left">Review For:</div>
+                                <div class="mp-header-middle">
+                                    <div class="mp-header-middle-top">FirstName LastName</div>
+                                    <div class="mp-header-middle-bottom">Course | Academic Term</div>
+                                </div>
+                            </div>
+                            <div class="mp-review">
+                                <div class="mp-review-stars"></div>
+                                <div class="mp-rev-description">Excellent</div>
+                            </div>
+                            <div class="mp-review-box">
+                                <div class="mp-review-text"><p></p></div>
+                            </div>
+                            <div class="mp-subheader">
+                                <img class="mp-subheader-pic" src="./public/empty-profile-pic.jpeg" alt="pic">
+                                <div class="mp-subheader-left">
+                                    <div class="mp-subheader-left-top">FirstName LastName</div>
+                                    <div class="mp-subheader-left-bottom">Degree | College</div>
+                                </div>
+                                <div class="mp-subheader-likebutton"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="searchContainer">
+                    <div id="review-headline">CUSTOM SEARCH</div>
+                    <div class="searchBody">
+                        <select name="filtercourse" id="filtercourse" class="searchFilter">
+                            <option value="" disabled selected hidden>Select Course ...</option>
+                            <option value="ccprog1">CCPROG1</option>
+                            <option value="ccprog2">CCPROG2</option>
+                            <option value="ccprog3">CCPROG3</option>
+                            <option value="csadprg">CSADPRG</option>
+                            <option value="ccapdev">CCAPDEV</option>
+                        </select>
+
+                        <select name="filterterm" id="filterterm" class="searchFilter">
+                            <option value="" disabled selected hidden>Select Term ...</option>
+                            <optgroup label="A.Y: 2021-2022">
+                                <option value="term2/21-22">Term 2</option>
+                                <option value="term1/21-22">Term 1</option>
+                            </optgroup>
+                            <optgroup label="A.Y: 2020-2021">
+                                <option value="term3/20-21">Term 3</option>
+                                <option value="term2/20-21">Term 2</option>
+                                <option value="term1/20-21">Term 1</option>
+                            </optgroup>
+                            <optgroup label="A.Y: 2019-2020">
+                                <option value="term3/19-20">Term 3</option>
+                                <option value="term2/19-20">Term 2</option>
+                                <option value="term2/19-20">Term 1</option>
+                            </optgroup>
+                        </select>
+
+                        <select name="filtercollege" id="filtercollege" class="searchFilter">
+                            <option value="" disabled selected hidden>Select College ...</option>
+                            <option value="cla">CLA</option>
+                            <option value="cos">COS</option>
+                            <option value="gcoe">GCOE</option>
+                            <option value="rvcob">RVCOB</option>
+                            <option value="soe">SOE</option>
+                            <option value="baggced">BAGCED</option>
+                            <option value="ccs">CCS</option>
+                        </select>
+
+                        <select name="filterrating" id="filterrating" class="searchFilter">
+                            <option value="" disabled selected hidden>Select Rating ...</option>
+                            <option value="1star">★</option>
+                            <option value="2stars">★★</option>
+                            <option value="3stars">★★★</option>
+                            <option value="4stars">★★★★</option>
+                            <option value="5stars">★★★★★</option>
+                        </select> 
+
+                        <button class="searchButton" id="searchByFilter">SEARCH BY FILTER</button>
+
+                        <br>
+
+                        <input class="searchName" type="text" id="profname2" name="profname2" placeholder="Input Prof's First Name...">
+                        <input class="searchName" type="text" id="profLastName2" name="profLastName2" placeholder="Input Prof's Last Name...">
+                        <button class="searchButton" id="searchByName">SEARCH BY NAME</button>
+                    </div>   
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
