@@ -10,3 +10,6 @@
         <script type="text/javascript" src="/js/profs.js"></script>
     </head>
 */
+$(document).ready(function () {
+    // place functions in here
+});
