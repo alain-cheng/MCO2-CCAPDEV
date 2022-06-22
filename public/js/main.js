@@ -472,8 +472,70 @@ jQuery(function () {
      /*========================================================*/
      /* HOVER/CLICK EVENTS */
      /*========================================================*/
+     //Handles the login thingy
+     $(".login").on("click", function () {
+          //Check if username exists
+          var tempU = $("#uName").val();//Stores username input
+
+          //Check if username exists
+          $.get("/findUser", {
+               filter: {
+                    username: tempU,
+               }
+          }).then((res) => {
+                    currentUser = res;
+
+                    //If username exists
+                    if(currentUser)
+                    {
+                         //Check if password is correct
+                         if(currentUser.password == $("#passwordInput").val() && currentUser.password == $("#passwordConfirm").val())
+                         {
+                              $("#loginResponse").html("Logged in as " + currentUser.firstName + " " + currentUser.lastName);
+                              $("#loginResponse").css("color", "var(--green1)");
+                              $("#loginResponse").css("display", "block");
+                              //Hide response and close popup
+                              setTimeout(() => {
+                                   $("#loginResponse").css("display", "none");
+                                   $("#loginResponse").css("color", "red");
+                                   $(".loginContainer").css("visibility", "hidden");
+                                   $(".loginContainer").css("display", "none");
+                                   $("body >*:not(.loginContainer)").css("filter", "none");
+                                   $("body >*:not(.loginContainer)").css("pointer-events", "all");
+                                   }, "1600");
+                              loggedIn = true; //Confirm login
+                              $.get("/login?" + "username=" + currentUser.username);
+                         }
+                         else
+                         {
+                              $("#loginResponse").html("Incorrect username/Email or password!");
+                              $("#loginResponse").css("display", "block");
+                              //Hide response
+                              setTimeout(() => {$("#loginResponse").css("display", "none");}, "1600");
+                         }
+                    }
+                    else
+                    {
+                         $("#loginResponse").html("Username/Email does not exist!");
+                         $("#loginResponse").css("display", "block");
+                         //Hide response
+                         setTimeout(() => {$("#loginResponse").css("display", "none");}, "1600");
+                    }
+
+                    //Reveal and update
+                    if(loggedIn)
+                    {
+                         $(".signed-out-message").hide();
+                         login(currentUser);
+                         $(".rightbar").css("display", "block");
+                         $(".mainpage").css("display", "block");
+                         $(".navbar-loginregister").html("Log Out");
+                         tempU = "";
+                    }
+          });
+     });
      
-     $(".navbar-loginregister").click(function (e) {
+     $(".navbar-loginregister").on("click", function (e) {
           //Handles log out functions
           if(loggedIn)
           {
@@ -481,6 +543,9 @@ jQuery(function () {
                $(".rightbar").css("display", "none");
                $(".mainpage").css("display", "none");
                $(".navbar-loginregister").html("Login/Register");
+
+               //Store name of user temporarily
+               let tempName = $(".lu-info-top").text();
 
                // clear right bar contents
                $("#logged-user").attr("src", "");
@@ -504,19 +569,18 @@ jQuery(function () {
                //Hide and Delete reviews
                $(".newReviewContainer").css("display", "none");
                $(".newReviewContainer").html("");
-               
-               //Store name of user temporarily
-               //let tempName = users[loggedIn].firstName + " " + users[loggedIn].lastName;
 
                //Reset loggedIn
                loggedIn = false;
+               //Delete user data
+               currentUser = {};
 
                //Re-open login window with a logout declaration
                $(".loginContainer").css("visibility", "visible");
                $(".loginContainer").css("display", "block");
                $("body >*:not(.loginContainer)").css("filter", "blur(2.5px)");
                $("body >*:not(.loginContainer)").css("pointer-events", "none");
-               //$("#loginResponse").html(tempName + " logged out!");
+               $("#loginResponse").html(tempName + " logged out!");
                $("#loginResponse").css("color", "var(--green1)");
                $("#loginResponse").css("display", "block");
                setTimeout(() => {
@@ -526,7 +590,7 @@ jQuery(function () {
                     }, "1600");
 
                //erase tempName data
-               //tempName = "";
+               tempName = "";
           }
           else
           {
@@ -538,29 +602,29 @@ jQuery(function () {
      });
 
      /* closes the login pop up */
-     $("button.login-close").click(function (e) {
+     $("button.login-close").on("click", function (e) {
           $(".loginContainer").css("visibility", "hidden");
           $(".loginContainer").css("display", "none");
           $("body >*:not(.loginContainer)").css("filter", "none");
           $("body >*:not(.loginContainer)").css("pointer-events", "all");
      });
 
-     $("#scroll-left").click(function () { 
+     $("#scroll-left").on("click", function () { 
           var container = document.getElementById("coursepostContainer");
           sideScroll(container, "left", 5, 520, 10);
      });
 
-     $("#scroll-right").click(function () { 
+     $("#scroll-right").on("click", function () { 
           var container = document.getElementById("coursepostContainer");
           sideScroll(container, "right", 5, 520, 10);
      });
 
-     $("#see-all").click(function () {
+     $("#see-all").on("click", function () {
           $("#coursepostContainer").html("");
           $.get("/findPosts", { filter: {} }).then((res) => displayPosts(res));
      });
 
-     $("#coursesContainer").hover(function () {
+     $("#coursesContainer").on("hover", function () {
                $("#scroll-container").css("visibility", "visible");
           }, function () {
                $("#scroll-container").css("visibility", "hidden");
@@ -568,14 +632,14 @@ jQuery(function () {
      );
 
      // Hovering over Home, Profs, and Courses buttons in the NavBar
-     $('.navbar-buttons').hover(function() {
+     $('.navbar-buttons').on("hover", function() {
           $(this).css("background-color", "rgb(71, 179, 107)");
      }, function (){
                $(this).css("background-color", "");
      });
 
      // Hovering over Login in the NavBar
-     $('.navbar-loginregister').hover(function() {
+     $('.navbar-loginregister').on("hover", function() {
           $(this).css("background-color", "rgb(71, 179, 107)");
      }, function (){
           $(this).css("background-color", "");
@@ -584,14 +648,14 @@ jQuery(function () {
      /* courses.html functions */
 
      // Hovering over the college name buttons in courses.html (i.e. School of Economics, College of Science)
-     $('.courseButton').hover(function() {
+     $('.courseButton').on("hover", function() {
           $(this).css("opacity", "75%");
      }, function (){
           $(this).css("opacity", "100%");
      });
 
      // Hovering over the contents of a table of courses
-     $("#course-table tr").hover(function() {
+     $("#course-table tr").on("hover", function() {
           $(this).css("background-color", "var(--gray2)");
      }, function (){
           $(this).css("background-color", "var(--white1)");
@@ -605,7 +669,7 @@ jQuery(function () {
           function in controller.js. The buttonID is also included in the URL as it will be queried by getCourseTable later. At this
           point, go to getCourseTable function in controller.js.
      */
-     $(".courseButton").click(function(event) {
+     $(".courseButton").on("click", function(event) {
           let buttonID = event.target.id;
      fetch(`/getCourseTable?collegeid=${buttonID}`)
      .then(res => res.json()) // this is the res that came from controller.js (returned as a resolved promise)
