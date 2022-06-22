@@ -11,13 +11,13 @@
 $(document).ready(function () {
     // place functions in here
     
-    // -alain
     /* 
         I think its better nalang to use /findProfs instead, tas having the filter like this: ( filter: {} ),
         This returns a promise of a list of profs that contains every single prof from our db. Can access this
         inside the .then method.
         
         ^ you could try printing out the output using the console.log if you're not sure what to do with it ^^ 
+        -- alain
     */
     $.get("/findProf", {   
         filter: {
