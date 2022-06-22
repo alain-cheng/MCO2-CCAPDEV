@@ -132,7 +132,7 @@ jQuery(function () {
                });
           }
           
-          
+          renderSearches();
      }
 
      /*
@@ -324,6 +324,34 @@ jQuery(function () {
                case 5: return "Excellent";
                default: return "Error";
           }
+     }
+
+     /*
+          Renders all the options available for the post search feature 
+     */
+     function renderSearches() {
+          $('#filtercourse').html("");
+          $('#filtercollege').html("");
+
+          $.get("/findCourses", {filter: {}}).then((courses) => {
+               console.log('courses found:',courses);
+               courses.forEach(course => {
+                    var option = document.createElement("option");
+                    $(option).attr("value", course['coursecode']);
+                    $(option).text(course['coursecode']);
+                    $('#filtercourse').append(option);
+               });
+          });
+
+          $.get("/findColleges", {filter: {}}).then((colleges) => {
+               console.log('colleges found:',colleges);
+               colleges.forEach(college => {
+                    var option = document.createElement("option");
+                    $(option).attr("value", college['collegename']);
+                    $(option).text(college['collegename']);
+                    $('#filtercollege').append(option);
+               });
+          });
      }
      
      /*

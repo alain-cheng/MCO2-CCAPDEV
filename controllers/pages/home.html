@@ -51,7 +51,7 @@
     <!-- Common Contents END -->
 
     <div class="content">
-        <span class="signed-out-message">It looks like you are Signed out. Please Log in first!</span>
+        <span class="signed-out-message">It looks like you are Signed out. Please Log in first to get full functionality of the application!</span>
 
         <div class="rightbar">
             <div class="rightbar-contents">
@@ -159,11 +159,13 @@
                 <div class="searchBody">
                     <select name="filtercourse" id="filtercourse" class="searchFilter">
                         <option value="" disabled selected hidden>Select Course ...</option>
-                        <option value="CCPROG1">CCPROG1</option>
-                        <option value="CCPROG2">CCPROG2</option>
-                        <option value="CCPROG3">CCPROG3</option>
-                        <option value="CSADPRG">CSADPRG</option>
-                        <option value="CCAPDEV">CCAPDEV</option>
+                        <!-- Options for courses should look like these:
+                            <option value="CCPROG1">CCPROG1</option>
+                            <option value="CCPROG2">CCPROG2</option>
+                            <option value="CCPROG3">CCPROG3</option>
+                            <option value="CSADPRG">CSADPRG</option>
+                            <option value="CCAPDEV">CCAPDEV</option>
+                        -->
                     </select>
 
                     <select name="filterterm" id="filterterm" class="searchFilter">
@@ -175,13 +177,15 @@
 
                     <select name="filtercollege" id="filtercollege" class="searchFilter">
                         <option value="" disabled selected hidden>Select College ...</option>
-                        <option value="College of Liberal Arts">CLA</option>
-                        <option value="College of Science">COS</option>
-                        <option value="Gokongwei College of Engineering">GCOE</option>
-                        <option value="Ramon V. Del Rosario College of Business">RVCOB</option>
-                        <option value="School of Economics">SOE</option>
-                        <option value="Brother Andrew Gonzalez College of Education">BAGCED</option>
-                        <option value="College of Computer Studies">CCS</option>
+                        <!-- Options for colleges should look like these:
+                            <option value="College of Liberal Arts">College of Liberal Arts</option>
+                            <option value="College of Science">College of Science</option>
+                            <option value="Gokongwei College of Engineering">Gokongwei College of Engineering</option>
+                            <option value="Ramon V. Del Rosario College of Business">Ramon V. Del Rosario College of Business</option>
+                            <option value="School of Economics">School of Economics</option>
+                            <option value="Brother Andrew Gonzalez College of Education">Brother Andrew Gonzalez College of Education</option>
+                            <option value="College of Computer Studies">College of Computer Studies</option>
+                        -->
                     </select>
 
                     <select name="filterrating" id="filterrating" class="searchFilter">

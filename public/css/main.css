@@ -162,14 +162,16 @@ textarea {
 
 /* Signed Out Message */
 .signed-out-message {
+    display: block;
     background-image: linear-gradient(to right, var(--green1), var(--green3));
     border-radius: 10px;
     font-family: 'Inter', sans-serif;
     color: var(--white1);
     font-size: 30px;
     height: auto;
-    max-width: auto;
+    max-width: 730px;
     padding: 10px;
+    word-wrap: break-word;
 }
 
 /* RIGHT BAR */
