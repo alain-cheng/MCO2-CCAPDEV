@@ -12,7 +12,7 @@ $(document).ready(function () {
     // place functions in here
     
     /* 
-        I think its better nalang to use /findProfs instead, tas having the filter like this: ( filter: {} ),
+        I think its better nalang to use /findProfs instead, tas having the filter like this: ( filter: {} ),  <-- make sure findProfs is using db.findMany() btw
         This returns a promise of a list of profs that contains every single prof from our db. Can access this
         inside the .then method.
         
