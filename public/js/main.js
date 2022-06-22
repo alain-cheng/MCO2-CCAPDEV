@@ -2,7 +2,13 @@ const mpHeaderLeft = "Review For:";
 const errPostEmpty = "OOPS! There are no posts here.";
 var currentUser;                 // Store the logged user in json object format
 
-$.get("/fillDB");                // Fill Database with default data
+/*
+     Fills the db with default data that is stored in controller.js fillDB.
+     If you decide to add more data to the database or want to refresh the data,
+     you might want to delete the entire Prof2Pick db folder and rerun the 
+     application again to save your new changes.
+*/
+$.get("/fillDB");                
 
 jQuery(function () {
      console.log("Document Loaded");
