@@ -492,6 +492,29 @@ const controller = {
                     console.log("Post 1204 saved to database");
                 }
             });
+            await collection['posts'].create({
+                id: '1205',
+                reviewForFN: "Choi",
+                reviewForLN: "Jisu",
+                reviewCourse: "KEMPRN1",
+                reviewTerm: "Term 1",
+                reviewRating: 2,
+                reviewText: "I think there is still a lot of improvements needed, I think they are fine but not great either, atleast not the worst.",
+                posterNameFN: "Jose",
+                posterNameLN: "Magalang",
+                posterPfp: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
+                posterDegCode: "BSC",
+                posterCollege: "College of Science",
+                likesNum: 1,
+            }).then((err) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                else {
+                    console.log("Post 1205 saved to database");
+                }
+            });
 
             // Sample Profs - there are 8 profs for each of the 8 courses in the database
             await collection['profs'].create({

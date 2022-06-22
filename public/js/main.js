@@ -10,7 +10,7 @@ var currentUser;                 // Store the logged user in json object format
      post liking and course following to prevent it from reverting to default values when 
      the page gets refreshed.
 */
-//$.get("/fillDB");                
+$.get("/fillDB");                
 
 jQuery(function () {
      console.log("Document Loaded");
