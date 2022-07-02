@@ -233,6 +233,7 @@ jQuery(function () {
                          var mpSHLTop = document.createElement("div");
                          var mpSHLBot = document.createElement("div");
                     var mpLike = document.createElement("div");
+                    var numLikes = document.createElement("div");
 
           // Add classes
           $(mainpost).addClass("mainpost");
@@ -252,6 +253,7 @@ jQuery(function () {
           $(mpSHLTop).addClass("mp-subheader-left-top");
           $(mpSHLBot).addClass("mp-subheader-left-bottom");
           $(mpLike).addClass("mp-subheader-likebutton");
+          $(numLikes).addClass("numLikes");
 
           // Append
           $(mainpost).append(mpHeader);
@@ -271,6 +273,7 @@ jQuery(function () {
           $(mpSHLeft).append(mpSHLTop);
           $(mpSHLeft).append(mpSHLBot);
           $(mpSubHeader).append(mpLike);
+          $(mpSubHeader).append(numLikes);
 
           // Set post content
           $(mpHLeft).text(mpHeaderLeft);
@@ -282,6 +285,7 @@ jQuery(function () {
           $(mpSHLTop).text(post['posterNameFN']+ " " + post['posterNameLN']);
           $(mpSHLBot).text(post['posterDegCode'] + " | " + post['posterCollege']);
           $(mpLike).attr("id", post['id']);
+          $(numLikes).text(post['likesNum']);
           
           // Set proper display of post ratings
           switch(post['reviewRating'])
@@ -368,6 +372,7 @@ jQuery(function () {
                     filter: { username: currentUser['username'] },
                     update: { $addToSet: { likedPosts: e.target.id } }
                });
+               refreshContent(currentUser);
           } 
           else { // if like button is color red
                e.target.style.backgroundPosition = "-300px -130px";
@@ -382,6 +387,7 @@ jQuery(function () {
                     filter: { username: currentUser['username'] },
                     update: { $pull: { likedPosts: e.target.id } }
                });
+               refreshContent(currentUser);
           }          
      }
 

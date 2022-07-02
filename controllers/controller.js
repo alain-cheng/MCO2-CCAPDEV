@@ -49,13 +49,13 @@ const controller = {
         //     //console.log('result:', result);
         // });
 
-        Post.create({
+        collection['posts'].create({
             id: req.query['id'],
             reviewForFN: req.query['reviewForFN'],
             reviewForLN: req.query['reviewForLN'],
             reviewCourse: req.query['reviewCourse'],
             reviewTerm: req.query['reviewTerm'],
-            reviewRating: parseInt(req.query['reviewRating']), // its emiting an error
+            reviewRating: req.query['reviewRating'],
             reviewText: req.query['reviewText'],
             posterNameFN: req.query['posterNameFN'],
             posterNameLN: req.query['posterNameLN'],
@@ -89,17 +89,33 @@ const controller = {
              //console.log('result:', result);
         });
 
-        // db.updateOne(collection['users'], req.query['filter'], {
-        //     update: { $addToSet: { likedPosts: req.query['data'] }}
-        // }, (result) => {
-        //     console.log('result:', result);
-        // });
+        let postid = req.query['update']['$addToSet']['likedPosts'];
+        console.log(postid)
+
+        db.updateOne(collection['posts'], {
+            id: postid
+        }, {
+            $inc: { likesNum: 1 }
+        }, (result) => {
+        
+        });
     },
 
     unlikePost: (req, res) => {
         db.updateOne(collection['users'], req.query['filter'], req.query['update'], (result) => {
             //console.log('result:', result);
        });
+
+       let postid = req.query['update']['$pull']['likedPosts'];
+       console.log(postid)
+
+        db.updateOne(collection['posts'], {
+            id: postid
+        }, {
+            $inc: { likesNum: -1 }
+        }, (result) => {
+            
+        });
     },
 
     /*

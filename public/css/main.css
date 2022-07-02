@@ -747,13 +747,21 @@ div#coursepostContainer {
     min-height: 50px;
 
     float: right;
-    clear: right;
-    margin: -13px -11px 0px 0px;
+    margin: -13px 5px 0px 0px;
 }
 
 .mp-subheader-likebutton:hover {
     opacity: 50%;
     cursor: pointer;
+}
+
+.numLikes {
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+
+    float: right;
+    clear: right;
+    margin: -27px 5px 0px 0px;
 }
 
 /* COURSE POST SCROLL BUTTONS */
