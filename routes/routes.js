@@ -8,6 +8,7 @@ routes.get('/home', controller.getHome);
 routes.get('/courses', controller.getCourses);
 routes.get('/profs', controller.getProfs);
 routes.get('/addPost', controller.addPost);
+routes.get('/updatePost', controller.updatePost);
 routes.get('/followCourse', controller.followCourse);
 routes.get('/likePost', controller.likePost);
 routes.get('/unlikePost', controller.unlikePost);

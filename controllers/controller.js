@@ -70,6 +70,12 @@ const controller = {
         });
     },
 
+    updatePost: (req, res) => {
+        db.updateOne(collection['posts'], req.query['filter'], req.query['update'], (result) => {
+            //console.log('result:', result);
+       });
+    },
+
     /*
         Use when user presses the follow button on a course.
         Use HTTP GET method.

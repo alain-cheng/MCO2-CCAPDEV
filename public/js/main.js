@@ -3,6 +3,15 @@ const errPostEmpty = "OOPS! There are no posts here.";
 var currentUser;                 // Store the logged user in json object format
 var rating;
 
+// Set of variables to temporarily store latest review values locally
+var latestPostID = 0;
+var latestPFname = '';
+var latestPLname = '';
+var latestCourse = '';
+var latestTerm = '';
+var latestRating = 0;
+var latestDesc = '';
+
 /*
      Fills the db with default data that is stored in controller.js fillDB.
 
@@ -499,6 +508,136 @@ jQuery(function () {
           }, speed);
      }
 
+     // Just prints a message
+     function updateReview() {
+          $("#reviewStatus").html("You are now changing your review!");
+          $("#reviewStatus").css("color", "red");
+          $("#reviewStatus").css("display", "block");
+     }
+
+     function updateNewReview(fname, lname, course, term, rating, desc) {
+
+          let stars, legend, htmlString, now;
+          let numStars;
+
+          switch (rating) {
+               case '1':
+                    stars = "★";
+                    numStars = 1;
+                    legend = "DO NOT TAKE";
+                    break;
+               case '2':
+                    stars = "★★";
+                    numStars = 2;
+                    legend = "Poor";
+                    break;
+               case '3':
+                    stars = "★★★";
+                    numStars = 3;
+                    legend = "Average";
+                    break;
+               case '4':
+                    stars = "★★★★";
+                    numStars = 4;
+                    legend = "Good";
+                    break;
+               case '5':
+                    stars = "★★★★★";
+                    numStars = 5;
+                    legend = "Excellent";
+                    break;
+          }
+
+          // $.get("/findPosts", {filter: {}}).then((res) => {
+          //      var idNum = latestPostID;
+          //      $.get("/addPost", {
+          //           id: idNum,
+          //           reviewForFN: fname,
+          //           reviewForLN: lname,
+          //           reviewCourse: course,
+          //           reviewTerm: term,
+          //           reviewRating: rating,
+          //           reviewText: desc,
+          //           posterNameFN: currentUser['firstName'],
+          //           posterNameLN: currentUser['lastName'],
+          //           posterPfp: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
+          //           posterDegCode: currentUser['degreeCode'],
+          //           posterCollege: currentUser['college'],
+          //           likesNum: 0
+          //      });
+
+          //      latestPostID = idNum;
+          //      latestPFname = fname;
+          //      latestPLname = lname;
+          //      latestCourse = course;
+          //      latestTerm = term;
+          //      latestRating = rating;
+          //      latestDesc = desc;
+
+          //      console.log(`Post ${latestPostID} added`);
+          // });
+
+          $.get("/updatePost", {
+               filter: { id: latestPostID },
+               update: { $set: {
+                    id: latestPostID,
+                    reviewForFN: fname,
+                    reviewForLN: lname,
+                    reviewCourse: course,
+                    reviewTerm: term,
+                    reviewRating: rating,
+                    reviewText: desc
+               }}
+          }).then((res) => {
+               latestPostID = latestPostID;
+               latestPFname = fname;
+               latestPLname = lname;
+               latestCourse = course;
+               latestTerm = term;
+               latestRating = rating;
+               latestDesc = desc;
+
+               console.log(`Post ${latestPostID} updated`);
+          });
+
+          
+
+          $('#edit-review').css('display', 'inline-block');
+
+          //Store current date and time in variable
+          now = new Date();
+
+          htmlString = `
+               <div class="nrSubContainer">
+                    <img src="${currentUser.img}" id="nrUserDP">
+                    <div class="nrUserDetails">${currentUser.firstName} ${currentUser.lastName}</div>
+                    <div class="nrUserDetails">${currentUser.degree}</div>
+                    <div class="nrUserDetails">${currentUser.batch}</div>
+                    <br>
+                    <div class="nrPubInfo">Published on:</div>
+                    <div class="nrPubInfo">${now.toLocaleDateString("en-US", {month: "long", day: "numeric", year: "numeric"})}</div>
+                    <div class="nrPubInfo">${now.toLocaleTimeString("en-US", { hour: "numeric", minute: "numeric"})}</div>
+               </div>
+               <div class="divider"></div>
+               <div class="nrSubContainer2">
+                    <div class="nrHeader">
+                         <div id="reviewFor">REVIEW FOR: </div>
+                         <div id="reviewForInfo">${fname} ${lname} | ${course} | ${term}</div>
+                    </div>
+                    <div class="nrRatingContainer">
+                         <div class="nrStars">${stars}</div>
+                         <div class="nrLegend">${legend}</div>
+                    </div>
+                    <div class="nrDesc">${desc}</div>
+                    <div class="nrLikeCounter">0 likes</div>
+                    
+               </div>
+          `;
+
+          $(".newReviewContainer").css("display", "flex"); // reveals the (initially) hidden newReviewContainer div
+          return htmlString;
+     }
+
      /*========================================================*/
      /* HOVER/CLICK EVENTS */
      /*========================================================*/
@@ -621,6 +760,7 @@ jQuery(function () {
 
                //erase tempName data
                tempName = "";
+               location.reload();
           }
           else
           {
@@ -691,14 +831,11 @@ jQuery(function () {
                     $(message).text("Sorry, There are no posts with this filter.");
                     $("#coursepostContainer").append(message);
                }
-               
           });
      });
 
      $('#searchByName').click(function () {
           console.log('clicked');
-          // console.log('First', $('#profname2').val());
-          // console.log('Last', $('#profLastName2').val());
 
           $.get("/findPosts", {
                filter: {
@@ -726,90 +863,106 @@ jQuery(function () {
           $(this).css("background-color", "");
      });
 
-     /* User information (i.e., name, degree), number of likes, and date and time of publication are hard-coded for now */
-     /* I'll try to find some APIs that can get the current date and time*/
-     // function createNewReview(fname, lname, course, term, rating, desc) {
+     function createNewReview(fname, lname, course, term, rating, desc) {
 
-     //      let stars, legend, htmlString, now;
-     //      let numStars;
+          let stars, legend, htmlString, now;
+          let numStars;
 
-     //      updateData.fname = fname;
-     //      updateData.lname = lname;
-     //      updateData.course = course;
-     //      updateData.term = term;
-     //      updateData.rating = rating;
-     //      updateData.desc = desc;
+          switch (rating) {
+               case '1':
+                    stars = "★";
+                    numStars = 1;
+                    legend = "DO NOT TAKE";
+                    break;
+               case '2':
+                    stars = "★★";
+                    numStars = 2;
+                    legend = "Poor";
+                    break;
+               case '3':
+                    stars = "★★★";
+                    numStars = 3;
+                    legend = "Average";
+                    break;
+               case '4':
+                    stars = "★★★★";
+                    numStars = 4;
+                    legend = "Good";
+                    break;
+               case '5':
+                    stars = "★★★★★";
+                    numStars = 5;
+                    legend = "Excellent";
+                    break;
+          }
 
-     //      switch (rating) {
-     //           case '1':
-     //                stars = "★";
-     //                numStars = 1;
-     //                legend = "DO NOT TAKE";
-     //                break;
-     //           case '2':
-     //                stars = "★★";
-     //                numStars = 2;
-     //                legend = "Poor";
-     //                break;
-     //           case '3':
-     //                stars = "★★★";
-     //                numStars = 3;
-     //                legend = "Average";
-     //                break;
-     //           case '4':
-     //                stars = "★★★★";
-     //                numStars = 4;
-     //                legend = "Good";
-     //                break;
-     //           case '5':
-     //                stars = "★★★★★";
-     //                numStars = 5;
-     //                legend = "Excellent";
-     //                break;
-     //      }
+          $.get("/findPosts", {filter: {}}).then((res) => {
+               var idNum = 1200 + res.length + 1;
+               $.get("/addPost", {
+                    id: idNum,
+                    reviewForFN: fname,
+                    reviewForLN: lname,
+                    reviewCourse: course,
+                    reviewTerm: term,
+                    reviewRating: rating,
+                    reviewText: desc,
+                    posterNameFN: currentUser['firstName'],
+                    posterNameLN: currentUser['lastName'],
+                    posterPfp: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
+                    posterDegCode: currentUser['degreeCode'],
+                    posterCollege: currentUser['college'],
+                    likesNum: 0
+               });
 
-     //      // create new post object
-     //      newPost = new Post(fname, lname, String(desc), course, term, numStars, currentUser, (100000+posts.length+1));
-     //      posts.push(newPost);
+               latestPostID = idNum;
+               latestPFname = fname;
+               latestPLname = lname;
+               latestCourse = course;
+               latestTerm = term;
+               latestRating = rating;
+               latestDesc = desc;
 
-     //      //Store current date and time in variable
-     //      now = new Date();
+               console.log(`Post ${latestPostID} added`);
+          });
 
-     //      htmlString = `
-     //           <div class="nrSubContainer">
-     //                <img src="${users[loggedIn].img}" id="nrUserDP">
-     //                <div class="nrUserDetails">${users[loggedIn].firstName} ${users[loggedIn].lastName}</div>
-     //                <div class="nrUserDetails">${users[loggedIn].degree}</div>
-     //                <div class="nrUserDetails">${users[loggedIn].batch}</div>
-     //                <br>
-     //                <div class="nrPubInfo">Published on:</div>
-     //                <div class="nrPubInfo">${now.toLocaleDateString("en-US", {month: "long", day: "numeric", year: "numeric"})}</div>
-     //                <div class="nrPubInfo">${now.toLocaleTimeString("en-US", { hour: "numeric", minute: "numeric"})}</div>
-     //           </div>
-     //           <div class="divider"></div>
-     //           <div class="nrSubContainer2">
-     //                <div class="nrHeader">
-     //                     <div id="reviewFor">REVIEW FOR: </div>
-     //                     <div id="reviewForInfo">${fname} ${lname} | ${course} | ${term}</div>
-     //                </div>
-     //                <div class="nrRatingContainer">
-     //                     <div class="nrStars">${stars}</div>
-     //                     <div class="nrLegend">${legend}</div>
-     //                </div>
-     //                <div class="nrDesc">${desc}</div>
-     //                <div class="nrLikeCounter">0 likes</div>
+          $('#edit-review').css('display', 'inline-block');
+
+          //Store current date and time in variable
+          now = new Date();
+
+          htmlString = `
+               <div class="nrSubContainer">
+                    <img src="${currentUser.img}" id="nrUserDP">
+                    <div class="nrUserDetails">${currentUser.firstName} ${currentUser.lastName}</div>
+                    <div class="nrUserDetails">${currentUser.degree}</div>
+                    <div class="nrUserDetails">${currentUser.batch}</div>
+                    <br>
+                    <div class="nrPubInfo">Published on:</div>
+                    <div class="nrPubInfo">${now.toLocaleDateString("en-US", {month: "long", day: "numeric", year: "numeric"})}</div>
+                    <div class="nrPubInfo">${now.toLocaleTimeString("en-US", { hour: "numeric", minute: "numeric"})}</div>
+               </div>
+               <div class="divider"></div>
+               <div class="nrSubContainer2">
+                    <div class="nrHeader">
+                         <div id="reviewFor">REVIEW FOR: </div>
+                         <div id="reviewForInfo">${fname} ${lname} | ${course} | ${term}</div>
+                    </div>
+                    <div class="nrRatingContainer">
+                         <div class="nrStars">${stars}</div>
+                         <div class="nrLegend">${legend}</div>
+                    </div>
+                    <div class="nrDesc">${desc}</div>
+                    <div class="nrLikeCounter">0 likes</div>
                     
-     //           </div>
-     //      `;
+               </div>
+          `;
 
-
-     //      $(".newReviewContainer").css("display", "flex"); // reveals the (initially) hidden newReviewContainer div
-     //      return htmlString;
-     // }
+          $(".newReviewContainer").css("display", "flex"); // reveals the (initially) hidden newReviewContainer div
+          return htmlString;
+     }
 
      $('.rate').click(function() {
           rating = $('input[name="rate"]:checked').val();
-          console.log(rating);
           switch(rating) {
                case '5':
                     $('#reviewLegend').html("Excellent");
@@ -936,39 +1089,20 @@ jQuery(function () {
           //Submit review
           if(errState == 0)
           {
-               //Console output for now... Store data later
-               console.log("First Name: " + fNameInput);
-               console.log("Last Name: " + lNameInput);
-               console.log("Course: " + courseInput);
-               console.log("Academic Term: " + aTermInput);
-               console.log("Rating: " + rating);
-               console.log("Description: " + descInput);
-
+               // console.log("First Name: " + fNameInput);
+               // console.log("Last Name: " + lNameInput);
+               // console.log("Course: " + courseInput);
+               // console.log("Academic Term: " + aTermInput);
+               // console.log("Rating: " + rating);
+               // console.log("Description: " + descInput);
                
-               $(".new-review-headline").html("YOU CREATED A NEW REVIEW!")
-               $("#edit-review").html('<button class="edit-review">CLICK HERE TO EDIT</button>')
-               // Call createNewReview to update the newReviewContainer div
-               //$(".newReviewContainer").html(createNewReview(fNameInput, lNameInput, courseInput, aTermInput, rating, descInput))
-               $.get("/findPosts", {filter: {}}).then((res) => {
-                    var idNum = 1200 + res.length + 1;
-                    $.get("/addPost", {
-                         id: idNum,
-                         reviewForFN: fNameInput,
-                         reviewForLN: lNameInput,
-                         reviewCourse: courseInput,
-                         reviewTerm: aTermInput,
-                         reviewRating: rating,
-                         reviewText: descInput,
-                         posterNameFN: currentUser['firstName'],
-                         posterNameLN: currentUser['lastName'],
-                         posterPfp: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
-                         posterDegCode: currentUser['degreeCode'],
-                         posterCollege: currentUser['college'],
-                         likesNum: 0
-                    }).then((res) => {
-                         console.log('Add post result', res);
-                    });
-               });
+               $(".new-review-headline").html("Made a typo? You can still make last minute changes!")
+               //$("#edit-review").html('<button class="edit-review">CLICK HERE TO EDIT</button>')
+
+               if(latestPostID == 0)
+                    $(".newReviewContainer").html(createNewReview(fNameInput, lNameInput, courseInput, aTermInput, rating, descInput))
+               else
+                    $(".newReviewContainer").html(updateNewReview(fNameInput, lNameInput, courseInput, aTermInput, rating, descInput))
 
                //Reset inputs
                $("#profname").val("");
@@ -985,6 +1119,30 @@ jQuery(function () {
           var errState = 0;
           // update page of user
           refreshContent(currentUser);
+     });
+
+     $(".edit-review").click(function () {
+          console.log("Change button clicked");
+          $('html,body').animate({
+               scrollTop: $(".reviewContainer").offset()?.top
+          });
+          updateReview();
+     });
+
+     $(".finalize-review").click(function () {
+          console.log("Finalize button clicked");
+
+          latestPostID = 0;
+          latestPFname = '';
+          latestPLname = '';
+          latestCourse = '';
+          latestTerm = '';
+          latestRating = 0;
+          latestDesc = '';
+
+          $('.newReviewContainer').css('display', 'none');
+          $('#edit-review').css('display', 'none');
+          $('.new-review-headline').html('');
      });
 
      /* courses.html functions */
