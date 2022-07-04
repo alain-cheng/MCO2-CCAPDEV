@@ -19,16 +19,31 @@ $(document).ready(function () {
         ^ you could try printing out the output using the console.log if you're not sure what to do with it ^^ 
         -- alain
     */
-    $.get("/findProf", {   
-        filter: {
-             firstName: 'Nicole',
-             lastName: 'Zefanya',
-        }
-   }).then((user) => {
-        console.log(user);
-        currentUser = user;
-        login(currentUser);
-   });
 
-   console.log()
+    $(".showProfsBtn").on("click", function(event) {
+        let buttonID = event.target.id;
+        
+        fetch(`/getProfProfiles?collegeid=${buttonID}`)
+        .then(res => res.json()) // this is the res that came from controller.js (returned as a resolved promise)
+            .then(res => {
+                    $("#ALL_PROFS_TABLE").html(res.message);
+            });  
+    });
+
+    $(document).on("click", ".image-overlay",function(event) { 
+        console.log("prof image clicked");
+
+        let eventID = event.currentTarget.id;
+        let profNames = eventID.trim().split(/\s+/);
+        let fname = profNames[0];
+        let lname = profNames[1];
+
+        fetch(`/getProfReviews?fname=${fname}&lname=${lname}`)
+        .then(res => res.json())
+                .then(res => {
+                $("#PROF_REVIEWS").html(res.message);
+        });  
+        
+        
+    });
 });

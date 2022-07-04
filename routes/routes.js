@@ -13,6 +13,8 @@ routes.get('/likePost', controller.likePost);
 routes.get('/unlikePost', controller.unlikePost);
 routes.get('/getCourseTable', controller.getCourseTable);
 routes.get('/getCourseReviews', controller.getCourseReviews);
+routes.get('/getProfProfiles', controller.getProfProfiles);
+routes.get('/getProfReviews', controller.getProfReviews);
 
 routes.get('/findCourse', controller.findCourse);
 routes.get('/findCourses', controller.findCourses);
@@ -22,8 +24,8 @@ routes.get('/findUser', controller.findUser);
 routes.get('/findUsers', controller.findUsers);
 routes.get('/findPost', controller.findPost);
 routes.get('/findPosts', controller.findPosts);
-// routes.get('/findProf', controller.findProf);
-// routes.get('/findProfs', controller.findProfs);
+//routes.get('/findProf', controller.findProf);
+//routes.get('/findProfs', controller.findProfs);
 
 routes.get('/fillDB', controller.fillDB);
 routes.get('/login', controller.login);
