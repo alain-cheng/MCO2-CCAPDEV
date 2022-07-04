@@ -44,6 +44,8 @@ $(document).ready(function () {
         to the function above and that's because dynamically created buttons apparently have to undergo "event delegation" to work.
         https://stackoverflow.com/questions/34896106/attach-event-to-dynamic-elements-in-javascript
     */
+
+    /*
     $(document).on("click", ".courseCodeBtn",function(event) { // this is different compared to "$(".courseButton").click(function(event)" above
         let buttonID = event.target.id;
         let buttonName = event.target.name;
@@ -71,5 +73,39 @@ $(document).ready(function () {
                 }
                 $(`#${college}_COURSE_REVIEWS`).html(res.message);
         });    
+    });
+    */
+
+    $(document).on("click", "#course-table tr",function(event) { // this is different compared to "$(".courseButton").click(function(event)" above
+        console.log("row clicked");
+        let rowName = event.currentTarget.className;
+        let buttonID = rowName.substr(7);
+        let buttonName = rowName.substr(0,7);
+
+        fetch(`/getCourseReviews?collegeid=${buttonID}&coursecode=${buttonName}`)
+        .then(res => res.json())
+                .then(res => {
+                let college;
+                switch (buttonID) {  // the switch case determines what _COURSE_REVIEWS will be modified with the HTML string from controller.js
+                    case "1": college = "CLA";
+                        break;
+                    case "2": college = "COS";
+                        break;
+                    case "3": college = "GCOE";
+                        break;
+                    case "4": college = "RVCOB";
+                        break;
+                    case "5": college = "SOE";
+                        break;
+                    case "6": college = "BAGCED";
+                        break;
+                    case "7": college = "CCS";
+                        break;
+                    case "8": college = "GE";
+                        break;
+                }
+                $(`#${college}_COURSE_REVIEWS`).html(res.message);
+        });  
+        
     });
 });
