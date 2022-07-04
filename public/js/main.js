@@ -684,6 +684,14 @@ jQuery(function () {
                console.log('result', posts);
                $("#coursepostContainer").html("");
                displayPosts(posts);
+               if(posts.length == 0) {
+                    $("#coursepostContainer").html('');
+                    var message = document.createElement("div");
+                    $(message).addClass("empty-post-message");
+                    $(message).text("Sorry, There are no posts with this filter.");
+                    $("#coursepostContainer").append(message);
+               }
+               
           });
      });
 
