@@ -213,6 +213,7 @@ const controller = {
         let stars
         let starsString;
         let starsLegend;
+        let sendBack;
 
         Post.find({reviewCourse:{$eq:code}}, function(err, result){
             if(err){
@@ -225,74 +226,82 @@ const controller = {
                 console.log(reviews);
                 console.log("---------------------");
 
-                for(let i = 0; i < reviews.length; i++){
-                    stars = reviews[i].reviewRating;
-                    switch (stars) {
-                        case 1:
-                                starsString = "★";
-                                starsLegend = "DO NOT TAKE";
-                                break;
-                        case 2:
-                                starsString = "★★";
-                                starsLegend = "Poor";
-                                break;
-                        case 3:
-                                starsString = "★★★";
-                                starsLegend = "Average";
-                                break;
-                        case 4:
-                                starsString = "★★★★";
-                                starsLegend = "Good";
-                                break;
-                        case 5:
-                                starsString = "★★★★★";
-                                starsLegend = "Excellent";
-                                break;
-                    }
-
-                    newMainPost = 
-                    `
-                    <div class="mainpost">
-                        <div class="mp-header">
-                            <div class="mp-header-left">
-                                Review For:
-                            </div>
-                            <div class="mp-header-middle">
-                                <div class="mp-header-middle-top">${reviews[i].reviewForFN} ${reviews[i].reviewForLN}</div>
-                                <div class="mp-header-middle-bottom">${reviews[i].reviewCourse} | ${reviews[i].reviewTerm}</div>
-                            </div>
-                        </div>
-                        <div class="mp-review">
-                            <div class="mp-review-stars">
-                                ${starsString}
-                            </div>
-                            <div class="mp-rev-description">
-                                ${starsLegend}
-                            </div>
-                        </div>
-                        <div class="mp-review-box">
-                            ${reviews[i].reviewText}
-                        </div>
-                        <div class="mp-subheader">
-                            <img class="mp-subheader-pic" src="${reviews[i].posterPfp}" alt="pic">
-                            <div class="mp-subheader-left">
-                                <div class="mp-subheader-left-top">
-                                    ${reviews[i].posterNameFN} ${reviews[i].posterNameLN}
-                                </div>
-                                <div class="mp-subheader-left-bottom">
-                                    ${reviews[i].posterDegCode} | ${reviews[i].posterCollege}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    `;
-                    reviewsContainer = reviewsContainer.concat(newMainPost);
+                if(Object.entries(reviews).length === 0){
+                    console.log("no reviews");
+                    sendBack = `No reviews were found for ${code}`;
                 }
-                reviewsContainer = reviewsContainer.concat("</div>"); // "</div>" is concatenated to end the div
-                console.log(reviewsContainer);
+                else {
+                    console.log("review found");
+                    for(let i = 0; i < reviews.length; i++){
+                        stars = reviews[i].reviewRating;
+                        switch (stars) {
+                            case 1:
+                                    starsString = "★";
+                                    starsLegend = "DO NOT TAKE";
+                                    break;
+                            case 2:
+                                    starsString = "★★";
+                                    starsLegend = "Poor";
+                                    break;
+                            case 3:
+                                    starsString = "★★★";
+                                    starsLegend = "Average";
+                                    break;
+                            case 4:
+                                    starsString = "★★★★";
+                                    starsLegend = "Good";
+                                    break;
+                            case 5:
+                                    starsString = "★★★★★";
+                                    starsLegend = "Excellent";
+                                    break;
+                        }
+    
+                        newMainPost = 
+                        `
+                        <div class="mainpost">
+                            <div class="mp-header">
+                                <div class="mp-header-left">
+                                    Review For:
+                                </div>
+                                <div class="mp-header-middle">
+                                    <div class="mp-header-middle-top">${reviews[i].reviewForFN} ${reviews[i].reviewForLN}</div>
+                                    <div class="mp-header-middle-bottom">${reviews[i].reviewCourse} | ${reviews[i].reviewTerm}</div>
+                                </div>
+                            </div>
+                            <div class="mp-review">
+                                <div class="mp-review-stars">
+                                    ${starsString}
+                                </div>
+                                <div class="mp-rev-description">
+                                    ${starsLegend}
+                                </div>
+                            </div>
+                            <div class="mp-review-box">
+                                ${reviews[i].reviewText}
+                            </div>
+                            <div class="mp-subheader">
+                                <img class="mp-subheader-pic" src="${reviews[i].posterPfp}" alt="pic">
+                                <div class="mp-subheader-left">
+                                    <div class="mp-subheader-left-top">
+                                        ${reviews[i].posterNameFN} ${reviews[i].posterNameLN}
+                                    </div>
+                                    <div class="mp-subheader-left-bottom">
+                                        ${reviews[i].posterDegCode} | ${reviews[i].posterCollege}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        `;
+                        reviewsContainer = reviewsContainer.concat(newMainPost);
+                    }
+                    reviewsContainer = reviewsContainer.concat("</div>"); // "</div>" is concatenated to end the div
+                    console.log(reviewsContainer);
+                    sendBack = reviewsContainer;
+                }
 
                 res.status(200).send({
-                    message: reviewsContainer //sends the reviewsContainer string to main.js along with a status code of 200 (OK)
+                    message: sendBack //sends the reviewsContainer string to main.js along with a status code of 200 (OK)
                 });
             }
         });
@@ -395,6 +404,7 @@ const controller = {
         let stars
         let starsString;
         let starsLegend;
+        let sendBack;
 
         Post.find({reviewForFN:{$eq:fname}, reviewForLN:{$eq:lname}}, function(err, result){
             if(err){
@@ -407,74 +417,83 @@ const controller = {
                 console.log(reviews);
                 console.log("---------------------");
 
-                for(let i = 0; i < reviews.length; i++){
-                    stars = reviews[i].reviewRating;
-                    switch (stars) {
-                        case 1:
-                                starsString = "★";
-                                starsLegend = "DO NOT TAKE";
-                                break;
-                        case 2:
-                                starsString = "★★";
-                                starsLegend = "Poor";
-                                break;
-                        case 3:
-                                starsString = "★★★";
-                                starsLegend = "Average";
-                                break;
-                        case 4:
-                                starsString = "★★★★";
-                                starsLegend = "Good";
-                                break;
-                        case 5:
-                                starsString = "★★★★★";
-                                starsLegend = "Excellent";
-                                break;
-                    }
-
-                    newMainPost = 
-                    `
-                    <div class="mainpost">
-                        <div class="mp-header">
-                            <div class="mp-header-left">
-                                Review For:
-                            </div>
-                            <div class="mp-header-middle">
-                                <div class="mp-header-middle-top">${reviews[i].reviewForFN} ${reviews[i].reviewForLN}</div>
-                                <div class="mp-header-middle-bottom">${reviews[i].reviewCourse} | ${reviews[i].reviewTerm}</div>
-                            </div>
-                        </div>
-                        <div class="mp-review">
-                            <div class="mp-review-stars">
-                                ${starsString}
-                            </div>
-                            <div class="mp-rev-description">
-                                ${starsLegend}
-                            </div>
-                        </div>
-                        <div class="mp-review-box">
-                            ${reviews[i].reviewText}
-                        </div>
-                        <div class="mp-subheader">
-                            <img class="mp-subheader-pic" src="${reviews[i].posterPfp}" alt="pic">
-                            <div class="mp-subheader-left">
-                                <div class="mp-subheader-left-top">
-                                    ${reviews[i].posterNameFN} ${reviews[i].posterNameLN}
-                                </div>
-                                <div class="mp-subheader-left-bottom">
-                                    ${reviews[i].posterDegCode} | ${reviews[i].posterCollege}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    `;
-                    reviewsContainer = reviewsContainer.concat(newMainPost);
+                if(Object.entries(reviews).length === 0){
+                    console.log("no reviews");
+                    sendBack = `No reviews were found for ${fname} ${lname}`;
                 }
-                reviewsContainer = reviewsContainer.concat("</div>"); // "</div>" is concatenated to end the div
-                console.log(reviewsContainer);
+                else {
+                    console.log("reviews found");
+                    for(let i = 0; i < reviews.length; i++){
+                        stars = reviews[i].reviewRating;
+                        switch (stars) {
+                            case 1:
+                                    starsString = "★";
+                                    starsLegend = "DO NOT TAKE";
+                                    break;
+                            case 2:
+                                    starsString = "★★";
+                                    starsLegend = "Poor";
+                                    break;
+                            case 3:
+                                    starsString = "★★★";
+                                    starsLegend = "Average";
+                                    break;
+                            case 4:
+                                    starsString = "★★★★";
+                                    starsLegend = "Good";
+                                    break;
+                            case 5:
+                                    starsString = "★★★★★";
+                                    starsLegend = "Excellent";
+                                    break;
+                        }
+    
+                        newMainPost = 
+                        `
+                        <div class="mainpost">
+                            <div class="mp-header">
+                                <div class="mp-header-left">
+                                    Review For:
+                                </div>
+                                <div class="mp-header-middle">
+                                    <div class="mp-header-middle-top">${reviews[i].reviewForFN} ${reviews[i].reviewForLN}</div>
+                                    <div class="mp-header-middle-bottom">${reviews[i].reviewCourse} | ${reviews[i].reviewTerm}</div>
+                                </div>
+                            </div>
+                            <div class="mp-review">
+                                <div class="mp-review-stars">
+                                    ${starsString}
+                                </div>
+                                <div class="mp-rev-description">
+                                    ${starsLegend}
+                                </div>
+                            </div>
+                            <div class="mp-review-box">
+                                ${reviews[i].reviewText}
+                            </div>
+                            <div class="mp-subheader">
+                                <img class="mp-subheader-pic" src="${reviews[i].posterPfp}" alt="pic">
+                                <div class="mp-subheader-left">
+                                    <div class="mp-subheader-left-top">
+                                        ${reviews[i].posterNameFN} ${reviews[i].posterNameLN}
+                                    </div>
+                                    <div class="mp-subheader-left-bottom">
+                                        ${reviews[i].posterDegCode} | ${reviews[i].posterCollege}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        `;
+                        reviewsContainer = reviewsContainer.concat(newMainPost);
+                    }
+                    reviewsContainer = reviewsContainer.concat("</div>"); // "</div>" is concatenated to end the div
+                    console.log(reviewsContainer);
+                    sendBack = reviewsContainer;
+
+                }
 
                 res.status(200).send({
-                    message: reviewsContainer //sends the reviewsContainer string to main.js along with a status code of 200 (OK)
+                    message: sendBack
                 });
             }
         });
