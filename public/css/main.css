@@ -902,6 +902,10 @@ div#coursepostContainer {
     border-radius: 10px 10px 10px 10px;
 }
 
+.searchButton:hover {
+    background-color: var(--gray2);
+}
+
 
 /*profstuff*/
 
