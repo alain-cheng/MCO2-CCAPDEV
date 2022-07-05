@@ -34,15 +34,15 @@ const controller = {
 
     /*
         Use this when a new user registers into the application.
-        Use HTTP POST method.
     */
     addUser: (req, res) => {
-
+        db.insertOne(collection['users'], req.query['document'], (callback) => {
+            console.log(callback);
+        });
     },
 
     /*
         Use when submitting a post review.
-        Use HTTP POST method 
     */
     addPost: (req, res) => {
         // db.insertOne(collection['posts'], req.query['data'], (result) => {
@@ -73,7 +73,7 @@ const controller = {
     updatePost: (req, res) => {
         db.updateOne(collection['posts'], req.query['filter'], req.query['update'], (result) => {
             //console.log('result:', result);
-       });
+        });
     },
 
     /*
