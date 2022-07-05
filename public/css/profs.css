@@ -160,3 +160,51 @@
     opacity: 75%;
 
 }
+
+#profFNameInput{
+    width: 420px;
+    margin-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    padding: 5px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#profLNameInput{
+    width: 420px;
+    margin-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    padding: 5px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.searchInputContainer {
+    display: inline-block;
+}
+
+.searchBarContainer {
+    background-color: var(--green1);
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.profSearchFilter {
+    width: 120px;
+    margin-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    border: 3px solid var(--white1);
+    border-radius: 4px;
+}

@@ -12,6 +12,17 @@ $(document).ready(function () {
             });  
     });
 
+    $("#profSearchByName").on("click", function() {
+        let fname = $("#profFNameInput").val();
+        let lname = $("#profLNameInput").val();
+        
+        fetch(`/getProfReviews?fname=${fname}&lname=${lname}`)
+        .then(res => res.json())
+                .then(res => {
+                $("#PROF_REVIEWS").html(res.message);
+        });  
+    });
+
     $(document).on("click", ".image-overlay",function(event) { 
         console.log("prof image clicked");
 

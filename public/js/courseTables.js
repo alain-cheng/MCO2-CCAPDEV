@@ -7,10 +7,23 @@ $(document).ready(function () {
         function in controller.js. The buttonID is also included in the URL as it will be queried by getCourseTable later. At this
         point, go to getCourseTable function in controller.js.
     */
+    $("#searchByCode").on("click", function() {
+        let code = $("#courseCodeInput").val()
+        console.log(code);
+
+        fetch(`/getCourseReviews?coursecode=${code}`)
+        .then(res => res.json())
+        .then(res => {  
+            $("#searchBarResults").html(res.message);
+        }); 
+        
+          
+    });
+   
     $(".courseButton").on("click", function(event) {
         let buttonID = event.target.id;
-    fetch(`/getCourseTable?collegeid=${buttonID}`)
-    .then(res => res.json()) // this is the res that came from controller.js (returned as a resolved promise)
+        fetch(`/getCourseTable?collegeid=${buttonID}`)
+        .then(res => res.json()) // this is the res that came from controller.js (returned as a resolved promise)
         .then(res => {
                 let college; // the switch case determines what _TABLE will be modified with the HTML string from controller.js
                 switch (buttonID) {
