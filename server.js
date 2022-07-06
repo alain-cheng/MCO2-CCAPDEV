@@ -63,7 +63,7 @@ await collection['users'].create({
         return;
     }
     else {
-        console.log("User Sarah Parker saved to database")
+        //console.log("User Sarah Parker saved to database")
     }
 });
 await collection['users'].create({
@@ -84,7 +84,7 @@ await collection['users'].create({
         return;
     }
     else {
-        console.log("User Gerald Velasco saved to database")
+        //console.log("User Gerald Velasco saved to database")
     }
 });
 
@@ -110,7 +110,7 @@ await collection['posts'].create({
         return;
     }
     else {
-        console.log("Post 1201 saved to database");
+        //console.log("Post 1201 saved to database");
     }
 });
 await collection['posts'].create({
@@ -129,11 +129,11 @@ await collection['posts'].create({
     likesNum: 3,
 }).then((err) => {
     if (err) {
-        console.log(err);
+        //console.log(err);
         return;
     }
     else {
-        console.log("Post 1202 saved to database");
+        //console.log("Post 1202 saved to database");
     }
 });
 await collection['posts'].create({
@@ -152,11 +152,11 @@ await collection['posts'].create({
     likesNum: 3,
 }).then((err) => {
     if (err) {
-        console.log(err);
+        //console.log(err);
         return;
     }
     else {
-        console.log("Post 1203 saved to database");
+        //console.log("Post 1203 saved to database");
     }
 });
 await collection['posts'].create({
@@ -179,7 +179,7 @@ await collection['posts'].create({
         return;
     }
     else {
-        console.log("Post 1204 saved to database");
+        //console.log("Post 1204 saved to database");
     }
 });
 await collection['posts'].create({
@@ -202,7 +202,7 @@ await collection['posts'].create({
         return;
     }
     else {
-        console.log("Post 1205 saved to database");
+        //console.log("Post 1205 saved to database");
     }
 });
 
@@ -224,7 +224,7 @@ await collection['profs'].create({
         console.log(err);
         return;
     }
-    console.log("Prof. Hwang Yeji saved to database");
+    //console.log("Prof. Hwang Yeji saved to database");
 });
 await collection['profs'].create({
     firstName: "Choi",
@@ -243,7 +243,7 @@ await collection['profs'].create({
         console.log(err);
         return;
     }
-    console.log("Prof. Choi Jisu saved to database");
+    //console.log("Prof. Choi Jisu saved to database");
 });
 await collection['profs'].create({
     firstName: "Lee",
@@ -262,7 +262,7 @@ await collection['profs'].create({
         console.log(err);
         return;
     }
-    console.log("Prof. Lee Chaeryeong saved to database");
+    //console.log("Prof. Lee Chaeryeong saved to database");
 })
 await collection['profs'].create({
     firstName: "Shin",
@@ -281,7 +281,7 @@ await collection['profs'].create({
         console.log(err);
         return;
     }
-    console.log("Prof. Shin Ryujin saved to database");
+    //console.log("Prof. Shin Ryujin saved to database");
 });
 await collection['profs'].create({
     firstName: "Shin",
@@ -300,7 +300,7 @@ await collection['profs'].create({
         console.log(err);
         return;
     }
-    console.log("Prof. Shin Yuna saved to database");
+    //console.log("Prof. Shin Yuna saved to database");
 });
 await collection['profs'].create({
     firstName: "George",
@@ -319,7 +319,7 @@ await collection['profs'].create({
         console.log(err);
         return;
     }
-    console.log("Prof. George Miller saved to database");
+    //console.log("Prof. George Miller saved to database");
 });
 await collection['profs'].create({
     firstName: "Brian",
@@ -338,7 +338,7 @@ await collection['profs'].create({
         console.log(err);
         return;
     }
-    console.log("Prof. Brian Soewarno saved to database");
+    //console.log("Prof. Brian Soewarno saved to database");
 });
 await collection['profs'].create({
     firstName: "Nicole",
@@ -357,7 +357,7 @@ await collection['profs'].create({
         console.log(err);
         return;
     }
-    console.log("Prof. Nicole Zefanya saved to database");
+    //console.log("Prof. Nicole Zefanya saved to database");
 })
 await collection['profs'].create({
     firstName: "Artemis",
@@ -376,7 +376,7 @@ await collection['profs'].create({
         console.log(err);
         return;
     }
-    console.log("Prof. Artemis Celestial saved to database");
+    //console.log("Prof. Artemis Celestial saved to database");
 });
 
 // Sample Colleges - there are 7 main colleges in DLSU and they are assigned their respective IDs;
@@ -390,7 +390,7 @@ await collection['colleges'].create({
         console.log(err);
         return;
     }
-    console.log("College 1 saved to database");
+    //console.log("College 1 saved to database");
 });
 await collection['colleges'].create({
     collegename: "College of Computer Studies",
@@ -401,7 +401,7 @@ await collection['colleges'].create({
         console.log(err);
         return;
     }
-    console.log("College 1 saved to database");
+    //console.log("College 1 saved to database");
 });
 await collection['colleges'].create({
     collegename: "Gokongwei College of Engineering",
@@ -412,7 +412,7 @@ await collection['colleges'].create({
         console.log(err);
         return;
     }
-    console.log("College 1 saved to database");
+    //console.log("College 1 saved to database");
 })
 await collection['colleges'].create({
     collegename: "Ramon V. Del Rosario College of Business",
@@ -423,7 +423,7 @@ await collection['colleges'].create({
         console.log(err);
         return;
     }
-    console.log("College 1 saved to database");
+    //console.log("College 1 saved to database");
 })
 await collection['colleges'].create({
     collegename: "School of Economics",
@@ -434,7 +434,7 @@ await collection['colleges'].create({
         console.log(err);
         return;
     }
-    console.log("College 1 saved to database");
+    //console.log("College 1 saved to database");
 });
 await collection['colleges'].create({
     collegename: "Brother Andrew Gonzalez College of Education",
@@ -445,7 +445,7 @@ await collection['colleges'].create({
         console.log(err);
         return;
     }
-    console.log("College 1 saved to database");
+    //console.log("College 1 saved to database");
 })
 await collection['colleges'].create({
     collegename: "College of Computer Studies",
@@ -456,7 +456,7 @@ await collection['colleges'].create({
         console.log(err);
         return;
     }
-    console.log("College 1 saved to database");
+    //console.log("College 1 saved to database");
 });
 
 // Sample Courses - there are 8 sample courses; 7 courses (for 7 colleges) + 1 GE course
@@ -470,7 +470,7 @@ await collection['courses'].create({
         console.log(err);
         return;
     }
-    console.log("Course 1 saved to database");
+    //console.log("Course 1 saved to database");
 });
 await collection['courses'].create({
     coursename: "Principles of Chemistry 1",
@@ -482,7 +482,7 @@ await collection['courses'].create({
         console.log(err);
         return;
     }
-    console.log("Course 2 saved to database");
+    //console.log("Course 2 saved to database");
 });
 await collection['courses'].create({
     coursename: "Engineering Graphics 1",
@@ -494,7 +494,7 @@ await collection['courses'].create({
         console.log(err);
         return;
     }
-    console.log("Course 3 saved to database");
+    //console.log("Course 3 saved to database");
 });
 await collection['courses'].create({
     coursename: "Fundamentals of Accountancy, Business, and Management",
@@ -506,7 +506,7 @@ await collection['courses'].create({
         console.log(err);
         return;
     }
-    console.log("Course 4 saved to database");
+    //console.log("Course 4 saved to database");
 });
 await collection['courses'].create({
     coursename: "Basic Microeconomics",
@@ -518,7 +518,7 @@ await collection['courses'].create({
         console.log(err);
         return;
     }
-    console.log("Course 5 saved to database");
+    //console.log("Course 5 saved to database");
 });
 await collection['courses'].create({
     coursename: "Basic Communication and Study Skills",
@@ -530,7 +530,7 @@ await collection['courses'].create({
         console.log(err);
         return;
     }
-    console.log("Course 6 saved to database");
+    //console.log("Course 6 saved to database");
 });
 await collection['courses'].create({
     coursename: "Web Application Development",
@@ -542,7 +542,7 @@ await collection['courses'].create({
         console.log(err);
         return;
     }
-    console.log("Course 7 saved to database");
+    //console.log("Course 7 saved to database");
 });
 await collection['courses'].create({
     coursename: "Understanding the Self",
@@ -554,7 +554,7 @@ await collection['courses'].create({
         console.log(err);
         return;
     }
-    console.log("Course 8 saved to database");
+    //console.log("Course 8 saved to database");
 });
 await collection['courses'].create({
     coursename: "Readings in Philippine History",
@@ -566,7 +566,7 @@ await collection['courses'].create({
         console.log(err);
         return;
     }
-    console.log("Course 9 saved to database");
+    //console.log("Course 9 saved to database");
 });
 await collection['courses'].create({
     coursename: "The Contemporary World",
@@ -578,7 +578,7 @@ await collection['courses'].create({
         console.log(err);
         return;
     }
-    console.log("Course 10 saved to database");
+    //console.log("Course 10 saved to database");
 });
 
 /*========================================================*/
