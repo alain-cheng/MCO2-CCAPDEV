@@ -51,8 +51,8 @@ const controller = {
             password: "otiscow",
             img: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg?fbclid=IwAR1BIj-LervtpSjks9e0bre7FYMzuMQnTW7HYMixxXDI6s8uUbBIXcQIPEQ",
             followedCourses: [],
-            likedPosts: [],
-        })
+            likedPosts: []
+        });
     },
 
     /*
