@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const url = process.env.DB_URL || 'mongodb+srv://user:W4vlm1o6khDkh0Z0@cluster0.wqulwpm.mongodb.net/?retryWrites=true&w=majority';
+const url = process.env.DB_URL || 'mongodb+srv://user:W4vlm1o6khDkh0Z0@cluster0.wqulwpm.mongodb.net/Prof2Pick?retryWrites=true&w=majority';
 
 const database = {
 
