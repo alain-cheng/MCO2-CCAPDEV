@@ -8,7 +8,7 @@ import controller from './controllers/controller.js';
 import db from './models/db.js';
 import collection from './models/schemas.js';
 
-const port = process.env.SERVER_PORT;
+const port = process.env.PORT || 3000;
 
 const app = express();
 
@@ -30,6 +30,5 @@ db.connect();
 console.log("Connected to database");
 
 app.listen(port, () => {
-    console.log('Server is running at:');
-    console.log('http://localhost:' + port);
+    console.log('Server is running at port:', port);
 });

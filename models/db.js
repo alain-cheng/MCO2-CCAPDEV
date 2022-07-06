@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 
-const url = process.env.DB_URL || 'mongodb://localhost:27017/Prof2Pick';
+const url = process.env.DB_URL || 'mongodb+srv://user:W4vlm1o6khDkh0Z0@cluster0.wqulwpm.mongodb.net/Prof2Pick?retryWrites=true&w=majority';
 
 const database = {
 
     connect: () => {
         // @ts-ignore
-        mongoose.connect(url)
+        mongoose.connect(url, {useNewUrlParser: true})
             .then(connect => console.log('connected to mongodb...'))
             .catch(err => console.log('error occured when connecting to mongodb...', err));
     },
