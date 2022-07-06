@@ -765,10 +765,40 @@ jQuery(function () {
           else
           {
                $(".loginContainer").css("visibility", "visible");
-               $(".loginContainer").css("display", "block");
+               $(".logintable").css("display", "block");
                $("body >*:not(.loginContainer)").css("filter", "blur(2.5px)");
                $("body >*:not(.loginContainer)").css("pointer-events", "none");
           }  
+     });
+
+     
+     $.get("/addUser", {
+          firstName: "bruh",
+          lastName: "otiscow",
+          degree: "otis cow",
+          degreeCode: "adsfafd",
+          college: "otiscow",
+          batch: "118",
+          username: "otiscow",
+          password: "otiscow",
+          img: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg?fbclid=IwAR1BIj-LervtpSjks9e0bre7FYMzuMQnTW7HYMixxXDI6s8uUbBIXcQIPEQ",
+          followedCourses: [],
+          likedPosts: [],
+     });
+
+     // you can't use the db methods directly in main js, only the controller.js is allowed to do this --akn5
+     db.insertOne(collection['users'], req.query['document'], (callback) => {
+          console.log(callback);
+     });
+
+     $(".signuplnk").on("click", function (e) {
+          $(".logintable").css("display", "none");
+          $(".registertable").css("display", "block");
+     });
+
+     $(".loginlnk").on("click", function (e) {
+          $(".logintable").css("display", "block");
+          $(".registertable").css("display", "none ");
      });
 
      /* closes the login pop up */

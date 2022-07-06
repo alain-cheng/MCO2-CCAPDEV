@@ -55,6 +55,13 @@ input[type=text], select{
     resize: vertical;
 }
 
+input[type=number], select{
+    width: 190px;
+    border: 3px solid var(--green1);
+    border-radius: 4px;
+    resize: vertical;
+}
+
 input[type=password], select{
     width: 190px;
     border: 3px solid var(--green1);
@@ -307,8 +314,23 @@ textarea {
     clear: right;
 }
 
-.logintable{
+.logintable {
     position: relative;
+    display: none;
+}
+
+.registertable {
+    position: relative;
+    display: none;
+    
+}
+
+.loginlnk:hover{
+    color: #4fc204;
+}
+
+.signuplnk:hover{
+    color: #4fc204;
 }
 
 #loginResponse{

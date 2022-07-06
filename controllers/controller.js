@@ -36,9 +36,23 @@ const controller = {
         Use this when a new user registers into the application.
     */
     addUser: (req, res) => {
-        db.insertOne(collection['users'], req.query['document'], (callback) => {
-            console.log(callback);
-        });
+        // db.insertOne(collection['users'], req.query['document'], (callback) => {
+        //     console.log(callback);
+        // });
+
+        collection['users'].create({
+            firstName: "bruh",
+            lastName: "otiscow",
+            degree: "otis cow",
+            degreeCode: "adsfafd",
+            college: "otiscow",
+            batch: "118",
+            username: "otiscow",
+            password: "otiscow",
+            img: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg?fbclid=IwAR1BIj-LervtpSjks9e0bre7FYMzuMQnTW7HYMixxXDI6s8uUbBIXcQIPEQ",
+            followedCourses: [],
+            likedPosts: [],
+        })
     },
 
     /*
