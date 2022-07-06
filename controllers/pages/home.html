@@ -23,8 +23,9 @@
     </div>
 
     <div class="loginContainer">
-        
-        <button type="button" class="login-close">X</button>
+        <div>
+            <button type="button" class="login-close">X</button>
+        </div>
 
         <div class="logintable">
         <span>LOGIN</span>
@@ -43,15 +44,15 @@
             </tr>
             <tr>
                 <td></td>
-                <td><button type="button" class="login">Login</button>
-                
+                <td><button type="button" class="login">Login</button><button type="button" class="cancel">Cancel</button></td>
+                <td></td>
             </tr>
             <tr>
                 <td></td>
                 <td>Don't have an account? <span class="signuplnk"><u>Signup</u>.</span></td>
             </tr>
         </table>
-        <p id="loginResponse">TEST</p>
+        <p id="loginResponse"></p>
         </div>
 
         <div class="registertable">
@@ -94,7 +95,7 @@
                     <td><input type="password" id="rpasswordConfirm" value=""></td>
                 </tr>
                 <tr>
-                    <td id="signupMessage"></td>
+                    <td id="_signupMessage"></td>
                     <td><button type="button" class="signup">Signup</button>
                 </tr>
                 <tr>
@@ -102,9 +103,8 @@
                     <td>Already have an account? <span class="loginlnk"><u>Login</u>.</span></td>
                 </tr>
             </table>
-            <p id="registerResponse"></p>
+            <p id="signupMessage"></p>
         </div>
-        
     </div>
     <!-- Common Contents END -->
 
