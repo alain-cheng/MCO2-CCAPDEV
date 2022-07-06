@@ -6,7 +6,7 @@ const database = {
 
     connect: () => {
         // @ts-ignore
-        mongoose.connect(url)
+        mongoose.connect(url, {useNewUrlParser: true})
             .then(connect => console.log('connected to mongodb...'))
             .catch(err => console.log('error occured when connecting to mongodb...', err));
     },
