@@ -309,6 +309,10 @@ textarea {
     clear: left;
 }
 
+.cancel {
+    margin-left: 90px;
+}
+
 .signup {
     float: right;
     clear: right;

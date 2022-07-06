@@ -25,9 +25,12 @@
     </div>
 
     <div class="loginContainer">
-        <span>LOGIN</span>
-        <button type="button" class="login-close">X</button>
+        <div>
+            <button type="button" class="login-close">X</button>
+        </div>
+
         <div class="logintable">
+        <span>LOGIN</span>
         <table>
             <tr>
                 <td>Username/Email</td>
@@ -43,11 +46,66 @@
             </tr>
             <tr>
                 <td></td>
-                <td><button type="button" class="login">Login</button>
-                <button type="button" class="signup">Signup</button></td>
+                <td><button type="button" class="login">Login</button><button type="button" class="cancel">Cancel</button></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Don't have an account? <span class="signuplnk"><u>Signup</u>.</span></td>
             </tr>
         </table>
-        <p id="loginResponse">TEST</p>
+        <p id="loginResponse"></p>
+        </div>
+
+        <div class="registertable">
+            <span>CREATE AN ACCOUNT</span>
+            <table>
+                <tr>
+                    <td>First Name</td>
+                    <td><input type="text" id="rfName" value=""></td>
+                </tr>
+                <tr>
+                    <td>Lastname</td>
+                    <td><input type="text" id="rlName" value=""></td>
+                </tr>
+                <tr>
+                    <td>Degree</td>
+                    <td><input type="text" id="rdegree" value=""></td>
+                </tr>
+                <tr>
+                    <td>Degree Code</td>
+                    <td><input type="text" id="rdCode" value=""></td>
+                </tr>
+                <tr>
+                    <td>College</td>
+                    <td><input type="text" id="rcollege" value=""></td>
+                </tr>
+                <tr>
+                    <td>Batch</td>
+                    <td><input type="number" id="rbatch" value=""></td>
+                </tr>
+                <tr>
+                    <td>Username</td>
+                    <td><input type="text" id="ruName" value=""></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><input type="password" id="rpasswordInput" value=""></td>
+                </tr>
+                <tr>
+                    <td>Confirm Password</td>
+                    <td><input type="password" id="rpasswordConfirm" value=""></td>
+                </tr>
+                <tr>
+                    <td id="_signupMessage"></td>
+                    <td><button type="button" class="signup">Signup</button>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Already have an account? <span class="loginlnk"><u>Login</u>.</span></td>
+                </tr>
+            </table>
+            <p id="signupMessage"></p>
         </div>
     </div>
     <!-- Common Contents END -->

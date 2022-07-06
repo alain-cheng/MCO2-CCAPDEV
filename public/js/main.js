@@ -806,11 +806,19 @@ jQuery(function () {
      });
 
      /* closes the login pop up */
-     $(".login-close").on("click", function () {
+     $(".login-close").on("click", function () { // the button broke
           $(".loginContainer").css("visibility", "hidden");
           $(".loginContainer").css("display", "none");
           $("body >*:not(.loginContainer)").css("filter", "none");
           $("body >*:not(.loginContainer)").css("pointer-events", "all");
+     });
+
+     $(".cancel").click(function () {
+          $(".loginContainer").css("visibility", "hidden");
+          $(".loginContainer").css("display", "none");
+          $("body >*:not(.loginContainer)").css("filter", "none");
+          $("body >*:not(.loginContainer)").css("pointer-events", "all");
+          location.reload(); // patch
      });
 
      $("#scroll-left").on("click", function () { 
