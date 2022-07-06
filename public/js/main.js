@@ -402,9 +402,6 @@ jQuery(function () {
 
      /* 
           Follows/unfollows courses in the suggestions tab
-          Current issue persists where the server lags for 
-          some time when spamming follow buttons or pressing
-          follow buttons a couple times in short intervals
      */
      function followCourse(e) {
           let target = getEventTarget(e);
@@ -434,7 +431,7 @@ jQuery(function () {
                               }
                          }).then((user) => {
                               currentUser = user;
-                              refreshContent(currentUser); 
+                              //refreshContent(currentUser); 
                          });
                     });
                }
@@ -458,7 +455,7 @@ jQuery(function () {
                               }
                          }).then((user) => {
                               currentUser = user;
-                              refreshContent(currentUser);
+                              //refreshContent(currentUser);
                          });
                     });
                }
