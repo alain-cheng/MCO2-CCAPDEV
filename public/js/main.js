@@ -548,35 +548,6 @@ jQuery(function () {
                     break;
           }
 
-          // $.get("/findPosts", {filter: {}}).then((res) => {
-          //      var idNum = latestPostID;
-          //      $.get("/addPost", {
-          //           id: idNum,
-          //           reviewForFN: fname,
-          //           reviewForLN: lname,
-          //           reviewCourse: course,
-          //           reviewTerm: term,
-          //           reviewRating: rating,
-          //           reviewText: desc,
-          //           posterNameFN: currentUser['firstName'],
-          //           posterNameLN: currentUser['lastName'],
-          //           posterPfp: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
-          //           posterDegCode: currentUser['degreeCode'],
-          //           posterCollege: currentUser['college'],
-          //           likesNum: 0
-          //      });
-
-          //      latestPostID = idNum;
-          //      latestPFname = fname;
-          //      latestPLname = lname;
-          //      latestCourse = course;
-          //      latestTerm = term;
-          //      latestRating = rating;
-          //      latestDesc = desc;
-
-          //      console.log(`Post ${latestPostID} added`);
-          // });
-
           $.get("/updatePost", {
                filter: { id: latestPostID },
                update: { $set: {
@@ -765,10 +736,43 @@ jQuery(function () {
           else
           {
                $(".loginContainer").css("visibility", "visible");
-               $(".loginContainer").css("display", "block");
+               $(".logintable").css("display", "block");
                $("body >*:not(.loginContainer)").css("filter", "blur(2.5px)");
                $("body >*:not(.loginContainer)").css("pointer-events", "none");
           }  
+     });
+
+
+     // you can't use the db methods directly in main js, only the controller.js is allowed to do this --akn5
+     // db.insertOne(collection['users'], req.query['document'], (callback) => {
+     //      console.log(callback);
+     // });
+
+     $(".signuplnk").on("click", function (e) {
+          $(".logintable").css("display", "none");
+          $(".registertable").css("display", "block");
+     });
+
+     // When user presses the signup button
+     $(".signup").on("click", function () {
+          $.get("/addUser", {
+               firstName: "bruh",
+               lastName: "otiscow",
+               degree: "otis cow",
+               degreeCode: "adsfafd",
+               college: "otiscow",
+               batch: "118",
+               username: "otiscow",
+               password: "otiscow",
+               img: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
+               followedCourses: [],
+               likedPosts: [],
+          });
+     });
+
+     $(".loginlnk").on("click", function (e) {
+          $(".logintable").css("display", "block");
+          $(".registertable").css("display", "none ");
      });
 
      /* closes the login pop up */
