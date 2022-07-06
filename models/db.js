@@ -6,10 +6,9 @@ const database = {
 
     connect: () => {
         // @ts-ignore
-        mongoose.connect(url, (error) => {
-            if(error) throw error;
-            console.log('Connected to', url);
-        });
+        mongoose.connect(url || 'mongodb://localhost:27017/Prof2Pick', {useNewUrlParser: true})
+            .then(connect => console.log('connected to mongodb...'))
+            .catch(err => console.log('error occured when connecting to mongodb...', err));
     },
 
     insertOne: (model, document, callback) => {
