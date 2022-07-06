@@ -30,7 +30,7 @@ routes.get('/findPosts', controller.findPosts);
 //routes.get('/findProf', controller.findProf);
 //routes.get('/findProfs', controller.findProfs);
 
-routes.get('/fillDB', controller.fillDB);
+//routes.get('/fillDB', controller.fillDB);
 routes.get('/login', controller.login);
 
 export default routes;

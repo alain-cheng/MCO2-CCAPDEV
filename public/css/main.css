@@ -325,6 +325,13 @@ textarea {
     
 }
 
+#signupMessage {
+    float: right;
+    clear: left;
+    margin: auto 5px auto auto;
+    color: red;
+}
+
 .loginlnk:hover{
     color: #4fc204;
 }
