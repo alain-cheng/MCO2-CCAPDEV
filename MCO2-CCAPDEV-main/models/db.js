@@ -1,15 +1,14 @@
 import mongoose from 'mongoose';
 
-const url = process.env.DB_URL;
+const url = process.env.DB_URL || 'mongodb://localhost:27017/Prof2Pick';
 
 const database = {
 
     connect: () => {
         // @ts-ignore
-        mongoose.connect(url, (error) => {
-            if(error) throw error;
-            console.log('Connected to', url);
-        });
+        mongoose.connect(url)
+            .then(connect => console.log('connected to mongodb...'))
+            .catch(err => console.log('error occured when connecting to mongodb...', err));
     },
 
     insertOne: (model, document, callback) => {

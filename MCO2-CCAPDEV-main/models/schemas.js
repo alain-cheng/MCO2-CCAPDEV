@@ -25,7 +25,7 @@ const UserSchema = new mongoose.Schema({
     password: { type: String, required: true },
     img: { type: String, required: true },          // image links
     followedCourses: [String],              // Stored array of course codes
-    likedPosts: [Number]                    // Stored array of post ids
+    likedPosts: [String]                    // Stored array of post ids
 });
 
 const ProfsSchema = new mongoose.Schema({
@@ -43,7 +43,7 @@ const ProfsSchema = new mongoose.Schema({
 });
 
 const PostSchema = new mongoose.Schema({
-    id: {type: Number, required: true},
+    id: {type: String, required: true},
     reviewForFN: { type: String, required: true },
     reviewForLN: { type: String, required: true },
     reviewCourse: { type: String, required: true },

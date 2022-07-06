@@ -1,12 +1,24 @@
 const mpHeaderLeft = "Review For:";
 const errPostEmpty = "OOPS! There are no posts here.";
 var currentUser;                 // Store the logged user in json object format
+var rating;
+
+// Set of variables to temporarily store latest review values locally
+var latestPostID = 0;
+var latestPFname = '';
+var latestPLname = '';
+var latestCourse = '';
+var latestTerm = '';
+var latestRating = 0;
+var latestDesc = '';
 
 /*
      Fills the db with default data that is stored in controller.js fillDB.
-     If you decide to add more data to the database or want to refresh the data,
-     you might want to delete the entire Prof2Pick db folder and rerun the 
-     application again to save your new changes.
+
+     Sometimes you might want to either delete the Prof2Pick database and restart the app
+     or comment this function out since it only needs to run once especially when testing
+     post liking and course following to prevent it from reverting to default values when 
+     the page gets refreshed.
 */
 $.get("/fillDB");                
 
@@ -36,16 +48,6 @@ jQuery(function () {
      /*=====================================================*/
      let loggedIn = false;
 
-     // function fadeWrap() {
-     //      let scrollPos = window.pageYOffset || document.documentElement.scrollLeft;
-     //      if(scrollPos > 300) {
-     //           $("#scroll-left").show();
-     //      }
-     //      else {
-     //           $("#scroll-left").hide();
-     //      }
-     // }
-
      /*  */
      function login(user) {
           currentUser = user;
@@ -58,13 +60,13 @@ jQuery(function () {
 
     /* Reloads the page content for the user */
      function refreshContent(user) {
-          console.log('refreshContent executed');
           // Reset the Right-bar user info
           $(".lu-info-top").text("");
           $(".lu-info-bottom").text("");
           $("#fr-list").html("");
           $(".lu-info-top").text(user['firstName'] + " " + user['lastName']);
           $(".lu-info-bottom").text(user['degreeCode'] + " | " + user['college']);
+          $("#coursepostContainer").html(""); // Clears all posts
           
           /*
                If  User   is   following    atleast   1   course ->
@@ -80,8 +82,6 @@ jQuery(function () {
                objects   to  be  displayed  will  be  called,  and 
                displayPosts() which accepts a list of post objects 
                to be displayed.
-               One other thing, also suggest courses based on the
-               posts the user has liked.
           */
           if(user['followedCourses'].length > 0) {
                let following = user['followedCourses'];
@@ -113,7 +113,7 @@ jQuery(function () {
                     $.get("/findCourses", {                              // Use the codes list to grab all courses within the same colleges
                          filter: { collegeid: codes }
                     }).then((suggestCourses) => {
-                         console.log('Courses to suggest:', suggestCourses);
+                         //console.log('Courses to suggest:', suggestCourses);
                          displayCourse(suggestCourses);
                     });
 
@@ -142,7 +142,7 @@ jQuery(function () {
                });
           }
           
-          $("#coursepostContainer").html("");                    // Clears all posts
+          renderSearches();
      }
 
      /*
@@ -150,7 +150,7 @@ jQuery(function () {
           of the homepage by accepting a list of course objects. 
      */
      function displayCourse(courses) {
-          console.log('displayCourse received:', courses);
+          //console.log('displayCourse received:', courses);
 
           courses.forEach(e => {
                let frListElement = document.createElement("div");
@@ -170,8 +170,6 @@ jQuery(function () {
                $("#fr-list").append(frListElement);
           });
      }
-
-     
 
      /* 
           Simply checks if current user is following a given
@@ -200,15 +198,16 @@ jQuery(function () {
         singular form of this method.
     */
      function displayPosts(posts) {
-          console.log('displayPosts received:', posts);
+          //console.log('displayPosts received:', posts);
 
           if(posts.length == 0) {
                var message = document.createElement("div");
                $(message).addClass("empty-post-message");
                $(message).text(errPostEmpty);
                $("#coursepostContainer").append(message);
-               console.log(errPostEmpty)
+               //console.log(errPostEmpty)
           } else {
+               $('.empty-post-message').hide();
                posts.forEach(e => {
                     displayPost(e);
                });
@@ -243,6 +242,7 @@ jQuery(function () {
                          var mpSHLTop = document.createElement("div");
                          var mpSHLBot = document.createElement("div");
                     var mpLike = document.createElement("div");
+                    var numLikes = document.createElement("div");
 
           // Add classes
           $(mainpost).addClass("mainpost");
@@ -262,6 +262,7 @@ jQuery(function () {
           $(mpSHLTop).addClass("mp-subheader-left-top");
           $(mpSHLBot).addClass("mp-subheader-left-bottom");
           $(mpLike).addClass("mp-subheader-likebutton");
+          $(numLikes).addClass("numLikes");
 
           // Append
           $(mainpost).append(mpHeader);
@@ -281,36 +282,43 @@ jQuery(function () {
           $(mpSHLeft).append(mpSHLTop);
           $(mpSHLeft).append(mpSHLBot);
           $(mpSubHeader).append(mpLike);
+          $(mpSubHeader).append(numLikes);
 
           // Set post content
           $(mpHLeft).text(mpHeaderLeft);
           $(mpHMTop).text(post['reviewForFN'] + " " + post['reviewForLN']);
-          $(mpHMBot).text(post['reviewCourse'] + " | Term " + post['reviewTerm']);
+          $(mpHMBot).text(post['reviewCourse'] + " | " + post['reviewTerm']);
           $(mpRDesc).text(getStarDesc(post['reviewRating']));
           $(mpRParagraph).text(post['reviewText']);
           $(mpSHImg).attr("src", post['posterPfp']);
           $(mpSHLTop).text(post['posterNameFN']+ " " + post['posterNameLN']);
           $(mpSHLBot).text(post['posterDegCode'] + " | " + post['posterCollege']);
           $(mpLike).attr("id", post['id']);
+          $(numLikes).text(post['likesNum']);
           
           // Set proper display of post ratings
-          switch(post.stars)
+          switch(post['reviewRating'])
           {
                case 1:
-                    $(mpRStars).css("background-position", "-230px -76px");
-                    $(mpRDesc).css("bottom", "40px");                         // Patch for 1star text being in the wrong position
+                    // $(mpRStars).css("background-position", "-230px -76px");
+                    // $(mpRDesc).css("bottom", "40px");                         // Patch for 1star text being in the wrong position
+                    $(mpRStars).text("★");
                     break;
                case 2:
-                    $(mpRStars).css("background-position", "-10px -148px");
+                    // $(mpRStars).css("background-position", "-10px -148px");
+                    $(mpRStars).text("★★");
                     break;
                case 3:
-                    $(mpRStars).css("background-position", "-230px -14px");
+                    //$(mpRStars).css("background-position", "-230px -14px");
+                    $(mpRStars).text("★★★");
                     break;
                case 4:
-                    $(mpRStars).css("background-position", "-10px -83px");
+                    //$(mpRStars).css("background-position", "-10px -83px");
+                    $(mpRStars).text("★★★★");
                     break;
                case 5:
-                    $(mpRStars).css("background-position", "-10px -18px");
+                    //$(mpRStars).css("background-position", "-10px -18px");
+                    $(mpRStars).text("★★★★★");
                     break;
           }
           // Display mainpost to post container
@@ -330,6 +338,34 @@ jQuery(function () {
                default: return "Error";
           }
      }
+
+     /*
+          Renders all the options available for the post search feature 
+     */
+     function renderSearches() {
+          $('#filtercourse').html("");
+          $('#filtercollege').html("");
+
+          $.get("/findCourses", {filter: {}}).then((courses) => {
+               //console.log('courses found:',courses);
+               courses.forEach(course => {
+                    var option = document.createElement("option");
+                    $(option).attr("value", course['coursecode']);
+                    $(option).text(course['coursecode']);
+                    $('#filtercourse').append(option);
+               });
+          });
+
+          $.get("/findColleges", {filter: {}}).then((colleges) => {
+               //console.log('colleges found:',colleges);
+               colleges.forEach(college => {
+                    var option = document.createElement("option");
+                    $(option).attr("value", college['collegename']);
+                    $(option).text(college['collegename']);
+                    $('#filtercollege').append(option);
+               });
+          });
+     }
      
      /*
           likes posts from the course posts section
@@ -337,9 +373,15 @@ jQuery(function () {
      function like(e) {
           let bgPos = e.target.style.backgroundPosition;
           if(bgPos == "-300px -130px") { // if like button is empty
+               console.log('currentUser is', currentUser);
                e.target.style.backgroundPosition = "-230px -130px";
                currentUser.likedPosts.push(e.target.id);
                console.log("Liked " + e.target.id);
+               $.get("/likePost", {
+                    filter: { username: currentUser['username'] },
+                    update: { $addToSet: { likedPosts: e.target.id } }
+               });
+               refreshContent(currentUser);
           } 
           else { // if like button is color red
                e.target.style.backgroundPosition = "-300px -130px";
@@ -350,6 +392,11 @@ jQuery(function () {
                     }  
                }
                console.log("Removed Like for " + e.target.id);
+               $.get("/unlikePost", {
+                    filter: { username: currentUser['username'] },
+                    update: { $pull: { likedPosts: e.target.id } }
+               });
+               refreshContent(currentUser);
           }          
      }
 
@@ -363,7 +410,7 @@ jQuery(function () {
           let target = getEventTarget(e);
           let sibling = target.previousElementSibling;
           let currCourse = $(sibling).text();
-          console.log('followCourse:', currCourse)
+          //console.log('followCourse:', currCourse)
           if(target.className.toLowerCase() === "fr-list-element-follow") { //follow
                if(target.innerText.toLowerCase() === "follow") {
                     $(target).text("Following");
@@ -372,7 +419,7 @@ jQuery(function () {
                     $.get("/findCourse", {
                          filter: { coursecode: currCourse }
                     }).then((follow) => {
-                         console.log('found', follow);
+                         //console.log('found', follow);
                          $.get("/followCourse", {
                               filter: { username: currentUser['username'] },
                               update: { $addToSet: { followedCourses: follow['coursecode'] }}
@@ -387,7 +434,7 @@ jQuery(function () {
                               }
                          }).then((user) => {
                               currentUser = user;
-                              login(currentUser); 
+                              refreshContent(currentUser); 
                          });
                     });
                }
@@ -396,7 +443,7 @@ jQuery(function () {
                     $.get("/findCourse", {
                          filter: { coursecode: currCourse }
                     }).then((follow) => {
-                         console.log('found', follow);
+                         //console.log('found', follow);
                          $.get("/followCourse", {
                               filter: { username: currentUser['username'] },
                               update: { $pull: { followedCourses: follow['coursecode'] }}
@@ -411,7 +458,7 @@ jQuery(function () {
                               }
                          }).then((user) => {
                               currentUser = user;
-                              login(currentUser);
+                              refreshContent(currentUser);
                          });
                     });
                }
@@ -427,15 +474,13 @@ jQuery(function () {
      }
 
      /* 
-          Adds like button event listeners to all the posts in the followed courses tab 
+          Adds like button event listeners to all the posts in the followed courses tab,
+          and sets the like button state if the user has already liked the post previously.
      */
      function addLikeEvents() {
           const likeButtonsCF = document.querySelectorAll("div.mp-subheader-likebutton");
-          //console.log('likeButton:', likeButtonsCF);
           likeButtonsCF.forEach((e) => {
-               console.log('addLikeEvents:', e);
                e.addEventListener("click", like);
-               console.log(e);
                if(currentUser['likedPosts'].indexOf(e.id) !== -1) {
                     e.style.backgroundPosition = "-230px -130px";
                } else {
@@ -461,6 +506,136 @@ jQuery(function () {
                     window.clearInterval(slideTimer);
                }
           }, speed);
+     }
+
+     // Just prints a message
+     function updateReview() {
+          $("#reviewStatus").html("You are now changing your review!");
+          $("#reviewStatus").css("color", "red");
+          $("#reviewStatus").css("display", "block");
+     }
+
+     function updateNewReview(fname, lname, course, term, rating, desc) {
+
+          let stars, legend, htmlString, now;
+          let numStars;
+
+          switch (rating) {
+               case '1':
+                    stars = "★";
+                    numStars = 1;
+                    legend = "DO NOT TAKE";
+                    break;
+               case '2':
+                    stars = "★★";
+                    numStars = 2;
+                    legend = "Poor";
+                    break;
+               case '3':
+                    stars = "★★★";
+                    numStars = 3;
+                    legend = "Average";
+                    break;
+               case '4':
+                    stars = "★★★★";
+                    numStars = 4;
+                    legend = "Good";
+                    break;
+               case '5':
+                    stars = "★★★★★";
+                    numStars = 5;
+                    legend = "Excellent";
+                    break;
+          }
+
+          // $.get("/findPosts", {filter: {}}).then((res) => {
+          //      var idNum = latestPostID;
+          //      $.get("/addPost", {
+          //           id: idNum,
+          //           reviewForFN: fname,
+          //           reviewForLN: lname,
+          //           reviewCourse: course,
+          //           reviewTerm: term,
+          //           reviewRating: rating,
+          //           reviewText: desc,
+          //           posterNameFN: currentUser['firstName'],
+          //           posterNameLN: currentUser['lastName'],
+          //           posterPfp: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
+          //           posterDegCode: currentUser['degreeCode'],
+          //           posterCollege: currentUser['college'],
+          //           likesNum: 0
+          //      });
+
+          //      latestPostID = idNum;
+          //      latestPFname = fname;
+          //      latestPLname = lname;
+          //      latestCourse = course;
+          //      latestTerm = term;
+          //      latestRating = rating;
+          //      latestDesc = desc;
+
+          //      console.log(`Post ${latestPostID} added`);
+          // });
+
+          $.get("/updatePost", {
+               filter: { id: latestPostID },
+               update: { $set: {
+                    id: latestPostID,
+                    reviewForFN: fname,
+                    reviewForLN: lname,
+                    reviewCourse: course,
+                    reviewTerm: term,
+                    reviewRating: rating,
+                    reviewText: desc
+               }}
+          }).then((res) => {
+               latestPostID = latestPostID;
+               latestPFname = fname;
+               latestPLname = lname;
+               latestCourse = course;
+               latestTerm = term;
+               latestRating = rating;
+               latestDesc = desc;
+
+               console.log(`Post ${latestPostID} updated`);
+          });
+
+          
+
+          $('#edit-review').css('display', 'inline-block');
+
+          //Store current date and time in variable
+          now = new Date();
+
+          htmlString = `
+               <div class="nrSubContainer">
+                    <img src="${currentUser.img}" id="nrUserDP">
+                    <div class="nrUserDetails">${currentUser.firstName} ${currentUser.lastName}</div>
+                    <div class="nrUserDetails">${currentUser.degree}</div>
+                    <div class="nrUserDetails">${currentUser.batch}</div>
+                    <br>
+                    <div class="nrPubInfo">Published on:</div>
+                    <div class="nrPubInfo">${now.toLocaleDateString("en-US", {month: "long", day: "numeric", year: "numeric"})}</div>
+                    <div class="nrPubInfo">${now.toLocaleTimeString("en-US", { hour: "numeric", minute: "numeric"})}</div>
+               </div>
+               <div class="divider"></div>
+               <div class="nrSubContainer2">
+                    <div class="nrHeader">
+                         <div id="reviewFor">REVIEW FOR: </div>
+                         <div id="reviewForInfo">${fname} ${lname} | ${course} | ${term}</div>
+                    </div>
+                    <div class="nrRatingContainer">
+                         <div class="nrStars">${stars}</div>
+                         <div class="nrLegend">${legend}</div>
+                    </div>
+                    <div class="nrDesc">${desc}</div>
+                    <div class="nrLikeCounter">0 likes</div>
+                    
+               </div>
+          `;
+
+          $(".newReviewContainer").css("display", "flex"); // reveals the (initially) hidden newReviewContainer div
+          return htmlString;
      }
 
      /*========================================================*/
@@ -585,14 +760,46 @@ jQuery(function () {
 
                //erase tempName data
                tempName = "";
+               location.reload();
           }
           else
           {
                $(".loginContainer").css("visibility", "visible");
-               $(".loginContainer").css("display", "block");
+               $(".logintable").css("display", "block");
                $("body >*:not(.loginContainer)").css("filter", "blur(2.5px)");
                $("body >*:not(.loginContainer)").css("pointer-events", "none");
           }  
+     });
+
+     
+     $.get("/addUser", {
+          firstName: "bruh",
+          lastName: "otiscow",
+          degree: "otis cow",
+          degreeCode: "adsfafd",
+          college: "otiscow",
+          batch: "118",
+          username: "otiscow",
+          password: "otiscow",
+          img: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg?fbclid=IwAR1BIj-LervtpSjks9e0bre7FYMzuMQnTW7HYMixxXDI6s8uUbBIXcQIPEQ",
+          followedCourses: [],
+          likedPosts: [],
+     });
+
+     db.insertOne(collection['users'], req.query['document'], (callback) => {
+          console.log(callback);
+      });
+     
+     
+
+     $(".signuplnk").on("click", function (e) {
+          $(".logintable").css("display", "none");
+          $(".registertable").css("display", "block");
+     });
+
+     $(".loginlnk").on("click", function (e) {
+          $(".logintable").css("display", "block");
+          $(".registertable").css("display", "none ");
      });
 
      /* closes the login pop up */
@@ -618,12 +825,60 @@ jQuery(function () {
           $.get("/findPosts", { filter: {} }).then((res) => displayPosts(res));
      });
 
-     $("#coursesContainer").on("hover", function () {
+     $("#coursesContainer").hover(function () {
                $("#scroll-container").css("visibility", "visible");
           }, function () {
                $("#scroll-container").css("visibility", "hidden");
           }
      );
+
+     // For Search container
+     $('#searchByFilter').click(function () {
+          console.log('Course', $('#filtercourse').val());
+          console.log('Term', $('#filterterm').val());
+          console.log('College', $('#filtercollege').val());
+          console.log('Rating', $('#filterrating').val());
+
+          let selectCourse = $('#filtercourse').val();
+          let selectTerm = $('#filterterm').val();
+          let selectCollege = $('#filtercollege').val();
+          let selectRating = $('#filterrating').val();
+
+          $.get("/findPosts", {
+               filter: {
+                    reviewCourse: selectCourse || {},
+                    reviewTerm: selectTerm || {},
+                    posterCollege: selectCollege || {},
+                    reviewRating: selectRating || {}
+               }
+          }).then((posts) => {
+               console.log('result', posts);
+               $("#coursepostContainer").html("");
+               displayPosts(posts);
+               if(posts.length == 0) {
+                    $("#coursepostContainer").html('');
+                    var message = document.createElement("div");
+                    $(message).addClass("empty-post-message");
+                    $(message).text("Sorry, There are no posts with this filter.");
+                    $("#coursepostContainer").append(message);
+               }
+          });
+     });
+
+     $('#searchByName').click(function () {
+          console.log('clicked');
+
+          $.get("/findPosts", {
+               filter: {
+                    reviewForFN: $('#profname2').val() || {},
+                    reviewForLN: $('#profLastName2').val() || {}
+               }
+          }).then((posts) => {
+               console.log('result', posts);
+               $("#coursepostContainer").html("");
+               displayPosts(posts);
+          });
+     });
 
      // Hovering over Home, Profs, and Courses buttons in the NavBar
      $('.navbar-buttons').on("hover", function() {
@@ -637,6 +892,288 @@ jQuery(function () {
           $(this).css("background-color", "rgb(71, 179, 107)");
      }, function (){
           $(this).css("background-color", "");
+     });
+
+     function createNewReview(fname, lname, course, term, rating, desc) {
+
+          let stars, legend, htmlString, now;
+          let numStars;
+
+          switch (rating) {
+               case '1':
+                    stars = "★";
+                    numStars = 1;
+                    legend = "DO NOT TAKE";
+                    break;
+               case '2':
+                    stars = "★★";
+                    numStars = 2;
+                    legend = "Poor";
+                    break;
+               case '3':
+                    stars = "★★★";
+                    numStars = 3;
+                    legend = "Average";
+                    break;
+               case '4':
+                    stars = "★★★★";
+                    numStars = 4;
+                    legend = "Good";
+                    break;
+               case '5':
+                    stars = "★★★★★";
+                    numStars = 5;
+                    legend = "Excellent";
+                    break;
+          }
+
+          $.get("/findPosts", {filter: {}}).then((res) => {
+               var idNum = 1200 + res.length + 1;
+               $.get("/addPost", {
+                    id: idNum,
+                    reviewForFN: fname,
+                    reviewForLN: lname,
+                    reviewCourse: course,
+                    reviewTerm: term,
+                    reviewRating: rating,
+                    reviewText: desc,
+                    posterNameFN: currentUser['firstName'],
+                    posterNameLN: currentUser['lastName'],
+                    posterPfp: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
+                    posterDegCode: currentUser['degreeCode'],
+                    posterCollege: currentUser['college'],
+                    likesNum: 0
+               });
+
+               latestPostID = idNum;
+               latestPFname = fname;
+               latestPLname = lname;
+               latestCourse = course;
+               latestTerm = term;
+               latestRating = rating;
+               latestDesc = desc;
+
+               console.log(`Post ${latestPostID} added`);
+          });
+
+          $('#edit-review').css('display', 'inline-block');
+
+          //Store current date and time in variable
+          now = new Date();
+
+          htmlString = `
+               <div class="nrSubContainer">
+                    <img src="${currentUser.img}" id="nrUserDP">
+                    <div class="nrUserDetails">${currentUser.firstName} ${currentUser.lastName}</div>
+                    <div class="nrUserDetails">${currentUser.degree}</div>
+                    <div class="nrUserDetails">${currentUser.batch}</div>
+                    <br>
+                    <div class="nrPubInfo">Published on:</div>
+                    <div class="nrPubInfo">${now.toLocaleDateString("en-US", {month: "long", day: "numeric", year: "numeric"})}</div>
+                    <div class="nrPubInfo">${now.toLocaleTimeString("en-US", { hour: "numeric", minute: "numeric"})}</div>
+               </div>
+               <div class="divider"></div>
+               <div class="nrSubContainer2">
+                    <div class="nrHeader">
+                         <div id="reviewFor">REVIEW FOR: </div>
+                         <div id="reviewForInfo">${fname} ${lname} | ${course} | ${term}</div>
+                    </div>
+                    <div class="nrRatingContainer">
+                         <div class="nrStars">${stars}</div>
+                         <div class="nrLegend">${legend}</div>
+                    </div>
+                    <div class="nrDesc">${desc}</div>
+                    <div class="nrLikeCounter">0 likes</div>
+                    
+               </div>
+          `;
+
+          $(".newReviewContainer").css("display", "flex"); // reveals the (initially) hidden newReviewContainer div
+          return htmlString;
+     }
+
+     $('.rate').click(function() {
+          rating = $('input[name="rate"]:checked').val();
+          switch(rating) {
+               case '5':
+                    $('#reviewLegend').html("Excellent");
+                    break;
+               case '4':
+                    $('#reviewLegend').html("Good");
+                    break;
+               case '3':
+                    $('#reviewLegend').html("Average");
+                    break;
+               case '2':
+                    $('#reviewLegend').html("Poor");
+                    break;
+               case '1':
+                    $('#reviewLegend').html("DO NOT TAKE");
+                    break;
+          }
+     });
+
+     //Submit review checking for missing inputs and storing valid inputs into variables
+     $(".reviewSubmit").click(function () {
+          //Storing the inputs into vars
+          var fNameInput = $("#profname").val();
+          var lNameInput = $("#profLastName").val();
+          var courseInput = $("#profcourse").val();
+          var aTermInput = $("#acadterm").val();
+          var descInput = $("#reviewbody").val();
+
+          //Used for input checking
+          var errState = 0;
+          $("#reviewStatus").html("");
+
+          //Checking for missing inputs
+          if(fNameInput == "")
+          {
+               if(errState == 0)
+                    errState = 1;
+               else
+                    errState = 420;
+          }
+          if(lNameInput == "")
+          {
+               if(errState == 0)
+                    errState = 2;
+               else
+                    errState = 420;
+          }
+          if(courseInput == "")
+          {
+               if(errState == 0)
+                    errState = 3;
+               else
+                    errState = 420;
+          }
+          if(aTermInput == "")
+          {
+               if(errState == 0)
+                    errState = 4;
+               else
+                    errState = 420;
+          }
+          if(rating == undefined)
+          {
+               if(errState == 0)
+                    errState = 5;
+               else
+                    errState = 420;
+          }
+          if(descInput == "")
+          {
+               if(errState == 0)
+                    errState = 6;
+               else
+                    errState = 420;
+          }
+          //Printing errState
+          switch(errState)
+          {
+               case 1:
+                    $("#reviewStatus").html("No first name inputted!");
+                    $("#reviewStatus").css("color", "red");
+                    $("#reviewStatus").css("display", "block");
+                    break;
+               case 2:
+                    $("#reviewStatus").html("No last name inputted!");
+                    $("#reviewStatus").css("color", "red");
+                    $("#reviewStatus").css("display", "block");
+                    break;
+               case 3:
+                    $("#reviewStatus").html("No course inputted!");
+                    $("#reviewStatus").css("color", "red");
+                    $("#reviewStatus").css("display", "block");
+                    break;
+               case 4:
+                    $("#reviewStatus").html("No academic term inputted!");
+                    $("#reviewStatus").css("color", "red");
+                    $("#reviewStatus").css("display", "block");
+                    break;
+               case 5:
+                    $("#reviewStatus").html("No rating selected!");
+                    $("#reviewStatus").css("color", "red");
+                    $("#reviewStatus").css("display", "block");
+                    break;
+               case 6:
+                    $("#reviewStatus").html("No description inputted!");
+                    $("#reviewStatus").css("color", "red");
+                    $("#reviewStatus").css("display", "block");
+                    break;
+               case 420:
+                    $("#reviewStatus").html("Multiple missing inputs!");
+                    $("#reviewStatus").css("color", "red");
+                    $("#reviewStatus").css("display", "block");
+                    break;
+               case 0:
+                    $("#reviewStatus").html("Review successfully submitted!");
+                    $("#reviewStatus").css("color", "green");
+                    $("#reviewStatus").css("display", "block");
+                    break;
+          }
+
+          //Hide response
+          setTimeout(() => {$("#reviewStatus").css("display", "none");}, "1600");
+
+          //Submit review
+          if(errState == 0)
+          {
+               // console.log("First Name: " + fNameInput);
+               // console.log("Last Name: " + lNameInput);
+               // console.log("Course: " + courseInput);
+               // console.log("Academic Term: " + aTermInput);
+               // console.log("Rating: " + rating);
+               // console.log("Description: " + descInput);
+               
+               $(".new-review-headline").html("Made a typo? You can still make last minute changes!")
+               //$("#edit-review").html('<button class="edit-review">CLICK HERE TO EDIT</button>')
+
+               if(latestPostID == 0)
+                    $(".newReviewContainer").html(createNewReview(fNameInput, lNameInput, courseInput, aTermInput, rating, descInput))
+               else
+                    $(".newReviewContainer").html(updateNewReview(fNameInput, lNameInput, courseInput, aTermInput, rating, descInput))
+
+               //Reset inputs
+               $("#profname").val("");
+               $("#profLastName").val("");
+               $("#profcourse").val("");
+               $("#acadterm").val("");
+               $("input:radio[name='rate']:checked")[0].checked = false;
+               rating = undefined;
+               $('#reviewLegend').html("Rating");
+               $("#reviewbody").val("");
+          }
+
+          //Reset errState
+          var errState = 0;
+          // update page of user
+          refreshContent(currentUser);
+     });
+
+     $(".edit-review").click(function () {
+          console.log("Change button clicked");
+          $('html,body').animate({
+               scrollTop: $(".reviewContainer").offset()?.top
+          });
+          updateReview();
+     });
+
+     $(".finalize-review").click(function () {
+          console.log("Finalize button clicked");
+
+          latestPostID = 0;
+          latestPFname = '';
+          latestPLname = '';
+          latestCourse = '';
+          latestTerm = '';
+          latestRating = 0;
+          latestDesc = '';
+
+          $('.newReviewContainer').css('display', 'none');
+          $('#edit-review').css('display', 'none');
+          $('.new-review-headline').html('');
      });
 
      /* courses.html functions */

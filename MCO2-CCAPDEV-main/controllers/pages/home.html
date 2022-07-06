@@ -23,9 +23,11 @@
     </div>
 
     <div class="loginContainer">
-        <span>LOGIN</span>
+        
         <button type="button" class="login-close">X</button>
+
         <div class="logintable">
+        <span>LOGIN</span>
         <table>
             <tr>
                 <td>Username/Email</td>
@@ -42,16 +44,73 @@
             <tr>
                 <td></td>
                 <td><button type="button" class="login">Login</button>
-                <button type="button" class="signup">Signup</button></td>
+                
+            </tr>
+            <tr>
+                <td></td>
+                <td>Don't have an account? <span class="signuplnk"><u>Signup</u>.</span></td>
             </tr>
         </table>
         <p id="loginResponse">TEST</p>
         </div>
+
+        <div class="registertable">
+            <span>CREATE AN ACCOUNT</span>
+            <table>
+                <tr>
+                    <td>First Name</td>
+                    <td><input type="text" id="rfName" value=""></td>
+                </tr>
+                <tr>
+                    <td>Lastname</td>
+                    <td><input type="text" id="rlName" value=""></td>
+                </tr>
+                <tr>
+                    <td>Degree</td>
+                    <td><input type="text" id="rdegree" value=""></td>
+                </tr>
+                <tr>
+                    <td>Degree Code</td>
+                    <td><input type="text" id="rdCode" value=""></td>
+                </tr>
+                <tr>
+                    <td>College</td>
+                    <td><input type="text" id="rcollege" value=""></td>
+                </tr>
+                <tr>
+                    <td>Batch</td>
+                    <td><input type="number" id="rbatch" value=""></td>
+                </tr>
+                <tr>
+                    <td>Username/Email</td>
+                    <td><input type="text" id="ruName" value=""></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><input type="password" id="rpasswordInput" value=""></td>
+                </tr>
+                <tr>
+                    <td>Confirm Password</td>
+                    <td><input type="password" id="rpasswordConfirm" value=""></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button type="button" class="signup">Signup</button>
+                    
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Already have an account? <span class="loginlnk"><u>Login</u>.</span></td>
+                </tr>
+            </table>
+            <p id="registerResponse"></p>
+        </div>
+        
     </div>
     <!-- Common Contents END -->
 
     <div class="content">
-        <span class="signed-out-message">It looks like you are Signed out. Login first in order to view reviews!</span>
+        <span class="signed-out-message">It looks like you are Signed out. Please Log in first to get full functionality of the application!</span>
 
         <div class="rightbar">
             <div class="rightbar-contents">
@@ -107,7 +166,11 @@
 
             <div id="newReview">
                 <div class="new-review-headline"></div>
-                <div id="edit-review"></div><br>
+                <div id="edit-review">
+                    <button class="edit-review">CHANGE</button>
+                    <button class="finalize-review">FINALIZE</button>
+                    <div class="edit-notice">notice: You will need to finalize your post if you plan to make another one right after.</div>
+                </div><br>
                 <div class="newReviewContainer"></div>
             </div>
 
@@ -145,6 +208,7 @@
                                 <div class="mp-subheader-left-bottom">Degree | College</div>
                             </div>
                             <div class="mp-subheader-likebutton"></div>
+                            <div class="numLikes"></div>
                         </div>
                     </div>
                     -->
@@ -159,49 +223,42 @@
                 <div class="searchBody">
                     <select name="filtercourse" id="filtercourse" class="searchFilter">
                         <option value="" disabled selected hidden>Select Course ...</option>
-                        <option value="ccprog1">CCPROG1</option>
-                        <option value="ccprog2">CCPROG2</option>
-                        <option value="ccprog3">CCPROG3</option>
-                        <option value="csadprg">CSADPRG</option>
-                        <option value="ccapdev">CCAPDEV</option>
+                        <!-- Options for courses should look like these:
+                            <option value="CCPROG1">CCPROG1</option>
+                            <option value="CCPROG2">CCPROG2</option>
+                            <option value="CCPROG3">CCPROG3</option>
+                            <option value="CSADPRG">CSADPRG</option>
+                            <option value="CCAPDEV">CCAPDEV</option>
+                        -->
                     </select>
 
                     <select name="filterterm" id="filterterm" class="searchFilter">
                         <option value="" disabled selected hidden>Select Term ...</option>
-                        <optgroup label="A.Y: 2021-2022">
-                            <option value="term2/21-22">Term 2</option>
-                            <option value="term1/21-22">Term 1</option>
-                        </optgroup>
-                        <optgroup label="A.Y: 2020-2021">
-                            <option value="term3/20-21">Term 3</option>
-                            <option value="term2/20-21">Term 2</option>
-                            <option value="term1/20-21">Term 1</option>
-                        </optgroup>
-                        <optgroup label="A.Y: 2019-2020">
-                            <option value="term3/19-20">Term 3</option>
-                            <option value="term2/19-20">Term 2</option>
-                            <option value="term2/19-20">Term 1</option>
-                        </optgroup>
+                            <option value="Term 3">Term 3</option>
+                            <option value="Term 2">Term 2</option>
+                            <option value="Term 1">Term 1</option>
                     </select>
 
                     <select name="filtercollege" id="filtercollege" class="searchFilter">
                         <option value="" disabled selected hidden>Select College ...</option>
-                        <option value="cla">CLA</option>
-                        <option value="cos">COS</option>
-                        <option value="gcoe">GCOE</option>
-                        <option value="rvcob">RVCOB</option>
-                        <option value="soe">SOE</option>
-                        <option value="baggced">BAGCED</option>
-                        <option value="ccs">CCS</option>
+                        <!-- Options for colleges should look like these:
+                            <option value="College of Liberal Arts">College of Liberal Arts</option>
+                            <option value="College of Science">College of Science</option>
+                            <option value="Gokongwei College of Engineering">Gokongwei College of Engineering</option>
+                            <option value="Ramon V. Del Rosario College of Business">Ramon V. Del Rosario College of Business</option>
+                            <option value="School of Economics">School of Economics</option>
+                            <option value="Brother Andrew Gonzalez College of Education">Brother Andrew Gonzalez College of Education</option>
+                            <option value="College of Computer Studies">College of Computer Studies</option>
+                        -->
                     </select>
 
                     <select name="filterrating" id="filterrating" class="searchFilter">
                         <option value="" disabled selected hidden>Select Rating ...</option>
-                        <option value="1star">★</option>
-                        <option value="2stars">★★</option>
-                        <option value="3stars">★★★</option>
-                        <option value="4stars">★★★★</option>
-                        <option value="5stars">★★★★★</option>
+                        <option value="1">★</option>
+                        <option value="2">★★</option>
+                        <option value="3">★★★</option>
+                        <option value="4">★★★★</option>
+                        <option value="5">★★★★★</option>
                     </select> 
 
                     <button class="searchButton" id="searchByFilter">SEARCH BY FILTER</button>

@@ -21,7 +21,7 @@
             <a href="/home"><button class="navbar-buttons" id="homeBtn">Home</button></a>
             <a href="/profs"><button class="navbar-buttons" id="profsBtn">Profs</button></a>
             <a href="/courses"><button class="navbar-buttons" id="coursesBtn">Courses</button></a>
-            <button class="navbar-loginregister">Login/Register</button>
+            <!-- <button class="navbar-loginregister">Login/Register</button> -->
         </div>
     </div>
 
@@ -55,10 +55,12 @@
     -->
 
     <!-- Common Contents END -->
-
+    
     <div class="content">
+        <div id="review-headline">CUSTOM SEARCH</div>
         <div class="searchBarContainer">
-            <div class="searchInputContainer">
+            <!--
+                <div class="searchInputContainer">
                 <select name="filtercollege" id="filtercollege" class="filterInput">
                     <option value="" disabled selected hidden>Select College ...</option>
                     <option value="cla">CLA</option>
@@ -78,12 +80,16 @@
                 </select>
                 <button class="searchButton" id="searchByFilter">SEARCH BY FILTER</button>
             </div>
-            <div class="searchInputContainer">
-                <input type="text" id="profLastName2" name="profLastName2" placeholder="Input Prof's Last Name...">
-                <button class="searchButton" id="searchByName">SEARCH BY NAME</button>
-            </div>
 
+            --> 
+            <div class="searchInputContainer">
+                <input type="text" id="courseCodeInput" name="courseCodeInput" placeholder="Type Course Code ...">
+                <button class="searchButton" id="searchByCode">SEARCH BY CODE</button>
+            </div>
         </div>  
+
+        <div class="searchBarText" id="resultText"></div>
+        <div id="searchBarResults"></div><br>
 
         <!-- The contents of the _TABLE and _COURSE_REVIEWS divs are going to be dynamically
                 created by main.js (with the help of controller.js). Take a look at JQuery events
@@ -97,7 +103,6 @@
             - Also, profs.html remains empty. Honestly, the code needed to make the profs section of the website can be made with the same code used to make 
                 the course section. Obviously, variable names need to be changed and a new HTML file with a different design may need to be used.
         -->
-
         <button class="courseButton" id="8">General Education</button>
         <div id="GE_TABLE"></div>
         <div id="GE_COURSE_REVIEWS"></div>

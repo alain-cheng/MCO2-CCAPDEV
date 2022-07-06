@@ -55,6 +55,13 @@ input[type=text], select{
     resize: vertical;
 }
 
+input[type=number], select{
+    width: 190px;
+    border: 3px solid var(--green1);
+    border-radius: 4px;
+    resize: vertical;
+}
+
 input[type=password], select{
     width: 190px;
     border: 3px solid var(--green1);
@@ -162,14 +169,16 @@ textarea {
 
 /* Signed Out Message */
 .signed-out-message {
+    display: block;
     background-image: linear-gradient(to right, var(--green1), var(--green3));
     border-radius: 10px;
     font-family: 'Inter', sans-serif;
     color: var(--white1);
     font-size: 30px;
     height: auto;
-    max-width: auto;
+    max-width: 730px;
     padding: 10px;
+    word-wrap: break-word;
 }
 
 /* RIGHT BAR */
@@ -305,8 +314,23 @@ textarea {
     clear: right;
 }
 
-.logintable{
+.logintable {
     position: relative;
+    display: none;
+}
+
+.registertable {
+    position: relative;
+    display: none;
+    
+}
+
+.loginlnk:hover{
+    color: #4fc204;
+}
+
+.signuplnk:hover{
+    color: #4fc204;
 }
 
 #loginResponse{
@@ -357,6 +381,10 @@ textarea {
     right: 5px;
     /*display: none;*/
     height: 0px;
+}
+
+.reviewSubmit:hover {
+    opacity: 50%;
 }
 
 /* STAR RATING */
@@ -428,7 +456,7 @@ textarea {
 /* New Review */
 
 #newReview{
-    display: none;
+    display: block;
 }
 
 .newReviewContent {
@@ -437,7 +465,7 @@ textarea {
 }
 
 .newReviewContainer {
-    /*display: none;*/
+    display: none;
     border: 1px solid var(--black1);
     border-radius: 10px 10px 10px 10px;
     height: 250px;
@@ -556,7 +584,36 @@ textarea {
     border-radius: 10px 10px 10px 10px;
 }
 
+.finalize-review {
+    background-color: var(--green1);
+    border: none;
+    color: var(--white1);
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    padding: 5px;
+    cursor: pointer;
+    opacity: 100%;
+    border-radius: 10px 10px 10px 10px;
+}
 
+#edit-review {
+    display: none;
+    margin-bottom: 10px;
+}
+
+.edit-review:hover {
+    opacity: 50%;
+}
+
+.finalize-review:hover {
+    opacity: 50%;
+}
+
+.edit-notice {
+    color: red;
+}
 
 .divider {
     border-left: 3px solid green;
@@ -620,10 +677,6 @@ div#coursepostContainer {
     font-family: 'Inter', sans-serif;
     color: var(--white1);
     font-size: 40px;
-}
-
-#coursepostContainer::-webkit-scrollbar {
-    /*display: none;*/
 }
 
 /* COURSES YOU FOLLOW - POSTS */
@@ -749,13 +802,21 @@ div#coursepostContainer {
     min-height: 50px;
 
     float: right;
-    clear: right;
-    margin: -13px -11px 0px 0px;
+    margin: -13px 5px 0px 0px;
 }
 
 .mp-subheader-likebutton:hover {
     opacity: 50%;
     cursor: pointer;
+}
+
+.numLikes {
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+
+    float: right;
+    clear: right;
+    margin: -27px 5px 0px 0px;
 }
 
 /* COURSE POST SCROLL BUTTONS */
@@ -861,6 +922,10 @@ div#coursepostContainer {
     cursor: pointer;
     opacity: 100%;
     border-radius: 10px 10px 10px 10px;
+}
+
+.searchButton:hover {
+    background-color: var(--gray2);
 }
 
 

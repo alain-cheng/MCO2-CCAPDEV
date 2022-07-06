@@ -34,18 +34,60 @@ const controller = {
 
     /*
         Use this when a new user registers into the application.
-        Use HTTP POST method.
     */
     addUser: (req, res) => {
+        // db.insertOne(collection['users'], req.query['document'], (callback) => {
+        //     console.log(callback);
+        // });
 
+        collection['users'].create({
+            firstName: "bruh",
+            lastName: "otiscow",
+            degree: "otis cow",
+            degreeCode: "adsfafd",
+            college: "otiscow",
+            batch: "118",
+            username: "otiscow",
+            password: "otiscow",
+            img: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg?fbclid=IwAR1BIj-LervtpSjks9e0bre7FYMzuMQnTW7HYMixxXDI6s8uUbBIXcQIPEQ",
+            followedCourses: [],
+            likedPosts: [],
+        })
     },
 
     /*
         Use when submitting a post review.
-        Use HTTP POST method 
     */
     addPost: (req, res) => {
+        // db.insertOne(collection['posts'], req.query['data'], (result) => {
+        //     //console.log('result:', result);
+        // });
 
+        collection['posts'].create({
+            id: req.query['id'],
+            reviewForFN: req.query['reviewForFN'],
+            reviewForLN: req.query['reviewForLN'],
+            reviewCourse: req.query['reviewCourse'],
+            reviewTerm: req.query['reviewTerm'],
+            reviewRating: req.query['reviewRating'],
+            reviewText: req.query['reviewText'],
+            posterNameFN: req.query['posterNameFN'],
+            posterNameLN: req.query['posterNameLN'],
+            posterPfp: req.query['posterPfp'],
+            posterDegCode: req.query['posterDegCode'],
+            posterCollege: req.query['posterCollege'],
+            likesNum: req.query['likesNum']
+        }).then(res => {
+            console.log('post result', res);
+        }).catch(err => {
+            console.log('error on post', err);
+        });
+    },
+
+    updatePost: (req, res) => {
+        db.updateOne(collection['posts'], req.query['filter'], req.query['update'], (result) => {
+            //console.log('result:', result);
+        });
     },
 
     /*
@@ -61,14 +103,39 @@ const controller = {
     /*
         Use when user presses the like button on a post
         Use HTTP GET method
-        Same goes for unlikePost function.
     */
     likePost: (req, res) => {
+        db.updateOne(collection['users'], req.query['filter'], req.query['update'], (result) => {
+             //console.log('result:', result);
+        });
 
+        let postid = req.query['update']['$addToSet']['likedPosts'];
+        console.log(postid)
+
+        db.updateOne(collection['posts'], {
+            id: postid
+        }, {
+            $inc: { likesNum: 1 }
+        }, (result) => {
+        
+        });
     },
 
     unlikePost: (req, res) => {
+        db.updateOne(collection['users'], req.query['filter'], req.query['update'], (result) => {
+            //console.log('result:', result);
+       });
 
+       let postid = req.query['update']['$pull']['likedPosts'];
+       console.log(postid)
+
+        db.updateOne(collection['posts'], {
+            id: postid
+        }, {
+            $inc: { likesNum: -1 }
+        }, (result) => {
+            
+        });
     },
 
     /*
@@ -119,10 +186,11 @@ const controller = {
 
                 // a new table row (<tr> ... </tr) HTML string is going to be written and concatenated to the main 'table' string for every iteration of the for-loop
                 for(let i = 0; i < courses.length; i++){
+                    //id='${courses[i].collegeid}' name='${courses[i].coursecode}
                     newRow = 
-                    `
-                        <tr>
-                            <td width="108"><button class='courseCodeBtn' id='${courses[i].collegeid}' name='${courses[i].coursecode}'>${courses[i].coursecode}</button></td>
+                    `  
+                        <tr class='${courses[i].coursecode}${courses[i].collegeid}'>
+                            <td width="108">${courses[i].coursecode}</td>
                             <td width="402">${courses[i].coursename}</td>
                             <td style="text-align: center;" width="114">${courses[i].units}</td>
                         </tr>
@@ -165,6 +233,7 @@ const controller = {
         let stars
         let starsString;
         let starsLegend;
+        let sendBack;
 
         Post.find({reviewCourse:{$eq:code}}, function(err, result){
             if(err){
@@ -177,74 +246,274 @@ const controller = {
                 console.log(reviews);
                 console.log("---------------------");
 
-                for(let i = 0; i < reviews.length; i++){
-                    stars = reviews[i].reviewRating;
-                    switch (stars) {
-                        case 1:
-                                starsString = "★";
-                                starsLegend = "DO NOT TAKE";
-                                break;
-                        case 2:
-                                starsString = "★★";
-                                starsLegend = "Poor";
-                                break;
-                        case 3:
-                                starsString = "★★★";
-                                starsLegend = "Average";
-                                break;
-                        case 4:
-                                starsString = "★★★★";
-                                starsLegend = "Good";
-                                break;
-                        case 5:
-                                starsString = "★★★★★";
-                                starsLegend = "Excellent";
-                                break;
-                    }
-
-                    newMainPost = 
-                    `
-                    <div class="mainpost">
-                        <div class="mp-header">
-                            <div class="mp-header-left">
-                                Review For:
-                            </div>
-                            <div class="mp-header-middle">
-                                <div class="mp-header-middle-top">${reviews[i].reviewForFN} ${reviews[i].reviewForLN}</div>
-                                <div class="mp-header-middle-bottom">${reviews[i].reviewCourse} | ${reviews[i].reviewTerm}</div>
-                            </div>
-                        </div>
-                        <div class="mp-review">
-                            <div class="mp-review-stars">
-                                ${starsString}
-                            </div>
-                            <div class="mp-rev-description">
-                                ${starsLegend}
-                            </div>
-                        </div>
-                        <div class="mp-review-box">
-                            ${reviews[i].reviewText}
-                        </div>
-                        <div class="mp-subheader">
-                            <img class="mp-subheader-pic" src="${reviews[i].posterPfp}" alt="pic">
-                            <div class="mp-subheader-left">
-                                <div class="mp-subheader-left-top">
-                                    ${reviews[i].posterNameFN} ${reviews[i].posterNameLN}
-                                </div>
-                                <div class="mp-subheader-left-bottom">
-                                    ${reviews[i].posterDegCode} | ${reviews[i].posterCollege}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    `;
-                    reviewsContainer = reviewsContainer.concat(newMainPost);
+                if(Object.entries(reviews).length === 0){
+                    console.log("no reviews");
+                    sendBack = `No reviews were found for ${code}`;
                 }
-                reviewsContainer = reviewsContainer.concat("</div>"); // "</div>" is concatenated to end the div
-                console.log(reviewsContainer);
+                else {
+                    console.log("review found");
+                    for(let i = 0; i < reviews.length; i++){
+                        stars = reviews[i].reviewRating;
+                        switch (stars) {
+                            case 1:
+                                    starsString = "★";
+                                    starsLegend = "DO NOT TAKE";
+                                    break;
+                            case 2:
+                                    starsString = "★★";
+                                    starsLegend = "Poor";
+                                    break;
+                            case 3:
+                                    starsString = "★★★";
+                                    starsLegend = "Average";
+                                    break;
+                            case 4:
+                                    starsString = "★★★★";
+                                    starsLegend = "Good";
+                                    break;
+                            case 5:
+                                    starsString = "★★★★★";
+                                    starsLegend = "Excellent";
+                                    break;
+                        }
+    
+                        newMainPost = 
+                        `
+                        <div class="mainpost">
+                            <div class="mp-header">
+                                <div class="mp-header-left">
+                                    Review For:
+                                </div>
+                                <div class="mp-header-middle">
+                                    <div class="mp-header-middle-top">${reviews[i].reviewForFN} ${reviews[i].reviewForLN}</div>
+                                    <div class="mp-header-middle-bottom">${reviews[i].reviewCourse} | ${reviews[i].reviewTerm}</div>
+                                </div>
+                            </div>
+                            <div class="mp-review">
+                                <div class="mp-review-stars">
+                                    ${starsString}
+                                </div>
+                                <div class="mp-rev-description">
+                                    ${starsLegend}
+                                </div>
+                            </div>
+                            <div class="mp-review-box">
+                                ${reviews[i].reviewText}
+                            </div>
+                            <div class="mp-subheader">
+                                <img class="mp-subheader-pic" src="${reviews[i].posterPfp}" alt="pic">
+                                <div class="mp-subheader-left">
+                                    <div class="mp-subheader-left-top">
+                                        ${reviews[i].posterNameFN} ${reviews[i].posterNameLN}
+                                    </div>
+                                    <div class="mp-subheader-left-bottom">
+                                        ${reviews[i].posterDegCode} | ${reviews[i].posterCollege}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        `;
+                        reviewsContainer = reviewsContainer.concat(newMainPost);
+                    }
+                    reviewsContainer = reviewsContainer.concat("</div>"); // "</div>" is concatenated to end the div
+                    console.log(reviewsContainer);
+                    sendBack = reviewsContainer;
+                }
 
                 res.status(200).send({
-                    message: reviewsContainer //sends the reviewsContainer string to main.js along with a status code of 200 (OK)
+                    message: sendBack //sends the reviewsContainer string to main.js along with a status code of 200 (OK)
+                });
+            }
+        });
+    },
+
+    getProfProfiles: (req, res) => {
+        console.log("GET: /getProfProfiles");
+        let id = req.query.collegeid;
+        let profsList = "";
+        let newProfRow ="";
+        let containers = "";
+        let newProfContainer = "";
+        let index = 0;
+        let profs;
+        let rowCount;
+        let documentsCount;
+        let documentsLeft;
+        let documentsToProc;
+        let count;
+
+        Profs.find({collegeid:{$eq:id}}, function(err, result){
+            if(err) {
+                console.error(err);
+            }
+            else {
+                profs = result;
+                documentsCount = profs.length;
+                rowCount = Math.floor(documentsCount/4)
+                console.log("Prof profiles gathered");
+                console.log("---------------------");
+                console.log("Number of gathered documents: " + documentsCount);
+                console.log("Number of rows to be produced: " + rowCount);
+                console.log(profs);
+                console.log("---------------------");
+
+                for(let i = 0; i < documentsCount; i++) {
+                    console.log("value of i: " + i)
+                    if((i%4) == 0) {
+                        if(i >= 4) {
+                            console.log("   block 1")
+                            newProfRow = newProfRow.concat(containers);
+                            newProfRow = newProfRow.concat("</div>");
+                            newProfRow = newProfRow.concat(`                            <div class="prof-row">`);
+                            containers = "";
+                        }
+                        else {
+                            console.log("   block 2")
+                            newProfRow = newProfRow.concat(`                            <div class="prof-row">`);
+                        }
+                    }
+                    
+                    newProfContainer = 
+                        `
+                            <!-- ##### ${i} #### -->
+                            <div class="prof-container">
+                                <div class="prof-image-container">
+                                    <img class="prof-image" src="${profs[i].img}" alt="profpic">
+                                    <div class="image-overlay" id="${profs[i].firstName} ${profs[i].lastName}">
+                                        <div class="overlay-text">See Reviews</div>
+                                    </div>
+                                </div>
+                                
+                                
+                                <div class="prof-namebar">${profs[i].firstName} ${profs[i].lastName}</div>
+                                <div class="prof-info">${profs[i].position}</div>
+                                <div class="prof-info">${profs[i].department}</div>
+
+                                <div class="prof-creds">${profs[i].degree}</div>
+                                <div class="prof-creds">${profs[i].college} (${profs[i].gradYear})</div>
+                                <div class="prof-creds">Teaching Experience - ${profs[i].expYears} years</div>
+
+                                <div class="prof-rating-container">${profs[i].avgRating}</div>
+                            </div>
+                            <!-- #################### -->
+                        `;
+                    containers = containers.concat(newProfContainer);
+                }
+                newProfRow = newProfRow.concat(containers);
+                newProfRow = newProfRow.concat("</div>");
+                console.log(newProfRow);
+
+                res.status(200).send({
+                    message: newProfRow
+                });
+
+            }
+        });
+    },
+
+    getProfReviews: (req, res) => {
+        console.log("GET: /getProfReviews");
+        let fname = req.query.fname;
+        let lname = req.query.lname;
+        let reviewsContainer = 
+        `
+            <div class="coursePostContainer">
+        `
+        let newMainPost;
+        let reviews;
+        let stars
+        let starsString;
+        let starsLegend;
+        let sendBack;
+
+        Post.find({reviewForFN:{$eq:fname}, reviewForLN:{$eq:lname}}, function(err, result){
+            if(err){
+                console.error(err);
+            }
+            else {
+                reviews = result;
+                console.log(`Reviews gathered for ${fname} ${lname}`);
+                console.log("---------------------");
+                console.log(reviews);
+                console.log("---------------------");
+
+                if(Object.entries(reviews).length === 0){
+                    console.log("no reviews");
+                    sendBack = `No reviews were found for ${fname} ${lname}`;
+                }
+                else {
+                    console.log("reviews found");
+                    for(let i = 0; i < reviews.length; i++){
+                        stars = reviews[i].reviewRating;
+                        switch (stars) {
+                            case 1:
+                                    starsString = "★";
+                                    starsLegend = "DO NOT TAKE";
+                                    break;
+                            case 2:
+                                    starsString = "★★";
+                                    starsLegend = "Poor";
+                                    break;
+                            case 3:
+                                    starsString = "★★★";
+                                    starsLegend = "Average";
+                                    break;
+                            case 4:
+                                    starsString = "★★★★";
+                                    starsLegend = "Good";
+                                    break;
+                            case 5:
+                                    starsString = "★★★★★";
+                                    starsLegend = "Excellent";
+                                    break;
+                        }
+    
+                        newMainPost = 
+                        `
+                        <div class="mainpost">
+                            <div class="mp-header">
+                                <div class="mp-header-left">
+                                    Review For:
+                                </div>
+                                <div class="mp-header-middle">
+                                    <div class="mp-header-middle-top">${reviews[i].reviewForFN} ${reviews[i].reviewForLN}</div>
+                                    <div class="mp-header-middle-bottom">${reviews[i].reviewCourse} | ${reviews[i].reviewTerm}</div>
+                                </div>
+                            </div>
+                            <div class="mp-review">
+                                <div class="mp-review-stars">
+                                    ${starsString}
+                                </div>
+                                <div class="mp-rev-description">
+                                    ${starsLegend}
+                                </div>
+                            </div>
+                            <div class="mp-review-box">
+                                ${reviews[i].reviewText}
+                            </div>
+                            <div class="mp-subheader">
+                                <img class="mp-subheader-pic" src="${reviews[i].posterPfp}" alt="pic">
+                                <div class="mp-subheader-left">
+                                    <div class="mp-subheader-left-top">
+                                        ${reviews[i].posterNameFN} ${reviews[i].posterNameLN}
+                                    </div>
+                                    <div class="mp-subheader-left-bottom">
+                                        ${reviews[i].posterDegCode} | ${reviews[i].posterCollege}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        `;
+                        reviewsContainer = reviewsContainer.concat(newMainPost);
+                    }
+                    reviewsContainer = reviewsContainer.concat("</div>"); // "</div>" is concatenated to end the div
+                    console.log(reviewsContainer);
+                    sendBack = reviewsContainer;
+
+                }
+
+                res.status(200).send({
+                    message: sendBack
                 });
             }
         });
@@ -305,20 +574,6 @@ const controller = {
             res.send(result);
         });
     },
-                                                                                                                                     //like this???
-    findProf: (req, res) => {
-        db.findOne(collection['profs'], req.query['filter'], req.query['projection'], (result) => {
-            //console.log("findUser result", result);
-            res.send(result);
-        });
-    },
-    
-    findProfs: (req, res) => {
-        db.findMany(collection['profs'], req.query['filter'], req.query['projection'], (result) => {
-            //console.log("findUsers result", result);
-            res.send(result);
-        });
-    },
     
     /* Find a post */
     findPost: (req, res) => {
@@ -349,6 +604,7 @@ const controller = {
         // NOTE: for some reason, the console.logs of all code below don't work for some reason but the data is added to the database when you check MongoDBCompass
         /* TODO */
         //Async communication with DB
+        fillDB();
         async function fillDB()
         {
             //Used to prevent duplicates, might need to be removed
@@ -370,8 +626,8 @@ const controller = {
                 password: "12345",
                 img: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
                 followedCourses: ["GEUSELF", "POLGOVT"],
-                likedPosts: [1201, 1202]
-            }), (err) => {
+                likedPosts: ['1201', '1202']
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
@@ -379,7 +635,7 @@ const controller = {
                 else {
                     console.log("User Sarah Parker saved to database")
                 }
-            }
+            });
             await collection['users'].create({
                 firstName: "Gerald",
                 lastName: "Velasco",
@@ -391,8 +647,8 @@ const controller = {
                 password: "12345",
                 img: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
                 followedCourses: ["CCAPDEV"],
-                likedPosts: []
-            }), (err) => {
+                likedPosts: ['']
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
@@ -400,12 +656,12 @@ const controller = {
                 else {
                     console.log("User Gerald Velasco saved to database")
                 }
-            }
+            });
 
             /* TODO */
             // Sample Posts - fill up at least 3 more posts
             await collection['posts'].create({
-                id: 1201,
+                id: '1201',
                 reviewForFN: "Nicole",
                 reviewForLN: "Zefanya",
                 reviewCourse: "GEUSELF",
@@ -418,7 +674,7 @@ const controller = {
                 posterDegCode: "BSCS",
                 posterCollege: "College of Computer Studies",
                 likesNum: 3,
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
@@ -426,9 +682,9 @@ const controller = {
                 else {
                     console.log("Post 1201 saved to database");
                 }
-            }
+            });
             await collection['posts'].create({
-                id: 1202,
+                id: '1202',
                 reviewForFN: "Hwang",
                 reviewForLN: "Yeji",
                 reviewCourse: "POLGOVT",
@@ -441,7 +697,7 @@ const controller = {
                 posterDegCode: "ABPOM",
                 posterCollege: "College of Liberal Arts",
                 likesNum: 3,
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
@@ -449,9 +705,9 @@ const controller = {
                 else {
                     console.log("Post 1202 saved to database");
                 }
-            }
+            });
             await collection['posts'].create({
-                id: 1203,
+                id: '1203',
                 reviewForFN: "Nicole",
                 reviewForLN: "Zefanya",
                 reviewCourse: "GEUSELF",
@@ -464,7 +720,7 @@ const controller = {
                 posterDegCode: "ABLIT",
                 posterCollege: "College of Liberal Arts",
                 likesNum: 3,
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
@@ -472,9 +728,9 @@ const controller = {
                 else {
                     console.log("Post 1203 saved to database");
                 }
-            }
+            });
             await collection['posts'].create({
-                id: 1204,
+                id: '1204',
                 reviewForFN: "Artemis",
                 reviewForLN: "Celestial",
                 reviewCourse: "CCAPDEV",
@@ -487,7 +743,7 @@ const controller = {
                 posterDegCode: "BSCS",
                 posterCollege: "College of Computer Studies",
                 likesNum: 27,
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
@@ -495,7 +751,30 @@ const controller = {
                 else {
                     console.log("Post 1204 saved to database");
                 }
-            }
+            });
+            await collection['posts'].create({
+                id: '1205',
+                reviewForFN: "Choi",
+                reviewForLN: "Jisu",
+                reviewCourse: "KEMPRN1",
+                reviewTerm: "Term 1",
+                reviewRating: 2,
+                reviewText: "I think there is still a lot of improvements needed, I think they are fine but not great either, atleast not the worst.",
+                posterNameFN: "Jose",
+                posterNameLN: "Magalang",
+                posterPfp: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
+                posterDegCode: "BSC",
+                posterCollege: "College of Science",
+                likesNum: 1,
+            }).then((err) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                else {
+                    console.log("Post 1205 saved to database");
+                }
+            });
 
             // Sample Profs - there are 8 profs for each of the 8 courses in the database
             await collection['profs'].create({
@@ -510,13 +789,13 @@ const controller = {
                 avgRating: 4.5,
                 gradYear: 2015,
                 expYears: 2
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Prof. Hwang Yeji saved to database");
-            }
+            });
             await collection['profs'].create({
                 firstName: "Choi",
                 lastName: "Jisu",
@@ -529,13 +808,13 @@ const controller = {
                 avgRating: 4.2,
                 gradYear: 2016,
                 expYears: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Prof. Choi Jisu saved to database");
-            }
+            });
             await collection['profs'].create({
                 firstName: "Lee",
                 lastName: "Chaeryeong",
@@ -548,13 +827,13 @@ const controller = {
                 avgRating: 4.3,
                 gradYear: 2017,
                 expYears: 2 
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Prof. Lee Chaeryeong saved to database");
-            }
+            })
             await collection['profs'].create({
                 firstName: "Shin",
                 lastName: "Ryujin",
@@ -567,13 +846,13 @@ const controller = {
                 avgRating: 4.6,
                 gradYear: 2017,
                 expYears: 1
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Prof. Shin Ryujin saved to database");
-            }
+            });
             await collection['profs'].create({
                 firstName: "Shin",
                 lastName: "Yuna",
@@ -586,13 +865,13 @@ const controller = {
                 avgRating: 4.3,
                 gradYear: 2018,
                 expYears: 1
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Prof. Shin Yuna saved to database");
-            }
+            });
             await collection['profs'].create({
                 firstName: "George",
                 lastName: "Miller",
@@ -605,13 +884,13 @@ const controller = {
                 avgRating: 4.1,
                 gradYear: 2013,
                 expYears: 5
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Prof. George Miller saved to database");
-            }
+            });
             await collection['profs'].create({
                 firstName: "Brian",
                 lastName: "Soewarno",
@@ -624,13 +903,13 @@ const controller = {
                 avgRating: 4.0,
                 gradYear: 2017,
                 expYears: 1
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Prof. Brian Soewarno saved to database");
-            }
+            });
             await collection['profs'].create({
                 firstName: "Nicole",
                 lastName: "Zefanya",
@@ -643,13 +922,13 @@ const controller = {
                 avgRating: 4.5,
                 gradYear: 2016,
                 expYears: 2
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Prof. Nicole Zefanya saved to database");
-            }
+            })
             await collection['profs'].create({
                 firstName: "Artemis",
                 lastName: "Celestial",
@@ -662,13 +941,13 @@ const controller = {
                 avgRating: 4.9,
                 gradYear: 2017,
                 expYears: 1
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Prof. Artemis Celestial saved to database");
-            }
+            });
 
             // Sample Colleges - there are 7 main colleges in DLSU and they are assigned their respective IDs;
             //                   GE is considered its own college for this website
@@ -676,79 +955,79 @@ const controller = {
                 collegename: "College of Liberal Arts",
                 name: "CLA",
                 id: 1
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("College 1 saved to database");
-            }
+            });
             await collection['colleges'].create({
                 collegename: "College of Computer Studies",
                 name: "COS",
                 id: 2
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("College 1 saved to database");
-            }
+            });
             await collection['colleges'].create({
                 collegename: "Gokongwei College of Engineering",
                 name: "GCOE",
                 id: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("College 1 saved to database");
-            }
+            })
             await collection['colleges'].create({
                 collegename: "Ramon V. Del Rosario College of Business",
                 name: "RVCOB",
                 id: 4
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("College 1 saved to database");
-            }
+            })
             await collection['colleges'].create({
                 collegename: "School of Economics",
                 name: "SOE",
                 id: 5
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("College 1 saved to database");
-            }
+            });
             await collection['colleges'].create({
                 collegename: "Brother Andrew Gonzalez College of Education",
                 name: "BAGCED",
                 id: 6
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("College 1 saved to database");
-            }
+            })
             await collection['colleges'].create({
                 collegename: "College of Computer Studies",
                 name: "CCS",
                 id: 7
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("College 1 saved to database");
-            }
+            });
 
             // Sample Courses - there are 8 sample courses; 7 courses (for 7 colleges) + 1 GE course
             await collection['courses'].create({
@@ -756,123 +1035,122 @@ const controller = {
                 coursecode: "POLGOVT",
                 collegeid: 1,
                 units: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Course 1 saved to database");
-            }
+            });
             await collection['courses'].create({
                 coursename: "Principles of Chemistry 1",
                 coursecode: "KEMPRN1",
                 collegeid: 2,
                 units: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Course 2 saved to database");
-            }
+            });
             await collection['courses'].create({
                 coursename: "Engineering Graphics 1",
                 coursecode: "GRAPONE",
                 collegeid: 3,
                 units: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Course 3 saved to database");
-            }
+            });
             await collection['courses'].create({
                 coursename: "Fundamentals of Accountancy, Business, and Management",
                 coursecode: "FDNACCT",
                 collegeid: 4,
                 units: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Course 4 saved to database");
-            }
+            });
             await collection['courses'].create({
                 coursename: "Basic Microeconomics",
                 coursecode: "ECONONE",
                 collegeid: 5,
                 units: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Course 5 saved to database");
-            }
+            });
             await collection['courses'].create({
                 coursename: "Basic Communication and Study Skills",
                 coursecode: "ENGLCOM",
                 collegeid: 6,
                 units: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Course 6 saved to database");
-            }
+            });
             await collection['courses'].create({
                 coursename: "Web Application Development",
                 coursecode: "CCAPDEV",
                 collegeid: 7,
                 units: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Course 7 saved to database");
-            }
+            });
             await collection['courses'].create({
                 coursename: "Understanding the Self",
                 coursecode: "GEUSELF",
                 collegeid: 8,
                 units: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Course 8 saved to database");
-            }
+            });
             await collection['courses'].create({
                 coursename: "Readings in Philippine History",
                 coursecode: "GERPHIS",
                 collegeid: 8,
                 units: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Course 9 saved to database");
-            }
+            });
             await collection['courses'].create({
                 coursename: "The Contemporary World",
                 coursecode: "GEWORLD",
                 collegeid: 8,
                 units: 3
-            }), (err) => {
+            }).then((err) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log("Course 10 saved to database");
-            }
+            });
         }
-        fillDB();
 
         // remove "/*" to uncomment
 

@@ -1,29 +1,42 @@
 /* 
-    You can use this file for the exclusive functionalities of the profs.html page like displaying
-    all professors from the database.
-
-    If you plan on using this file, you might want to include to import the main.js script from
-    the profs.html for the css stylings written in the script, which should look something like this:
-
-    <head>
-        <script type="text/javascript" src="/js/main.js"></script>
-        <script type="text/javascript" src="/js/profs.js"></script>
-    </head>
+    You can use this file for the functionalities exclusive only to the profs.html page.
 */
 $(document).ready(function () {
-    // place functions in here
+    $(".showProfsBtn").on("click", function(event) {
+        let buttonID = event.target.id;
+        
+        fetch(`/getProfProfiles?collegeid=${buttonID}`)
+        .then(res => res.json()) // this is the res that came from controller.js (returned as a resolved promise)
+            .then(res => {
+                    $("#ALL_PROFS_TABLE").html(res.message);
+            });  
+    });
 
-    $.get("/findProf", {
-        filter: {
-             firstName: 'Nicole',
-             lastName: 'Zefanya',
-        }
-   }).then((user) => {
-        currentUser = user;
-        login(currentUser);
-   });
+    $("#profSearchByName").on("click", function() {
+        let fname = $("#profFNameInput").val();
+        let lname = $("#profLNameInput").val();
+        
+        fetch(`/getProfReviews?fname=${fname}&lname=${lname}`)
+        .then(res => res.json())
+                .then(res => {
+                $("#PROF_REVIEWS").html(res.message);
+        });  
+    });
 
-   console.log()
+    $(document).on("click", ".image-overlay",function(event) { 
+        console.log("prof image clicked");
+
+        let eventID = event.currentTarget.id;
+        let profNames = eventID.trim().split(/\s+/);
+        let fname = profNames[0];
+        let lname = profNames[1];
+
+        fetch(`/getProfReviews?fname=${fname}&lname=${lname}`)
+        .then(res => res.json())
+                .then(res => {
+                $("#PROF_REVIEWS").html(res.message);
+        });  
+        
+        
+    });
 });
-
-

@@ -1,6 +1,9 @@
 # MCO2-CCAPDEV
 Back-end development for DLSU Prof To Pick.
 
+## Heroku Deployment
+https://dlsuprof2pick.herokuapp.com/
+
 ## Modules Installed
 - **dotenv**
 - **express**

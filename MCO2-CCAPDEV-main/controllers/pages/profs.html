@@ -5,7 +5,9 @@
     <title>DLSU | Prof To Pick</title>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="/js/main.js"></script>
+    <script type="text/javascript" src="/js/profs.js"></script>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/profs.css">
 </head>
 <body>
     <!-- Common Contents START -->
@@ -29,15 +31,15 @@
         <table>
             <tr>
                 <td>Username/Email</td>
-                <td><input type="text" id="uName" value="HDavis"></td>
+                <td><input type="text" id="uName" value="Sarah Parker"></td>
             </tr>
             <tr>
                 <td>Password</td>
-                <td><input type="password" id="passwordInput" value="user1"></td>
+                <td><input type="password" id="passwordInput" value="12345"></td>
             </tr>
             <tr>
                 <td>Confirm Password</td>
-                <td><input type="password" id="passwordConfirm" value="user1"></td>
+                <td><input type="password" id="passwordConfirm" value="12345"></td>
             </tr>
             <tr>
                 <td></td>
@@ -54,131 +56,19 @@
 
     <div class="content">
 
-        <div class="searchContainer">
-            <div class="searchBody">
-                <select name="filtercourse" id="filtercourse" class="searchFilter">
-                    <option value="" disabled selected hidden>Select Course ...</option>
-                    <option value="ccprog1">CCPROG1</option>
-                    <option value="ccprog2">CCPROG2</option>
-                    <option value="ccprog3">CCPROG3</option>
-                    <option value="csadprg">CSADPRG</option>
-                    <option value="ccapdev">CCAPDEV</option>
-                </select>
-
-                <select name="filterterm" id="filterterm" class="searchFilter">
-                    <option value="" disabled selected hidden>Select Term ...</option>
-                    <optgroup label="A.Y: 2021-2022">
-                        <option value="term2/21-22">Term 2</option>
-                        <option value="term1/21-22">Term 1</option>
-                    </optgroup>
-                    <optgroup label="A.Y: 2020-2021">
-                        <option value="term3/20-21">Term 3</option>
-                        <option value="term2/20-21">Term 2</option>
-                        <option value="term1/20-21">Term 1</option>
-                    </optgroup>
-                    <optgroup label="A.Y: 2019-2020">
-                        <option value="term3/19-20">Term 3</option>
-                        <option value="term2/19-20">Term 2</option>
-                        <option value="term2/19-20">Term 1</option>
-                    </optgroup>
-                </select>
-
-                <select name="filtercollege" id="filtercollege" class="searchFilter">
-                    <option value="" disabled selected hidden>Select College ...</option>
-                    <option value="cla">CLA</option>
-                    <option value="cos">COS</option>
-                    <option value="gcoe">GCOE</option>
-                    <option value="rvcob">RVCOB</option>
-                    <option value="soe">SOE</option>
-                    <option value="baggced">BAGCED</option>
-                    <option value="ccs">CCS</option>
-                </select>
-
-                <select name="filterrating" id="filterrating" class="searchFilter">
-                    <option value="" disabled selected hidden>Select Rating ...</option>
-                    <option value="1star">★ or higher</option>
-                    <option value="2stars">★★ or higher</option>
-                    <option value="3stars">★★★ or higher</option>
-                    <option value="4stars">★★★★ or higher</option>
-                    <option value="5stars">★★★★★</option>
-                </select> 
-
-                <button class="searchButton" id="searchByFilter">SEARCH BY FILTER</button>
-
-                <br>
-
-                <input class="searchName" type="text" id="profname2" name="profname2" placeholder="Input Prof's First Name...">
-                <input class="searchName" type="text" id="profLastName2" name="profLastName2" placeholder="Input Prof's Last Name...">
-                <button class="searchButton" id="searchByName">SEARCH BY NAME</button>
-
-            </div>   
-        </div>
-
-
-        <div class="prof-row">
-            <div class="prof-container">
-                <img class="prof-image" src="/img/jennie.jpg" alt="profpic">
-                <div class="prof-namebar">Jennie Kim</div>
-                <div class="prof-info">Assistant Prof. Lecturer</div>
-                <div class="prof-info">Communication</div>
-
-                <div class="prof-creds">AB in Communication Arts</div>
-                <div class="prof-creds">De La Salle University (2015)</div>
-                <div class="prof-creds">Teaching Experience - 2 years</div>
-
-                <div class="prof-rating-container">4.6</div>
-            </div>
-            <div class="prof-container">
-                <img class="prof-image" src="/img/rose.jpg" alt="profpic">
-                <div class="prof-namebar">Park Chaeyoung</div>
-                <div class="prof-info">Associate Professor</div>
-                <div class="prof-info">International Studies</div>
-
-                <div class="prof-creds">AB in International Studies</div>
-                <div class="prof-creds">De La Salle University (2016)</div>
-                <div class="prof-creds">Teaching Experience - 3 years</div>
-
-                <div class="prof-rating-container">4.5</div>
-            </div>
-            <div class="prof-container">
-                <img class="prof-image" src="/img/jisoo.jpg" alt="profpic">
-                <div class="prof-namebar">Kim Jisoo</div>
-                <div class="prof-info">Lecturer</div>
-                <div class="prof-info">Behavioral Science</div>
-
-                <div class="prof-creds">AB in Behavioral Sciences</div>
-                <div class="prof-creds">De La Salle University (2016)</div>
-                <div class="prof-creds">Teaching Experience - 2 years</div>
-
-                <div class="prof-rating-container">4.4</div>
-            </div>
-            <div class="prof-container">
-                <img class="prof-image" src="/img/lisa.jpg" alt="profpic">
-                <div class="prof-namebar">Lalisa Manoban</div>
-                <div class="prof-info">Professional Lecturer</div>
-                <div class="prof-info">Literature</div>
-
-                <div class="prof-creds">AB in Literature</div>
-                <div class="prof-creds">De La Salle University (2015)</div>
-                <div class="prof-creds">Teaching Experience - 3 years</div>
-
-                <div class="prof-rating-container">4.5</div>
+        <div class="searchBarContainer">
+            <div class="searchInputContainer">
+                <input type="text" id="profFNameInput" name="profFname" placeholder="Type Prof's Last Name ...">
+                <input type="text" id="profLNameInput" name="profLname" placeholder="Type Prof's First Name ...">
+                <button class="searchButton" id="profSearchByName">SEARCH BY NAME</button>
             </div>
         </div>
+        
 
-        <div class="prof-row">
-            <div class="prof-container"></div>
-            <div class="prof-container"></div>
-            <div class="prof-container"></div>
-            <div class="prof-container"></div>
-        </div>
+        <div id="PROF_REVIEWS"></div>
 
-        <div class="prof-row">
-            <div class="prof-container"></div>
-            <div class="prof-container"></div>
-            <div class="prof-container"></div>
-            <div class="prof-container"></div>
-        </div>
+        <button class="showProfsBtn" id="8">SHOW ALL PROFS</button>
+        <div id="ALL_PROFS_TABLE"></div>
         
         
     </div>
