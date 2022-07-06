@@ -20,7 +20,7 @@ var latestDesc = '';
      post liking and course following to prevent it from reverting to default values when 
      the page gets refreshed.
 */
-$.get("/fillDB");                
+//$.get("/fillDB");                
 
 jQuery(function () {
      console.log("Document Loaded");
@@ -755,19 +755,49 @@ jQuery(function () {
 
      // When user presses the signup button
      $(".signup").on("click", function () {
-          $.get("/addUser", {
-               firstName: "bruh",
-               lastName: "otiscow",
-               degree: "otis cow",
-               degreeCode: "adsfafd",
-               college: "otiscow",
-               batch: "118",
-               username: "otiscow",
-               password: "otiscow",
-               img: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
-               followedCourses: [],
-               likedPosts: [],
-          });
+
+          // Collect user inputs from the text boxes
+          let rfName = $("#rfName").val();
+          let rlName = $("#rlName").val();
+          let rdegree = $("#rdegree").val();
+          let rdCode = $("#rdCode").val();
+          let rcollege = $("#rcollege").val();
+          let rbatch = $("#rbatch").val();
+          let ruName = $("#ruName").val();
+          let rpassword = $("#rpasswordInput").val();
+          let rpassConfirm = $("#rpasswordConfirm").val();
+
+
+          if(  rfName == null || rfName == "" &&
+               rlName == null || rlName == "" &&
+               rdegree == null || rdegree == "" &&
+               rdCode == null || rdCode == "" &&
+               rcollege == null || rcollege == "" &&
+               rbatch == null || rbatch == "" &&
+               ruName == null || ruName == "" &&
+               rpassword == null || rpassword == "" &&
+               rpassConfirm == null || rpassConfirm == ""
+               ) {
+               //console.log('Multiple missing inputs!');
+               $("#signupMessage").html("Multiple missing inputs!");
+          } else if( rpassword != rpassConfirm ) {
+               //console.log('Passwords do not match!');
+               $("#signupMessage").html("Passwords do not match!");
+          } else {
+               $("#signupMessage").html("");
+               $.get("/addUser", {
+                    firstName: rfName,
+                    lastName: rlName,
+                    degree: rdegree,
+                    degreeCode: rdCode,
+                    college: rcollege,
+                    batch: rbatch,
+                    username: ruName,
+                    password: rpassword
+               });
+               $(".logintable").css("display", "block");
+               $(".registertable").css("display", "none ");
+          }
      });
 
      $(".loginlnk").on("click", function (e) {
@@ -776,7 +806,7 @@ jQuery(function () {
      });
 
      /* closes the login pop up */
-     $("button.login-close").on("click", function (e) {
+     $(".login-close").on("click", function () {
           $(".loginContainer").css("visibility", "hidden");
           $(".loginContainer").css("display", "none");
           $("body >*:not(.loginContainer)").css("filter", "none");
